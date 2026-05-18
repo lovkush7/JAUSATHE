@@ -86,19 +86,19 @@ const Login = () => {
               </FieldDescription>
             </FieldGroup>
           </form>
-        <div className="relative flex w-full  hidden md:flex items-center justify-center  bg-white/10 backdrop-blur-xl ">
+        {/* <div className="relative flex w-full  hidden md:flex items-center justify-center  bg-white/10 backdrop-blur-xl ">
             <img
               src="/logo.png"
               alt="Image"
               className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
-          </div>
+          </div> */}
         </CardContent>
       </Card>
-      <FieldDescription className="px-6 text-center">
+      {/* <FieldDescription className="px-6 text-center">
         By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
         and <a href="#">Privacy Policy</a>.
-      </FieldDescription>
+      </FieldDescription> */}
     </div>
     </div>
   )

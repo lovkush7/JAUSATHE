@@ -1,9 +1,8 @@
+import Onboarding3 from '@/molecules/boarding/Onboarding3'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/boarding/page3/')({
-  component: RouteComponent,
+  component: Onboarding3,
 })
 
-function RouteComponent() {
-  return <div>Hello "/boarding/page3/"!</div>
-}
+
