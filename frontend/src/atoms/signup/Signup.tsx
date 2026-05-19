@@ -44,10 +44,10 @@ export const SignupForm = () => {
   return (
     <div className="flex justify-center items-center h-screen ">
       <div >
-        <Card className="p-3 bg-gray-700 text-white">
+        <Card className="p-3 bg-gray-800 text-gray-400 shadow-lg">
           <CardHeader className="text-center">
             <CardTitle className="text-xl">Create an account</CardTitle>
-            <CardDescription className="text-black">
+            <CardDescription className="">
               Login with your Apple or Google account
             </CardDescription>
           </CardHeader>
@@ -66,8 +66,8 @@ export const SignupForm = () => {
                     Login with Google
                   </Button>
                 </Field>
-                <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-                  Or continue with
+                <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card ">
+                  <p className="text-black "> Or continue with</p>
                 </FieldSeparator>
                 <Field>
                   <FieldLabel htmlFor="email">Fullname</FieldLabel>

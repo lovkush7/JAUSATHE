@@ -3,9 +3,9 @@ import React from 'react'
 
 const Loginpage = () => {
   return (
-       <div className='flex items-center justify-center min-h-screen bg-gray-900 px-4'>
-      <div className='w-full max-w-4xl'>
-        <Login />
+     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10 bg-gray-900">
+      <div className="w-full max-w-sm">
+       <Login/>
       </div>
     </div>
   )
