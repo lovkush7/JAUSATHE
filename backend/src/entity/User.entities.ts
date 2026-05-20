@@ -17,7 +17,7 @@ export class User extends CommonEntity {
     @Column({type: "text"})
     Phone!: string;
 
-    @Column({type: "text"})
+    @Column({type: "text" , nullable: true})
     profile: string;
 
 

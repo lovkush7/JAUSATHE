@@ -25,26 +25,39 @@ import {
 import { Input } from "@/components/ui/input"
 import { Link } from "@tanstack/react-router"
 import { useState } from "react"
+import { api } from "@/api/Api"
+import { useMutation } from "@tanstack/react-query"
 
 
 export const SignupForm = () => {
   const [Text, SetText] = useState({
-    Fullname: '',
-    email: '',
+    FullName: '',
+    Email: '',
     password: '',
-    phone: '',
-    address: '',
-    role: 'EMPLOYEE',
+    Phone: '',
+    Role: 'EMPLOYEE',
   })
+ const sendreq = async(text : any)=>{
+  const res = await api.post("/auth/signup", text )
+  return res.data;
+ }
 
+const mutation = useMutation({
+  mutationKey: ["signup"],
+  mutationFn: (data: any)=>sendreq(Text)
+})
 
-
-
+const handlesubmit =(e: any) =>{
+e.preventDefault();
+console.log(Text)
+console.log(e.target.value)
+mutation.mutate(Text)
+}
 
   return (
-    <div className="flex justify-center items-center h-screen ">
-      <div >
-        <Card className="p-3 bg-gray-800 text-gray-400 shadow-lg">
+    <div className="flex justify-center items-center min-h-screen ">
+      <div  >
+        <Card className="p-3 h-full bg-gray-800 text-gray-400 shadow-lg">
           <CardHeader className="text-center">
             <CardTitle className="text-xl">Create an account</CardTitle>
             <CardDescription className="">
@@ -52,7 +65,7 @@ export const SignupForm = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form >
+            <form onSubmit={handlesubmit}>
               <FieldGroup>
                 <Field>
                
@@ -75,8 +88,8 @@ export const SignupForm = () => {
                     id="text"
                     type="text"
                     placeholder="Enter the fullname"
-                    value={Text.Fullname}
-                    onChange={(e) => SetText({ ...Text, Fullname: e.target.value })}
+                    value={Text.FullName}
+                    onChange={(e) => SetText({ ...Text, FullName: e.target.value })}
                     required
                   />
                 </Field>
@@ -86,8 +99,8 @@ export const SignupForm = () => {
                     id="email"
                     type="email"
                     placeholder="m@example.com"
-                    value={Text.email}
-                    onChange={(e) => SetText({ ...Text, email: e.target.value })}
+                    value={Text.Email}
+                    onChange={(e) => SetText({ ...Text, Email: e.target.value })}
 
                     required
                   />
@@ -114,8 +127,8 @@ export const SignupForm = () => {
                     id="phone"
                     type="phone"
                     placeholder="+977..."
-                    value={Text.phone}
-                    onChange={(e) => SetText({ ...Text, phone: e.target.value })}
+                    value={Text.Phone}
+                    onChange={(e) => SetText({ ...Text, Phone: e.target.value })}
 
                     required
                   />
@@ -123,10 +136,10 @@ export const SignupForm = () => {
 
                 <Field className="">
                   <FieldLabel htmlFor="form-country">Role</FieldLabel>
-                  <Select   defaultValue="PASSENGERS" value={Text.role}
+                  <Select   defaultValue="PASSENGERS" value={Text.Role}
                     onValueChange={(value) => {
                       if (value) {
-                        SetText({ ...Text, role: value })
+                        SetText({ ...Text, Role: value })
                       }
                     }}>
                     <SelectTrigger id="" >

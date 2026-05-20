@@ -16,6 +16,7 @@ class Authentication {
         if(!existinguser){
             throw new Error("user dosent exist")
         }
+        console.log(existinguser)
        const ispasscheck = await bcrypt.compare(body.password, existinguser.password);
        
        if(!ispasscheck){

@@ -4,6 +4,7 @@ import express from "express"
 import Envconfig from "./config/Envconfig.ts"
 import cors from "cors"
 import cookieParser from "cookie-parser"
+import { RegisterRoutes } from "./routes/routes.ts"
 
 const app = express()
 app.use(express.json())
@@ -15,6 +16,15 @@ app.use(cors({
 AppDataSource.initialize().then(()=>{
     
 console.log("the db is initialized")
+RegisterRoutes(app);
+    app.use((err: any, req: any, res: any, next: any) => {
+  console.log(err)
+
+  return res.status(err.status || 500).json({
+    message: err.message,
+    fields: err.fields,
+  })
+})
 app.listen(Envconfig.PORT!,()=>{
     console.log(`the server is running ON ${Envconfig.PORT!}` )
 })

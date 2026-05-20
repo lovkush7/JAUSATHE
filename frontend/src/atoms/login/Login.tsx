@@ -21,7 +21,7 @@ import { api } from '@/api/Api'
 
 const Login = () => {
   const [value, setvalue] = useState({
-    email: '',
+    Email: '',
     password: '',
   })
        const sendlogin = async (value: any)=>{
@@ -62,8 +62,8 @@ const Login = () => {
                   id="email"
                   type="email"
                   placeholder="m@example.com"
-                  value={value.email}
-                  onChange={(e) => setvalue({ ...value, email: e.target.value })}
+                  value={value.Email}
+                  onChange={(e) => setvalue({ ...value, Email: e.target.value })}
                   required
                 />
               </Field>
