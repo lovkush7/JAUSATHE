@@ -3,7 +3,7 @@ import React from 'react'
 const Home = () => {
   return (
     <div>
-      hellow world
+      hellow world from nepal
     </div>
   )
 }

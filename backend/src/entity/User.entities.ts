@@ -11,7 +11,7 @@ export class User extends CommonEntity {
     @Column({type: "text", unique: true})
     Email!: string;
 
-    @Column({type: "text", select: false})
+    @Column({type: "text"})
     password: string;
 
     @Column({type: "text"})

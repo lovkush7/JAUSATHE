@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select"
 
 import { Input } from "@/components/ui/input"
-import { Link } from "@tanstack/react-router"
+import { Link, redirect } from "@tanstack/react-router"
 import { useState } from "react"
 import { api } from "@/api/Api"
 import { useMutation } from "@tanstack/react-query"
@@ -44,7 +44,11 @@ export const SignupForm = () => {
 
 const mutation = useMutation({
   mutationKey: ["signup"],
-  mutationFn: (data: any)=>sendreq(Text)
+  mutationFn: (data: any)=>sendreq(Text),
+
+  onSuccess: ()=>{
+    throw redirect({to: "/"})
+  }
 })
 
 const handlesubmit =(e: any) =>{

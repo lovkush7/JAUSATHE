@@ -124,6 +124,27 @@
 					}
 				}
 			}
+		},
+		"/auth/checkauth": {
+			"get": {
+				"operationId": "Checkauth",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
 		}
 	},
 	"servers": [
