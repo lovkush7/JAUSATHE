@@ -6,12 +6,12 @@ export const Route = createFileRoute('/auth/Signup/')({
   beforeLoad: async()=>{
     try{
       const user = await checkauth()
-
+        
       if(user){
         throw redirect({to: "/"})
       }
     }catch(err){
-      throw err;
+      return
     }
   },
   component: Signuppage,

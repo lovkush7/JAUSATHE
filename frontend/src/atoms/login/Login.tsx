@@ -15,7 +15,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 import { api } from '@/api/Api'
 
@@ -24,6 +24,7 @@ const Login = () => {
     Email: '',
     password: '',
   })
+  const navigate = useNavigate()
        const sendlogin = async (value: any)=>{
         try{
            const res = await api.post('/auth/login',value)
@@ -37,8 +38,11 @@ const Login = () => {
     mutationKey: ["login"],
     mutationFn:  sendlogin,
 
+
+
     onSuccess:()=>{
       console.log("success")
+      navigate({to: "/"})
     }
    })
    const handlesubmit = (e: any )=>{

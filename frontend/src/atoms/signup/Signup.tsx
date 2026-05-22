@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select"
 
 import { Input } from "@/components/ui/input"
-import { Link, redirect } from "@tanstack/react-router"
+import { Link, redirect, useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
 import { api } from "@/api/Api"
 import { useMutation } from "@tanstack/react-query"
@@ -37,6 +37,7 @@ export const SignupForm = () => {
     Phone: '',
     Role: 'EMPLOYEE',
   })
+  const navigate = useNavigate()
  const sendreq = async(text : any)=>{
   const res = await api.post("/auth/signup", text )
   return res.data;
@@ -44,10 +45,10 @@ export const SignupForm = () => {
 
 const mutation = useMutation({
   mutationKey: ["signup"],
-  mutationFn: (data: any)=>sendreq(Text),
+  mutationFn: sendreq,
 
   onSuccess: ()=>{
-    throw redirect({to: "/"})
+   navigate({to: "/"})
   }
 })
 

@@ -12,7 +12,8 @@ export const Route = createFileRoute('/auth/login/')({
       }
 
     }catch(err){
-      throw redirect({to: "/auth/login"})
+      // throw redirect({to: "/auth/login"})
+      return
     }
   },
   component: Login,

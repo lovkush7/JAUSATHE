@@ -19,7 +19,7 @@ const Onboarding3 = () => {
           <p className='text-gray-300'>Pay with eSewa, Khalti, card, or cash. Fast, safe, and seamless every time.</p>
         </div>
         <div>
-          <Button onClick={()=>navigate({ to: '/auth/login' })}  className='mt-6 w-2xl p-8 bg-blue-400 flex gap-2 hover:bg-blue-300 cursor-pointer '>
+          <Button onClick={()=>navigate({to:'/auth/login'})}  className='mt-6 w-2xl p-8 bg-blue-400 flex gap-2 hover:bg-blue-300 cursor-pointer '>
             Get Started <MoveRight size={20}/>
           </Button>
         </div>
