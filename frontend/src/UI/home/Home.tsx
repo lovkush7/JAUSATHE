@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <div>
       <Map/>
-      hellow world from nepal
+    
     </div>
   )
 }
