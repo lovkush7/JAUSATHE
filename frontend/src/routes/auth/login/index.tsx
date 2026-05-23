@@ -5,16 +5,17 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/auth/login/')({
   beforeLoad: async () => {
-    try{
+    
       const user = await checkauth()
+      console.log("the log user ",user)
+      
       if(user){
         throw redirect({to: "/"})
       }
 
-    }catch(err){
+    
       // throw redirect({to: "/auth/login"})
-      return
-    }
+    
   },
   component: Login,
 })

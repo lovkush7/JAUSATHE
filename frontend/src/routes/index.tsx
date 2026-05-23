@@ -8,6 +8,8 @@ export const Route = createFileRoute('/')({
  beforeLoad:async ()=>{
    try{
   const user =await checkauth()
+  console.log( "the user is ",user)
+
   if(!user){
     throw redirect({to: "/Splash"})
   }

@@ -2,6 +2,8 @@ import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import "./index.css"
+import "leaflet/dist/leaflet.css"
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css"
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
