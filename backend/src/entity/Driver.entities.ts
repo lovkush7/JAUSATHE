@@ -11,7 +11,7 @@ export class Driver extends  CommonEntity{
     @Column({type: "enum", enum: Driverstatus, default: Driverstatus.OFFLINE})
     status: Driverstatus;
 
-    @Column({type: "number", default: 0})
+    @Column({type: "integer", default: 0})
     totaltrip: number;
 
     @Column({type: "decimal", precision: 3 , scale:2 , default: 0})
