@@ -3,41 +3,68 @@ import L from "leaflet"
 import "leaflet-routing-machine"
 
 import { useMap } from 'react-leaflet'
-type props ={
+type props = {
     pickup: [number, number],
-    destination: [number , number]
+    destination: [number, number]
 }
 
-const RoutingMap = ({pickup, destination}: props) => {
+const RoutingMap = ({ pickup, destination }: props) => {
     const map = useMap();
 
-    useEffect(()=>{
-        if(!map) return;
+    useEffect(() => {
+        if (!map) return;
 
-         const routingControl = L.Routing.control({
+        const routingControl = L.Routing.control({
             waypoints: [
                 L.latLng(pickup[0], pickup[1]),
                 L.latLng(destination[0], destination[1])
             ],
-             lineOptions:{
-                  styles: [{color: "blue", weight: 5}],
-                  extendToWaypoints: true,
-                  missingRouteTolerance: 0
-             },
-             routeWhileDragging: false,
-             addWaypoints: false,
-             draggableWaypoints: false,
-             fixSelectedRoutes: true,
-             show: false,
-              
-             
-         }).addTo(map)
+            router: (L.Routing as any).osrmv1({
+                serviceUrl: "https://router.project-osrm.org/route/v1",
+            }),
+            lineOptions: {
+                styles: [{ color: "blue", weight: 5 }],
+                extendToWaypoints: true,
+                missingRouteTolerance: 0
+            },
+            routeWhileDragging: false,
+            addWaypoints: false,
+            draggableWaypoints: false,
+            fixSelectedRoutes: true,
+            show: false,
 
-         return ()=> {
+
+        }).addTo(map)
+
+       routingControl.on("routesfound", (e: any) => {
+  const route = e.routes[0];
+
+  // meters -> km
+  const distanceKm = route.summary.totalDistance / 1000;
+
+  // seconds -> minutes
+  const osrmTime = route.summary.totalTime / 60;
+
+  // Nepal realistic estimate
+  // 1 km = 3 min
+  const realisticTime = distanceKm * 3;
+
+  console.log("Distance KM:", distanceKm.toFixed(2));
+
+  console.log("OSRM Time:", osrmTime.toFixed(1));
+
+  console.log(
+    "Realistic Nepal ETA:",
+    realisticTime.toFixed(1),
+    "minutes"
+  );
+});
+
+        return () => {
             map.removeControl(routingControl)
-         }
-    },[map, pickup, destination])
-  return null;
+        }
+    }, [map, pickup, destination])
+    return null;
 }
 
 export default RoutingMap

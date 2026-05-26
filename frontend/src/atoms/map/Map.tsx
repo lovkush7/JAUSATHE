@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import Mapclickhandler from '@/utils/mapevent/Mapclickhandler'
+import RoutingMap from '@/utils/mapevent/RoutingMap'
 import { Bike, Car, CarFront, CarTaxiFront, Dot, Motorbike, Van } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
@@ -8,10 +9,12 @@ type LocationType = {
     lat: number,
     lng: number
 }
-const Map = () => {
+const  Map = () => {
     const [Locations, setLocations] = useState<LocationType | null>(null)
     const [Location, setLocation] = useState<LocationType | null>(null)
     const [openform, setopenform] = useState(false)
+    const [Destination, setDestination] = useState<LocationType | null>(null)
+
 
     const vechicles = [
         {
@@ -46,7 +49,7 @@ const Map = () => {
     }, [])
 
     return (
-        <div className='relative h-screen w-full'>
+        <div className='relative h-screen w-full overflow-y-auto'>
             <MapContainer
                 center={[27.6180, 85.5380]}
                 zoom={13}
@@ -61,6 +64,7 @@ const Map = () => {
 
                 <Mapclickhandler
                     setLocation={setLocation}
+                    setDestination={setDestination}
                     setopenform={setopenform}
                 />
                 {Locations &&
@@ -77,7 +81,17 @@ const Map = () => {
                         </Popup>
                     </Marker>}
 
+                    {Destination &&
+                    <Marker position={[Destination.lat, Destination.lng]}>
+                        <Popup>
+                            your choose  destinations{Destination.lat} <br />
+                        </Popup>
+                    </Marker>}
+             {
+                Locations && Destination &&
 
+            <RoutingMap pickup={[Locations?.lat, Locations?.lng]} destination={[Destination?.lat, Destination?.lng]}/>
+             }
             </MapContainer>
 
             <div className='absolute bottom-0 left-0 w-full z-[1000] '>

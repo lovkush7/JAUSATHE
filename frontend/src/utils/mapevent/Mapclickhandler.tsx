@@ -4,9 +4,10 @@ import { useMapEvents } from 'react-leaflet'
 type props = {
     setLocation: React.Dispatch<React.SetStateAction<any>>
      setopenform: React.Dispatch<React.SetStateAction<boolean>>
+     setDestination: React.Dispatch<React.SetStateAction<any>>
 }
 
-const Mapclickhandler = ({setLocation,setopenform} : props) => {
+const Mapclickhandler = ({setLocation,setopenform,setDestination} : props) => {
 
     useMapEvents({
         click(e){
@@ -15,6 +16,7 @@ const Mapclickhandler = ({setLocation,setopenform} : props) => {
                 lng: e.latlng.lng,
             }
             setLocation(latlng)
+            setDestination(latlng)
             setopenform(true)
         }
 
