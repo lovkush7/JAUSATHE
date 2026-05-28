@@ -1,7 +1,8 @@
-import { BeforeInsert, Column, Entity } from "typeorm";
+import { BeforeInsert, Column, Entity, OneToMany } from "typeorm";
 import { CommonEntity } from "./commonentity.ts";
 import { UserRole } from "../enum/enum.details.ts";
 import bcrypt from "bcrypt"
+import { Ride } from "./Ride.entities.ts";
 @Entity("user")
 export class User extends CommonEntity {
 
@@ -23,6 +24,9 @@ export class User extends CommonEntity {
 
     @Column({type:"enum", enum: UserRole, default: UserRole.PASSENGERS})
     Role: UserRole;
+
+    @OneToMany(()=>Ride, (ride)=>ride.rider)
+    rides: Ride[];
 
 
 

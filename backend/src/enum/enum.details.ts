@@ -21,5 +21,17 @@ export enum Driverstatus {
 }
 
 export enum RideStatus{
-    
+    REQUESTED = "REQUESTED",
+    ACCEPTED = "ACCEPTED",
+    ARRIVING = "ARRIVING",
+    STARTED = "STARTED",
+    COMPLETED = "COMPLETED",
+    CANCELED = "CANCELED",
+
+}
+
+export enum Cancledby {
+    DRIVER = "DRIVER",
+    PASSENGERS = "PASSENGERS",
+    SYSTEM = "SYSTEM"
 }

@@ -1,6 +1,7 @@
-import { Column, Entity, Index, type Point } from "typeorm";
+import { Column, Entity, Index, OneToOne, type Point } from "typeorm";
 import { CommonEntity } from "./commonentity.ts";
 import { Driverstatus } from "../enum/enum.details.ts";
+import { Vechicles } from "./Vechiles.entity.ts";
 
 @Entity("driver")
 export class Driver extends  CommonEntity{
@@ -26,6 +27,8 @@ export class Driver extends  CommonEntity{
     })
     CurrentLocation: Point;
 
+    @OneToOne(()=>Vechicles, (vechicles)=>vechicles.driver)
+    vechicles: Vechicles;
 
 
 }
