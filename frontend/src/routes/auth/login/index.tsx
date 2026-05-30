@@ -4,19 +4,19 @@ import { checkauth } from '@/utils/Checkauth'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/auth/login/')({
-  beforeLoad: async () => {
+  // beforeLoad: async () => {
     
-      const user = await checkauth()
-      console.log("the log user ",user)
+  //     const user = await checkauth()
+  //     console.log("the log user ",user)
       
-      if(user){
-        throw redirect({to: "/"})
-      }
+  //     if(user){
+  //       throw redirect({to: "/"})
+  //     }
 
     
-      // throw redirect({to: "/auth/login"})
+  //     // throw redirect({to: "/auth/login"})
     
-  },
+  // },
   component: Login,
 })
 
