@@ -5,6 +5,12 @@ export enum UserRole {
 
 }
 
+export enum Userstatus{
+    ACTIVE = "ACTIVE",
+    INACTIVE = "INACTIVE",
+    BLOCKED = "BLOCKED"
+}
+
 export enum VehicleType {
  BIKE = "BIKE",
  CAR = "CAR",

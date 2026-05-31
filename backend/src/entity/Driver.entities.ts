@@ -9,6 +9,12 @@ export class Driver extends  CommonEntity{
     @Column({type: "text", nullable: true, unique: true})
     licenseNumber: string;
 
+    @Column({type: 'date' , nullable: true})
+    licenseExpery: Date;
+
+    @Column({type: "text", nullable: true})
+    citizenshipNumber: string;
+
     @Column({type: "enum", enum: Driverstatus, default: Driverstatus.OFFLINE})
     status: Driverstatus;
 
