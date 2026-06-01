@@ -5,6 +5,10 @@ import type { TsoaRoute } from '@tsoa/runtime';
 import {  fetchMiddlewares, ExpressTemplateService } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { Authentication } from './../controller/userauth/Auth.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { UserController } from './../controller/userauth/UserController/User.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { DriverController } from './../controller/DriverController/Driver.controller';
 import { expressAuthentication } from './../Middlewares/ExpressAuthentication';
 // @ts-ignore - no great way to install types from subpackage
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
@@ -37,6 +41,148 @@ const models: TsoaRoute.Models = {
             "password": {"dataType":"string","required":true},
             "Phone": {"dataType":"string","required":true},
             "Role": {"ref":"UserRole","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Userstatus": {
+        "dataType": "refEnum",
+        "enums": ["ACTIVE","INACTIVE","BLOCKED"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Position": {
+        "dataType": "refAlias",
+        "type": {"dataType":"array","array":{"dataType":"double"},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Point": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"coordinates":{"ref":"Position","required":true},"type":{"dataType":"enum","enums":["Point"],"required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "LineString": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"coordinates":{"dataType":"array","array":{"dataType":"refAlias","ref":"Position"},"required":true},"type":{"dataType":"enum","enums":["LineString"],"required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "VehicleType": {
+        "dataType": "refEnum",
+        "enums": ["BIKE","CAR","ELECTRIC","AUTO"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "RideStatus": {
+        "dataType": "refEnum",
+        "enums": ["REQUESTED","ACCEPTED","ARRIVING","STARTED","COMPLETED","CANCELED"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Cancledby": {
+        "dataType": "refEnum",
+        "enums": ["DRIVER","PASSENGERS","SYSTEM"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "User": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "DeletedAt": {"dataType":"datetime","required":true},
+            "UpdatedAt": {"dataType":"datetime","required":true},
+            "CreatedAt": {"dataType":"datetime","required":true},
+            "FullName": {"dataType":"string","required":true},
+            "Email": {"dataType":"string","required":true},
+            "password": {"dataType":"string","required":true},
+            "Phone": {"dataType":"string","required":true},
+            "profile": {"dataType":"string","required":true},
+            "status": {"ref":"Userstatus","required":true},
+            "Role": {"ref":"UserRole","required":true},
+            "rides": {"dataType":"array","array":{"dataType":"refObject","ref":"Ride"},"required":true},
+            "Driver": {"ref":"Driver","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Driverstatus": {
+        "dataType": "refEnum",
+        "enums": ["ONLINE","OFFLINE","BUSY"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Vechicles": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "DeletedAt": {"dataType":"datetime","required":true},
+            "UpdatedAt": {"dataType":"datetime","required":true},
+            "CreatedAt": {"dataType":"datetime","required":true},
+            "model": {"dataType":"string","required":true},
+            "plateNumber": {"dataType":"string","required":true},
+            "color": {"dataType":"string","required":true},
+            "type": {"ref":"VehicleType","required":true},
+            "seatCapacity": {"dataType":"string","required":true},
+            "driver": {"ref":"Driver","required":true},
+            "rides": {"dataType":"array","array":{"dataType":"refObject","ref":"Ride"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Driver": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "DeletedAt": {"dataType":"datetime","required":true},
+            "UpdatedAt": {"dataType":"datetime","required":true},
+            "CreatedAt": {"dataType":"datetime","required":true},
+            "licenseNumber": {"dataType":"string","required":true},
+            "licenseExpery": {"dataType":"datetime","required":true},
+            "citizenshipNumber": {"dataType":"string","required":true},
+            "currentBearing": {"dataType":"double","required":true},
+            "lastLocationUpdate": {"dataType":"datetime","required":true},
+            "status": {"ref":"Driverstatus","required":true},
+            "totaltrip": {"dataType":"double","required":true},
+            "rating": {"dataType":"double","required":true},
+            "CurrentLocation": {"ref":"Point","required":true},
+            "vechicles": {"ref":"Vechicles","required":true},
+            "user": {"ref":"User","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Ride": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "DeletedAt": {"dataType":"datetime","required":true},
+            "UpdatedAt": {"dataType":"datetime","required":true},
+            "CreatedAt": {"dataType":"datetime","required":true},
+            "pickupAddress": {"dataType":"string","required":true},
+            "pickupLocation": {"ref":"Point","required":true},
+            "DropoffAddress": {"dataType":"string","required":true},
+            "DropoffLocation": {"ref":"Point","required":true},
+            "routepath": {"ref":"LineString","required":true},
+            "estimatedFare": {"dataType":"double","required":true},
+            "FinalFare": {"dataType":"double","required":true},
+            "estimatedDistance": {"dataType":"double","required":true},
+            "ActualDistance": {"dataType":"double","required":true},
+            "DurationMinutes": {"dataType":"double","required":true},
+            "reqVehicleType": {"ref":"VehicleType","required":true},
+            "ridestauts": {"ref":"RideStatus","required":true},
+            "cancledby": {"ref":"Cancledby","required":true},
+            "cancellationResion": {"dataType":"string","required":true},
+            "cancelAt": {"dataType":"datetime","required":true},
+            "driverAcceptedAt": {"dataType":"datetime","required":true},
+            "driverArrivedAt": {"dataType":"datetime","required":true},
+            "tripStartAt": {"dataType":"datetime","required":true},
+            "tripEndAt": {"dataType":"datetime","required":true},
+            "rider": {"ref":"User","required":true},
+            "vechicle": {"ref":"Vechicles","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Driverdto": {
+        "dataType": "refObject",
+        "properties": {
+            "licenseNumber": {"dataType":"string","required":true},
+            "licenseExpery": {"dataType":"datetime","required":true},
+            "citizenshipNumber": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -138,6 +284,163 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'checkauth',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsUserController_getuser: Record<string, TsoaRoute.ParameterSchema> = {
+                Role: {"in":"query","name":"Role","required":true,"ref":"UserRole"},
+                page: {"in":"query","name":"page","required":true,"dataType":"double"},
+                limit: {"in":"query","name":"limit","required":true,"dataType":"double"},
+        };
+        app.get('/users/getusers',
+            ...(fetchMiddlewares<RequestHandler>(UserController)),
+            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.getuser)),
+
+            async function UserController_getuser(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsUserController_getuser, request, response });
+
+                const controller = new UserController();
+
+              await templateService.apiHandler({
+                methodName: 'getuser',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsUserController_deleteUser: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
+        };
+        app.delete('/users/deleteuser/:id',
+            ...(fetchMiddlewares<RequestHandler>(UserController)),
+            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.deleteUser)),
+
+            async function UserController_deleteUser(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsUserController_deleteUser, request, response });
+
+                const controller = new UserController();
+
+              await templateService.apiHandler({
+                methodName: 'deleteUser',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsDriverController_registerDriver: Record<string, TsoaRoute.ParameterSchema> = {
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
+                body: {"in":"body","name":"body","required":true,"ref":"Driverdto"},
+        };
+        app.post('/driver/register-driver',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(DriverController)),
+            ...(fetchMiddlewares<RequestHandler>(DriverController.prototype.registerDriver)),
+
+            async function DriverController_registerDriver(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsDriverController_registerDriver, request, response });
+
+                const controller = new DriverController();
+
+              await templateService.apiHandler({
+                methodName: 'registerDriver',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsDriverController_getDriverProfile: Record<string, TsoaRoute.ParameterSchema> = {
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
+        };
+        app.get('/driver/myprofile',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(DriverController)),
+            ...(fetchMiddlewares<RequestHandler>(DriverController.prototype.getDriverProfile)),
+
+            async function DriverController_getDriverProfile(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsDriverController_getDriverProfile, request, response });
+
+                const controller = new DriverController();
+
+              await templateService.apiHandler({
+                methodName: 'getDriverProfile',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsDriverController_DriverLocation: Record<string, TsoaRoute.ParameterSchema> = {
+                body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"bearing":{"dataType":"double","required":true},"lng":{"dataType":"double","required":true},"lat":{"dataType":"double","required":true}}},
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
+        };
+        app.post('/driver/location',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(DriverController)),
+            ...(fetchMiddlewares<RequestHandler>(DriverController.prototype.DriverLocation)),
+
+            async function DriverController_DriverLocation(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsDriverController_DriverLocation, request, response });
+
+                const controller = new DriverController();
+
+              await templateService.apiHandler({
+                methodName: 'DriverLocation',
                 controller,
                 response,
                 next,

@@ -1,8 +1,9 @@
-import { BeforeInsert, Column, Entity, OneToMany } from "typeorm";
+import { BeforeInsert, Column, Entity, OneToMany, OneToOne } from "typeorm";
 import { CommonEntity } from "./commonentity.ts";
 import { UserRole, Userstatus } from "../enum/enum.details.ts";
 import bcrypt from "bcrypt"
 import { Ride } from "./Ride.entities.ts";
+import { Driver } from "./Driver.entities.ts";
 @Entity("user")
 export class User extends CommonEntity {
 
@@ -31,6 +32,8 @@ export class User extends CommonEntity {
     @OneToMany(()=>Ride, (ride)=>ride.rider)
     rides: Ride[];
 
+    @OneToOne(()=>Driver, (profile)=>profile.user)
+    Driver: Driver;
 
 
 

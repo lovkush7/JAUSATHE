@@ -4,7 +4,7 @@ import type { UserRole } from "../../../enum/enum.details.ts";
 import UserServices from "../../../services/UserService/User.services.ts";
 
 @Route("users")
-class UserController extends Controller {
+export class UserController extends Controller {
 
     @Get("getusers") //only for admin ko lage
     @Middlewares(Adminmiddleware)
@@ -21,7 +21,7 @@ class UserController extends Controller {
       }
     }
 
-    @Delete("deleteuser/:{id}")
+    @Delete("deleteuser/{id}")
     @Middlewares(Adminmiddleware)
     async deleteUser (
         @Path() id: string

@@ -1,30 +1,37 @@
-import { Column, Entity, Index, OneToOne, type Point } from "typeorm";
+import { Column, Entity, Index, JoinColumn, OneToOne, type Point } from "typeorm";
 import { CommonEntity } from "./commonentity.ts";
 import { Driverstatus } from "../enum/enum.details.ts";
 import { Vechicles } from "./Vechiles.entity.ts";
+import { User } from "./User.entities.ts";
 
 @Entity("driver")
-export class Driver extends  CommonEntity{
+export class Driver extends CommonEntity {
 
-    @Column({type: "text", nullable: true, unique: true})
+    @Column({ type: "text", nullable: true, unique: true })
     licenseNumber: string;
 
-    @Column({type: 'date' , nullable: true})
+    @Column({ type: 'date', nullable: true })
     licenseExpery: Date;
 
-    @Column({type: "text", nullable: true})
+    @Column({ type: "text", nullable: true })
     citizenshipNumber: string;
+         
+    @Column({ type: "decimal", precision: 10, scale: 7, nullable: true })
+    currentBearing: number;
 
-    @Column({type: "enum", enum: Driverstatus, default: Driverstatus.OFFLINE})
+    @Column({ type: "timestamp", nullable: true })
+    lastLocationUpdate: Date;
+
+    @Column({ type: "enum", enum: Driverstatus, default: Driverstatus.OFFLINE })
     status: Driverstatus;
 
-    @Column({type: "integer", default: 0})
+    @Column({ type: "integer", default: 0 })
     totaltrip: number;
 
-    @Column({type: "decimal", precision: 3 , scale:2 , default: 0})
+    @Column({ type: "decimal", precision: 3, scale: 2, default: 0 })
     rating: number;
 
-    @Index({spatial: true})
+    @Index({ spatial: true })
     @Column({
         type: "geometry",
         spatialFeatureType: "point",
@@ -33,8 +40,10 @@ export class Driver extends  CommonEntity{
     })
     CurrentLocation: Point;
 
-    @OneToOne(()=>Vechicles, (vechicles)=>vechicles.driver)
+    @OneToOne(() => Vechicles, (vechicles) => vechicles.driver)
     vechicles: Vechicles;
 
-
+    @OneToOne(() => User, (user) => user.Driver)
+    @JoinColumn({ name: "userId" })
+    user: User;
 }

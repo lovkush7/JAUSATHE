@@ -58,6 +58,443 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"Userstatus": {
+				"enum": [
+					"ACTIVE",
+					"INACTIVE",
+					"BLOCKED"
+				],
+				"type": "string"
+			},
+			"Position": {
+				"items": {
+					"type": "number",
+					"format": "double"
+				},
+				"type": "array",
+				"description": "Position object.\nhttps://datatracker.ietf.org/doc/html/rfc7946#section-3.1.1"
+			},
+			"Point": {
+				"properties": {
+					"coordinates": {
+						"$ref": "#/components/schemas/Position"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"Point"
+						],
+						"nullable": false
+					}
+				},
+				"required": [
+					"coordinates",
+					"type"
+				],
+				"type": "object",
+				"description": "Point geometry object.\nhttps://datatracker.ietf.org/doc/html/rfc7946#section-3.1.2"
+			},
+			"LineString": {
+				"properties": {
+					"coordinates": {
+						"items": {
+							"$ref": "#/components/schemas/Position"
+						},
+						"type": "array"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"LineString"
+						],
+						"nullable": false
+					}
+				},
+				"required": [
+					"coordinates",
+					"type"
+				],
+				"type": "object",
+				"description": "LineString geometry object.\nhttps://datatracker.ietf.org/doc/html/rfc7946#section-3.1.4"
+			},
+			"VehicleType": {
+				"enum": [
+					"BIKE",
+					"CAR",
+					"ELECTRIC",
+					"AUTO"
+				],
+				"type": "string"
+			},
+			"RideStatus": {
+				"enum": [
+					"REQUESTED",
+					"ACCEPTED",
+					"ARRIVING",
+					"STARTED",
+					"COMPLETED",
+					"CANCELED"
+				],
+				"type": "string"
+			},
+			"Cancledby": {
+				"enum": [
+					"DRIVER",
+					"PASSENGERS",
+					"SYSTEM"
+				],
+				"type": "string"
+			},
+			"User": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"DeletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"CreatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"FullName": {
+						"type": "string"
+					},
+					"Email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"Phone": {
+						"type": "string"
+					},
+					"profile": {
+						"type": "string"
+					},
+					"status": {
+						"$ref": "#/components/schemas/Userstatus"
+					},
+					"Role": {
+						"$ref": "#/components/schemas/UserRole"
+					},
+					"rides": {
+						"items": {
+							"$ref": "#/components/schemas/Ride"
+						},
+						"type": "array"
+					},
+					"Driver": {
+						"$ref": "#/components/schemas/Driver"
+					}
+				},
+				"required": [
+					"id",
+					"DeletedAt",
+					"UpdatedAt",
+					"CreatedAt",
+					"FullName",
+					"Email",
+					"password",
+					"Phone",
+					"profile",
+					"status",
+					"Role",
+					"rides",
+					"Driver"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Driverstatus": {
+				"enum": [
+					"ONLINE",
+					"OFFLINE",
+					"BUSY"
+				],
+				"type": "string"
+			},
+			"Vechicles": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"DeletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"CreatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"model": {
+						"type": "string"
+					},
+					"plateNumber": {
+						"type": "string"
+					},
+					"color": {
+						"type": "string"
+					},
+					"type": {
+						"$ref": "#/components/schemas/VehicleType"
+					},
+					"seatCapacity": {
+						"type": "string"
+					},
+					"driver": {
+						"$ref": "#/components/schemas/Driver"
+					},
+					"rides": {
+						"items": {
+							"$ref": "#/components/schemas/Ride"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"DeletedAt",
+					"UpdatedAt",
+					"CreatedAt",
+					"model",
+					"plateNumber",
+					"color",
+					"type",
+					"seatCapacity",
+					"driver",
+					"rides"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Driver": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"DeletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"CreatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"licenseNumber": {
+						"type": "string"
+					},
+					"licenseExpery": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"citizenshipNumber": {
+						"type": "string"
+					},
+					"currentBearing": {
+						"type": "number",
+						"format": "double"
+					},
+					"lastLocationUpdate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"status": {
+						"$ref": "#/components/schemas/Driverstatus"
+					},
+					"totaltrip": {
+						"type": "number",
+						"format": "double"
+					},
+					"rating": {
+						"type": "number",
+						"format": "double"
+					},
+					"CurrentLocation": {
+						"$ref": "#/components/schemas/Point"
+					},
+					"vechicles": {
+						"$ref": "#/components/schemas/Vechicles"
+					},
+					"user": {
+						"$ref": "#/components/schemas/User"
+					}
+				},
+				"required": [
+					"id",
+					"DeletedAt",
+					"UpdatedAt",
+					"CreatedAt",
+					"licenseNumber",
+					"licenseExpery",
+					"citizenshipNumber",
+					"currentBearing",
+					"lastLocationUpdate",
+					"status",
+					"totaltrip",
+					"rating",
+					"CurrentLocation",
+					"vechicles",
+					"user"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Ride": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"DeletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"CreatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"pickupAddress": {
+						"type": "string"
+					},
+					"pickupLocation": {
+						"$ref": "#/components/schemas/Point"
+					},
+					"DropoffAddress": {
+						"type": "string"
+					},
+					"DropoffLocation": {
+						"$ref": "#/components/schemas/Point"
+					},
+					"routepath": {
+						"$ref": "#/components/schemas/LineString"
+					},
+					"estimatedFare": {
+						"type": "number",
+						"format": "double"
+					},
+					"FinalFare": {
+						"type": "number",
+						"format": "double"
+					},
+					"estimatedDistance": {
+						"type": "number",
+						"format": "double"
+					},
+					"ActualDistance": {
+						"type": "number",
+						"format": "double"
+					},
+					"DurationMinutes": {
+						"type": "number",
+						"format": "double"
+					},
+					"reqVehicleType": {
+						"$ref": "#/components/schemas/VehicleType"
+					},
+					"ridestauts": {
+						"$ref": "#/components/schemas/RideStatus"
+					},
+					"cancledby": {
+						"$ref": "#/components/schemas/Cancledby"
+					},
+					"cancellationResion": {
+						"type": "string"
+					},
+					"cancelAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"driverAcceptedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"driverArrivedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"tripStartAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"tripEndAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"rider": {
+						"$ref": "#/components/schemas/User"
+					},
+					"vechicle": {
+						"$ref": "#/components/schemas/Vechicles"
+					}
+				},
+				"required": [
+					"id",
+					"DeletedAt",
+					"UpdatedAt",
+					"CreatedAt",
+					"pickupAddress",
+					"pickupLocation",
+					"DropoffAddress",
+					"DropoffLocation",
+					"routepath",
+					"estimatedFare",
+					"FinalFare",
+					"estimatedDistance",
+					"ActualDistance",
+					"DurationMinutes",
+					"reqVehicleType",
+					"ridestauts",
+					"cancledby",
+					"cancellationResion",
+					"cancelAt",
+					"driverAcceptedAt",
+					"driverArrivedAt",
+					"tripStartAt",
+					"tripEndAt",
+					"rider",
+					"vechicle"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Driverdto": {
+				"properties": {
+					"licenseNumber": {
+						"type": "string"
+					},
+					"licenseExpery": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"citizenshipNumber": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"licenseNumber",
+					"licenseExpery",
+					"citizenshipNumber"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -144,6 +581,205 @@
 					}
 				],
 				"parameters": []
+			}
+		},
+		"/users/getusers": {
+			"get": {
+				"operationId": "Getuser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"totalpages": {
+											"type": "number",
+											"format": "double"
+										},
+										"limit": {
+											"type": "number",
+											"format": "double"
+										},
+										"page": {
+											"type": "number",
+											"format": "double"
+										},
+										"total": {
+											"type": "number",
+											"format": "double"
+										},
+										"data": {
+											"items": {
+												"$ref": "#/components/schemas/User"
+											},
+											"type": "array"
+										}
+									},
+									"required": [
+										"totalpages",
+										"limit",
+										"page",
+										"total",
+										"data"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "Role",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/UserRole"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/users/deleteuser/{id}": {
+			"delete": {
+				"operationId": "DeleteUser",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/driver/register-driver": {
+			"post": {
+				"operationId": "RegisterDriver",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Driver"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Driverdto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/driver/myprofile": {
+			"get": {
+				"operationId": "GetDriverProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Driver"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/driver/location": {
+			"post": {
+				"operationId": "DriverLocation",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"bearing": {
+										"type": "number",
+										"format": "double"
+									},
+									"lng": {
+										"type": "number",
+										"format": "double"
+									},
+									"lat": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"bearing",
+									"lng",
+									"lat"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
 			}
 		}
 	},
