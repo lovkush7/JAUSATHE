@@ -21,7 +21,7 @@ export enum VehicleType {
 }
 
 export enum Driverstatus {
-    ONLIE= "ONLINE",
+    ONLINE= "ONLINE",
     OFFLINE = "OFFLINE",
     BUSY = "BUSY"
 }

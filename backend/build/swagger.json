@@ -486,12 +486,16 @@
 					},
 					"citizenshipNumber": {
 						"type": "string"
+					},
+					"status": {
+						"$ref": "#/components/schemas/Driverstatus"
 					}
 				},
 				"required": [
 					"licenseNumber",
 					"licenseExpery",
-					"citizenshipNumber"
+					"citizenshipNumber",
+					"status"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -741,8 +745,23 @@
 			"post": {
 				"operationId": "DriverLocation",
 				"responses": {
-					"204": {
-						"description": "No content"
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
 					}
 				},
 				"security": [
@@ -776,6 +795,47 @@
 									"lat"
 								],
 								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/driver/updateStauts": {
+			"patch": {
+				"operationId": "UpdateDriverStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Driverdto"
 							}
 						}
 					}

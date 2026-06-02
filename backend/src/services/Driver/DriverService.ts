@@ -1,6 +1,7 @@
 import type { Driverdto } from "../../dto/Driver.dto.ts";
 import { Driver } from "../../entity/Driver.entities.ts";
 import { User } from "../../entity/User.entities.ts";
+import { Driverstatus, type VehicleType } from "../../enum/enum.details.ts";
 
 class DriverServices {
     async createDriver(
@@ -106,6 +107,50 @@ class DriverServices {
         }
 
     }
-            
+          
+    async getNearbyDrivers(
+        lat: number,
+        lng: number,
+        vehicleType: VehicleType,
+        radious: number
+    ){
+        try{
+            const qb = Driver.createQueryBuilder("dq")
+            .select([
+                "dq.id",
+                "dq.userId",
+                "dq.status",
+                "dq.currentBearing",
+                "dq.rating"
+            ])
+            .addSelect(
+                `ST_Distance(
+                   dq."CurrentLocation"::geography,
+                   ST_SetSRID(
+                     ST_MakePoint(:lng, :lat),
+                     4326
+                   )::geography
+                )`,
+                'distanceMeters'
+            )
+            .leftJoinAndSelect("dq.user", "user")
+            .leftJoinAndSelect("dq.vechicles", "vechicles", 'vechicles."isDefault" = true')
+            .where("dq.status = :status",{status: Driverstatus.ONLINE })
+            .andWhere(
+                `ST_DWithin(
+                 dq."currentLocation"::geography,
+                 ST_SetSRID(
+                   ST_MakePoint(:lng, :lat),
+                     4326
+                 )::geography,
+                 :radious
+                     )`
+
+            )
+
+        }catch(err){
+            throw err;
+        }
+    }
 }
 export default new DriverServices();

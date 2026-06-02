@@ -2,6 +2,7 @@ import { Body, Controller, Get, Middlewares, Patch, Post, Request, Route, Securi
 import { Drivermiddleware } from "../../Middlewares/AdminMiddleware.ts";
 import type { Driverdto } from "../../dto/Driver.dto.ts";
 import DriverService from "../../services/Driver/DriverService.ts";
+import type { LocationInfoDto } from "../../dto/loc.info.dto.ts";
 
 @Route("driver")
 export class DriverController extends Controller{
@@ -73,5 +74,20 @@ export class DriverController extends Controller{
         }
     }
    
+    @Get("/nearby")
+    async getNearbyDrivers(
+        @Body() body: LocationInfoDto,
+        
+    ){
+        try{
+            if(body.lat == null || body.lng == null){
+                throw new Error("latitude and longitude are required")
+            }
 
+            await DriverService.getNearbyDrivers(body.lat, body.lng, body.vehicleType , body.radious ? body.radious : 5000)
+
+        }catch(err){
+            throw err;
+        }
+    }
 }
