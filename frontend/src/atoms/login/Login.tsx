@@ -87,7 +87,7 @@ const Login = () => {
                 required />
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
+                <Button className='bg-blue-600' type="submit">Login</Button>
               
                 <FieldDescription className="text-center">
                   Don&apos;t have an account? <Link to='/auth/Signup'>signup</Link>

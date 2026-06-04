@@ -499,6 +499,33 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"LocationInfoDto": {
+				"properties": {
+					"lat": {
+						"type": "number",
+						"format": "double"
+					},
+					"lng": {
+						"type": "number",
+						"format": "double"
+					},
+					"radious": {
+						"type": "number",
+						"format": "double"
+					},
+					"vehicleType": {
+						"$ref": "#/components/schemas/VehicleType"
+					}
+				},
+				"required": [
+					"lat",
+					"lng",
+					"radious",
+					"vehicleType"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -840,6 +867,54 @@
 						}
 					}
 				}
+			}
+		},
+		"/driver/nearby": {
+			"get": {
+				"operationId": "GetNearbyDrivers",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "lat",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "lng",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "radious",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "vehicleType",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/VehicleType"
+						}
+					}
+				]
 			}
 		}
 	},

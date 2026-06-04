@@ -188,6 +188,17 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "LocationInfoDto": {
+        "dataType": "refObject",
+        "properties": {
+            "lat": {"dataType":"double","required":true},
+            "lng": {"dataType":"double","required":true},
+            "radious": {"dataType":"double","required":true},
+            "vehicleType": {"ref":"VehicleType","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const templateService = new ExpressTemplateService(models, {"noImplicitAdditionalProperties":"throw-on-extras","bodyCoercion":true});
 
@@ -474,6 +485,36 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'updateDriverStatus',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsDriverController_getNearbyDrivers: Record<string, TsoaRoute.ParameterSchema> = {
+                body: {"in":"queries","name":"body","required":true,"ref":"LocationInfoDto"},
+        };
+        app.get('/driver/nearby',
+            ...(fetchMiddlewares<RequestHandler>(DriverController)),
+            ...(fetchMiddlewares<RequestHandler>(DriverController.prototype.getNearbyDrivers)),
+
+            async function DriverController_getNearbyDrivers(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsDriverController_getNearbyDrivers, request, response });
+
+                const controller = new DriverController();
+
+              await templateService.apiHandler({
+                methodName: 'getNearbyDrivers',
                 controller,
                 response,
                 next,

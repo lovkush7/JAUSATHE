@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Middlewares, Patch, Post, Request, Route, Security } from "tsoa";
+import { Body, Controller, Get, Middlewares, Patch, Post, Queries, Request, Route, Security } from "tsoa";
 import { Drivermiddleware } from "../../Middlewares/AdminMiddleware.ts";
 import type { Driverdto } from "../../dto/Driver.dto.ts";
 import DriverService from "../../services/Driver/DriverService.ts";
@@ -74,9 +74,9 @@ export class DriverController extends Controller{
         }
     }
    
-    @Get("/nearby")
+    @Get("nearby")
     async getNearbyDrivers(
-        @Body() body: LocationInfoDto,
+      @Queries() body:  LocationInfoDto
         
     ){
         try{

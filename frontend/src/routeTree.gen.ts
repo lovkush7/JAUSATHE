@@ -11,11 +11,15 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SplashIndexRouteImport } from './routes/Splash/index'
+import { Route as ProfileIndexRouteImport } from './routes/Profile/index'
 import { Route as BoardingPage3IndexRouteImport } from './routes/boarding/page3/index'
 import { Route as BoardingPage2IndexRouteImport } from './routes/boarding/page2/index'
 import { Route as BoardingPage1IndexRouteImport } from './routes/boarding/page1/index'
 import { Route as AuthLoginIndexRouteImport } from './routes/auth/login/index'
 import { Route as AuthSignupIndexRouteImport } from './routes/auth/Signup/index'
+import { Route as BookPaymentIndexRouteImport } from './routes/Book/Payment/index'
+import { Route as BookMyRidesIndexRouteImport } from './routes/Book/MyRides/index'
+import { Route as BookBookRidesIndexRouteImport } from './routes/Book/BookRides/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -25,6 +29,11 @@ const IndexRoute = IndexRouteImport.update({
 const SplashIndexRoute = SplashIndexRouteImport.update({
   id: '/Splash/',
   path: '/Splash/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileIndexRoute = ProfileIndexRouteImport.update({
+  id: '/Profile/',
+  path: '/Profile/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BoardingPage3IndexRoute = BoardingPage3IndexRouteImport.update({
@@ -52,10 +61,29 @@ const AuthSignupIndexRoute = AuthSignupIndexRouteImport.update({
   path: '/auth/Signup/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BookPaymentIndexRoute = BookPaymentIndexRouteImport.update({
+  id: '/Book/Payment/',
+  path: '/Book/Payment/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookMyRidesIndexRoute = BookMyRidesIndexRouteImport.update({
+  id: '/Book/MyRides/',
+  path: '/Book/MyRides/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookBookRidesIndexRoute = BookBookRidesIndexRouteImport.update({
+  id: '/Book/BookRides/',
+  path: '/Book/BookRides/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/Profile/': typeof ProfileIndexRoute
   '/Splash/': typeof SplashIndexRoute
+  '/Book/BookRides/': typeof BookBookRidesIndexRoute
+  '/Book/MyRides/': typeof BookMyRidesIndexRoute
+  '/Book/Payment/': typeof BookPaymentIndexRoute
   '/auth/Signup/': typeof AuthSignupIndexRoute
   '/auth/login/': typeof AuthLoginIndexRoute
   '/boarding/page1/': typeof BoardingPage1IndexRoute
@@ -64,7 +92,11 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/Profile': typeof ProfileIndexRoute
   '/Splash': typeof SplashIndexRoute
+  '/Book/BookRides': typeof BookBookRidesIndexRoute
+  '/Book/MyRides': typeof BookMyRidesIndexRoute
+  '/Book/Payment': typeof BookPaymentIndexRoute
   '/auth/Signup': typeof AuthSignupIndexRoute
   '/auth/login': typeof AuthLoginIndexRoute
   '/boarding/page1': typeof BoardingPage1IndexRoute
@@ -74,7 +106,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/Profile/': typeof ProfileIndexRoute
   '/Splash/': typeof SplashIndexRoute
+  '/Book/BookRides/': typeof BookBookRidesIndexRoute
+  '/Book/MyRides/': typeof BookMyRidesIndexRoute
+  '/Book/Payment/': typeof BookPaymentIndexRoute
   '/auth/Signup/': typeof AuthSignupIndexRoute
   '/auth/login/': typeof AuthLoginIndexRoute
   '/boarding/page1/': typeof BoardingPage1IndexRoute
@@ -85,7 +121,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/Profile/'
     | '/Splash/'
+    | '/Book/BookRides/'
+    | '/Book/MyRides/'
+    | '/Book/Payment/'
     | '/auth/Signup/'
     | '/auth/login/'
     | '/boarding/page1/'
@@ -94,7 +134,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/Profile'
     | '/Splash'
+    | '/Book/BookRides'
+    | '/Book/MyRides'
+    | '/Book/Payment'
     | '/auth/Signup'
     | '/auth/login'
     | '/boarding/page1'
@@ -103,7 +147,11 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/Profile/'
     | '/Splash/'
+    | '/Book/BookRides/'
+    | '/Book/MyRides/'
+    | '/Book/Payment/'
     | '/auth/Signup/'
     | '/auth/login/'
     | '/boarding/page1/'
@@ -113,7 +161,11 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ProfileIndexRoute: typeof ProfileIndexRoute
   SplashIndexRoute: typeof SplashIndexRoute
+  BookBookRidesIndexRoute: typeof BookBookRidesIndexRoute
+  BookMyRidesIndexRoute: typeof BookMyRidesIndexRoute
+  BookPaymentIndexRoute: typeof BookPaymentIndexRoute
   AuthSignupIndexRoute: typeof AuthSignupIndexRoute
   AuthLoginIndexRoute: typeof AuthLoginIndexRoute
   BoardingPage1IndexRoute: typeof BoardingPage1IndexRoute
@@ -135,6 +187,13 @@ declare module '@tanstack/react-router' {
       path: '/Splash'
       fullPath: '/Splash/'
       preLoaderRoute: typeof SplashIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Profile/': {
+      id: '/Profile/'
+      path: '/Profile'
+      fullPath: '/Profile/'
+      preLoaderRoute: typeof ProfileIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/boarding/page3/': {
@@ -172,12 +231,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignupIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/Book/Payment/': {
+      id: '/Book/Payment/'
+      path: '/Book/Payment'
+      fullPath: '/Book/Payment/'
+      preLoaderRoute: typeof BookPaymentIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Book/MyRides/': {
+      id: '/Book/MyRides/'
+      path: '/Book/MyRides'
+      fullPath: '/Book/MyRides/'
+      preLoaderRoute: typeof BookMyRidesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Book/BookRides/': {
+      id: '/Book/BookRides/'
+      path: '/Book/BookRides'
+      fullPath: '/Book/BookRides/'
+      preLoaderRoute: typeof BookBookRidesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ProfileIndexRoute: ProfileIndexRoute,
   SplashIndexRoute: SplashIndexRoute,
+  BookBookRidesIndexRoute: BookBookRidesIndexRoute,
+  BookMyRidesIndexRoute: BookMyRidesIndexRoute,
+  BookPaymentIndexRoute: BookPaymentIndexRoute,
   AuthSignupIndexRoute: AuthSignupIndexRoute,
   AuthLoginIndexRoute: AuthLoginIndexRoute,
   BoardingPage1IndexRoute: BoardingPage1IndexRoute,
