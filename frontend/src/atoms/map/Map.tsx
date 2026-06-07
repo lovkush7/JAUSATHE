@@ -19,9 +19,13 @@ const Map = () => {
 
     const control = useDragControls()
 
-   
+
 
     useEffect(() => {
+        if (!navigator.geolocation) {
+            console.log("Geolocation not supported");
+            return;
+        }
         navigator.geolocation.getCurrentPosition((position) => {
             setLocations({
                 lat: position.coords.latitude,
@@ -34,14 +38,15 @@ const Map = () => {
         )
     }, [])
 
+    console.log("my current locations is ", Locations)
     return (
-    
+
         <div className='w-full h-[500px]'>
             <MapContainer
                 center={[27.6180, 85.5380]}
                 zoom={13}
                 scrollWheelZoom={true}
-               className='w-full h-full'
+                className='w-full h-full'
 
             >
                 <TileLayer
@@ -58,6 +63,7 @@ const Map = () => {
                     <Marker position={[Locations.lat, Locations.lng]}>
                         <Popup>
                             your cuttent locations <br />
+
                         </Popup>
                     </Marker>}
 
@@ -80,9 +86,9 @@ const Map = () => {
                     <RoutingMap pickup={[Locations?.lat, Locations?.lng]} destination={[Destination?.lat, Destination?.lng]} />
                 }
             </MapContainer>
-           
-       
-       </div>
+
+
+        </div>
 
     )
 }

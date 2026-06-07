@@ -112,10 +112,10 @@ class DriverServices {
         lat: number,
         lng: number,
         vehicleType: VehicleType,
-        radious: number
+        radious: number = 5000
     ){
         try{
-            const qb = Driver.createQueryBuilder("dq")
+            let qb = Driver.createQueryBuilder("dq")
             .select([
                 "dq.id",
                 "dq.userId",
@@ -147,7 +147,15 @@ class DriverServices {
                      )`
 
             )
-
+            .setParameters({
+                lat: lat,
+                lng: lng,
+                radious: radious 
+            })
+            if(vehicleType){
+             qb  =  qb.andWhere('vechicles.type = :type',{type: vehicleType})
+            }
+            return (await qb.orderBy("distanceMeters", "ASC").limit(10).getRawAndEntities().then(r => r.entities))
         }catch(err){
             throw err;
         }
