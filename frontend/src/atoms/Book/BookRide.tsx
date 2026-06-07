@@ -3,7 +3,8 @@ import { Input } from '@/components/ui/input'
 import { CarFront, CarTaxiFront, Motorbike, Van } from 'lucide-react'
 import React from 'react'
 
-const BookRide = () => {
+const BookRide = ({Locations}:any) => {
+    console.log("mero location", Locations)
     const vechicles = [
         {
             type: "Electric",
@@ -30,7 +31,9 @@ const BookRide = () => {
             <div className='flex flex-col gap-2 w-full  p-2 ml-2 '>
                 <div className='flex gap-2 items-center justify-center'>
                     <div className='w-2 h-2 rounded-full bg-green-600'></div>
-                    <Input placeholder='Where to go?' className='outline- placeholder:text-white bg-[#222233] text-gray-400 border border-gray-500 rounded-md w-full p-4' />
+                    <p  
+                    className='outline- placeholder:text-white bg-[#222233] text-gray-400 border
+                     border-gray-500 rounded-md w-full p-4' >{Locations?.lat}, {Locations?.lng}</p>
                 </div>
                 <div className='flex gap-2 items-center justify-center'>
                     <div className='w-2 h-2 rounded-full bg-purple-600'></div>

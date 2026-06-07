@@ -31,6 +31,10 @@ export class Driver extends CommonEntity {
     @Column({ type: "decimal", precision: 3, scale: 2, default: 0 })
     rating: number;
 
+    @Column({type: "boolean", default: false})
+    isApproped: boolean;
+
+
     @Index({ spatial: true })
     @Column({
         type: "geometry",

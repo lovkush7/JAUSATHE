@@ -138,6 +138,7 @@ const models: TsoaRoute.Models = {
             "status": {"ref":"Driverstatus","required":true},
             "totaltrip": {"dataType":"double","required":true},
             "rating": {"dataType":"double","required":true},
+            "isApproped": {"dataType":"boolean","required":true},
             "CurrentLocation": {"ref":"Point","required":true},
             "vechicles": {"ref":"Vechicles","required":true},
             "user": {"ref":"User","required":true},
@@ -515,6 +516,65 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'getNearbyDrivers',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsDriverController_getApprovedDriver: Record<string, TsoaRoute.ParameterSchema> = {
+        };
+        app.get('/driver/getapprovedDriver',
+            ...(fetchMiddlewares<RequestHandler>(DriverController)),
+            ...(fetchMiddlewares<RequestHandler>(DriverController.prototype.getApprovedDriver)),
+
+            async function DriverController_getApprovedDriver(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsDriverController_getApprovedDriver, request, response });
+
+                const controller = new DriverController();
+
+              await templateService.apiHandler({
+                methodName: 'getApprovedDriver',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsDriverController_ApprovedDriver: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
+        };
+        app.patch('/driver/approved/:id',
+            ...(fetchMiddlewares<RequestHandler>(DriverController)),
+            ...(fetchMiddlewares<RequestHandler>(DriverController.prototype.ApprovedDriver)),
+
+            async function DriverController_ApprovedDriver(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsDriverController_ApprovedDriver, request, response });
+
+                const controller = new DriverController();
+
+              await templateService.apiHandler({
+                methodName: 'ApprovedDriver',
                 controller,
                 response,
                 next,

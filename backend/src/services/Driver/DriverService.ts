@@ -160,5 +160,24 @@ class DriverServices {
             throw err;
         }
     }
+    async ApproveDriver(
+        id: string
+    ){
+      const existance = await Driver.findOne({
+        where:{
+            user: {
+                id
+            }
+        }
+      })
+      if(!existance){
+        throw new Error("the driver doesnot exist")
+
+      }
+      existance.isApproped = true;
+      await existance.save();
+      return {message: "driver approved successfully"}
+        
+    }
 }
 export default new DriverServices();

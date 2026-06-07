@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Middlewares, Patch, Post, Queries, Request, Route, Security } from "tsoa";
-import { Drivermiddleware } from "../../Middlewares/AdminMiddleware.ts";
+import { Body, Controller, Get, Middlewares, Patch, Path, Post, Queries, Request, Route, Security } from "tsoa";
+import { Adminmiddleware, Drivermiddleware } from "../../Middlewares/AdminMiddleware.ts";
 import type { Driverdto } from "../../dto/Driver.dto.ts";
 import DriverService from "../../services/Driver/DriverService.ts";
 import type { LocationInfoDto } from "../../dto/loc.info.dto.ts";
+import { Driver } from "../../entity/Driver.entities.ts";
 
 @Route("driver")
 export class DriverController extends Controller{
@@ -89,5 +90,30 @@ export class DriverController extends Controller{
         }catch(err){
             throw err;
         }
+    }
+    @Get("getapprovedDriver")
+    @Middlewares(Adminmiddleware)
+    async getApprovedDriver(){
+        try{
+            const pending =  await Driver.find({
+                where:{
+                    isApproped: false
+                },
+                relations:{
+                    user: true
+                }
+            })
+            return pending;
+        }catch(err){
+
+        }
+    }
+    @Patch("approved/{id}")
+    @Middlewares(Adminmiddleware)
+    async ApprovedDriver(
+        @Path() id: string
+    ){
+
+        return await DriverService.ApproveDriver(id)
     }
 }

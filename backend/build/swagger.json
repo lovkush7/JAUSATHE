@@ -324,6 +324,9 @@
 						"type": "number",
 						"format": "double"
 					},
+					"isApproped": {
+						"type": "boolean"
+					},
 					"CurrentLocation": {
 						"$ref": "#/components/schemas/Point"
 					},
@@ -347,6 +350,7 @@
 					"status",
 					"totaltrip",
 					"rating",
+					"isApproped",
 					"CurrentLocation",
 					"vechicles",
 					"user"
@@ -912,6 +916,64 @@
 						"required": true,
 						"schema": {
 							"$ref": "#/components/schemas/VehicleType"
+						}
+					}
+				]
+			}
+		},
+		"/driver/getapprovedDriver": {
+			"get": {
+				"operationId": "GetApprovedDriver",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Driver"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/driver/approved/{id}": {
+			"patch": {
+				"operationId": "ApprovedDriver",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
 						}
 					}
 				]
