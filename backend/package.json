@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsoa spec-and-routes && tsx watch ./src/index.ts"
+    "start": "tsoa spec-and-routes && tsx watch ./src/index.ts",
+    "seed": "tsx  ./src/seed.ts"
   },
   "keywords": [],
   "author": "",

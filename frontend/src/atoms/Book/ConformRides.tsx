@@ -23,7 +23,8 @@ const vechicles = [
 
 const ConformRides = () => {
   const [isActive, SetIsActive] = useState(null)
-  const [vechiclestype, setVechiclestype] = useState(null)
+  const [vechiclestype, setVechiclestype] = useState(null);
+  const [Next, setNext] = useState(1)
   console.log("the vehicles is ",vechiclestype)
 
   return (
@@ -31,6 +32,8 @@ const ConformRides = () => {
       <div className='flex-1 mt-5 rounded-2xl '>
         <Map />
       </div>
+    {
+      Next === 1 && (
       <div className='flex-1 flex-col  m-5'>
         <div className='bg-[#161628] p-4 rounded-lg border-2 border-[#3B3B4F]'>
           <p>your Rides</p>
@@ -85,8 +88,19 @@ const ConformRides = () => {
             </div>
           ))}
         </div>
-        <Button className='w-full p-5 rounded-2xl bg-blue-800 mt-4 '>Continue - fare estimation</Button>
+        <Button onClick={()=>setNext(2)} className='w-full p-5 rounded-2xl bg-blue-800 mt-4 '>
+          Continue - fare estimation
+          </Button>
       </div>
+      )
+  }
+  {Next === 2 &&(
+    <div className='flex-1 flex-col m-5'>
+     <div className='bg-[#161628] p-4 rounded-lg border-2 border-[#3B3B4F]'>
+      <p className='font-medium text-white'>Fare breakdown</p>
+     </div>
+    </div>
+  )}
 
     </div>
   )

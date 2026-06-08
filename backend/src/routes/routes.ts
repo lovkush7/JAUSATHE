@@ -8,6 +8,8 @@ import { Authentication } from './../controller/userauth/Auth.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UserController } from './../controller/userauth/UserController/User.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { RideController } from './../controller/RideController/Ride.Controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { DriverController } from './../controller/DriverController/Driver.controller';
 import { expressAuthentication } from './../Middlewares/ExpressAuthentication';
 // @ts-ignore - no great way to install types from subpackage
@@ -359,6 +361,40 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'deleteUser',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsRideController_estimatefare: Record<string, TsoaRoute.ParameterSchema> = {
+                pickuplat: {"in":"query","name":"pickuplat","required":true,"dataType":"double"},
+                pickuplong: {"in":"query","name":"pickuplong","required":true,"dataType":"double"},
+                dropofflat: {"in":"query","name":"dropofflat","required":true,"dataType":"double"},
+                dropofflong: {"in":"query","name":"dropofflong","required":true,"dataType":"double"},
+                vehicleType: {"in":"query","name":"vehicleType","required":true,"ref":"VehicleType"},
+        };
+        app.get('/ride/estimatefare',
+            ...(fetchMiddlewares<RequestHandler>(RideController)),
+            ...(fetchMiddlewares<RequestHandler>(RideController.prototype.estimatefare)),
+
+            async function RideController_estimatefare(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsRideController_estimatefare, request, response });
+
+                const controller = new RideController();
+
+              await templateService.apiHandler({
+                methodName: 'estimatefare',
                 controller,
                 response,
                 next,

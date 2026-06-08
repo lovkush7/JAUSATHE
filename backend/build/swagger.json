@@ -716,6 +716,89 @@
 				]
 			}
 		},
+		"/ride/estimatefare": {
+			"get": {
+				"operationId": "Estimatefare",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"estimatedDurationMinutes": {
+											"type": "number",
+											"format": "double"
+										},
+										"estimatedDistanceKm": {
+											"type": "number",
+											"format": "double"
+										},
+										"estimatedFare": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"estimatedDurationMinutes",
+										"estimatedDistanceKm",
+										"estimatedFare"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "pickuplat",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "pickuplong",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "dropofflat",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "dropofflong",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "vehicleType",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/VehicleType"
+						}
+					}
+				]
+			}
+		},
 		"/driver/register-driver": {
 			"post": {
 				"operationId": "RegisterDriver",
