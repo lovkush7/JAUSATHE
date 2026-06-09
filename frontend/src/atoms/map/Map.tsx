@@ -10,14 +10,22 @@ type LocationType = {
     lat: number,
     lng: number
 }
-const Map = () => {
-    const [Locations, setLocations] = useState<LocationType | null>(null)
+ interface props {
+  setLocations: React.Dispatch<React.SetStateAction<any> >
+   Locations: LocationType | null
+    setDestination: React.Dispatch<React.SetStateAction<any> >
+     Destination: LocationType | null
+   
+ }
+const Map = ({setLocations,Locations,setDestination,Destination}:props) => {
+
+    // const [Locations, setLocations] = useState<LocationType | null>(null)
     const [Location, setLocation] = useState<LocationType | null>(null)
     const [openform, setopenform] = useState(false)
-    const [Destination, setDestination] = useState<LocationType | null>(null)
-    const [height, setheight] = useState(250)
+    // const [Destination, setDestination] = useState<LocationType | null>(null)
+    // const [height, setheight] = useState(250)
 
-    const control = useDragControls()
+    // const control = useDragControls()
 
 
 

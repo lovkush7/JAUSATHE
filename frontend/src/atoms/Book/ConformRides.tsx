@@ -20,17 +20,37 @@ const vechicles = [
   },
 
 ]
+type LocationType ={
+  lat : number
+  lng: number
+}
 
 const ConformRides = () => {
+  const [Locations, setLocations] = useState<LocationType | null>(null)
+  const [Destination, setDestination] = useState<LocationType | null>(null)
   const [isActive, SetIsActive] = useState(null)
   const [vechiclestype, setVechiclestype] = useState(null);
-  const [Next, setNext] = useState(1)
+  const [pickuplat, setPickuplat] = useState(null)
+  const [pickuplng, setPickuplng] = useState(null)
+  const [dropofflat, setDropofflat] = useState(null)
+  const [dropofflng, setDropofflng] = useState(null)
+  const [Next, setNext] = useState(1);
+  
   console.log("the vehicles is ",vechiclestype)
-
+  console.log("the Locations", Locations)
+  console.log("Destination",Destination)
+   const handleRouting = ()=>{
+  
+   }
   return (
     <div className="w-full h-screen flex  justify-center bg-[#08080F] text-white ">
       <div className='flex-1 mt-5 rounded-2xl '>
-        <Map />
+        <Map 
+        setLocations={setLocations} 
+         Locations={Locations}  
+         setDestination = {setDestination}
+         Destination = {Destination}
+         />
       </div>
     {
       Next === 1 && (
