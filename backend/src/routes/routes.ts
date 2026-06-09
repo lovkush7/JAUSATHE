@@ -374,9 +374,9 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsRideController_estimatefare: Record<string, TsoaRoute.ParameterSchema> = {
                 pickuplat: {"in":"query","name":"pickuplat","required":true,"dataType":"double"},
-                pickuplong: {"in":"query","name":"pickuplong","required":true,"dataType":"double"},
+                pickuplng: {"in":"query","name":"pickuplng","required":true,"dataType":"double"},
                 dropofflat: {"in":"query","name":"dropofflat","required":true,"dataType":"double"},
-                dropofflong: {"in":"query","name":"dropofflong","required":true,"dataType":"double"},
+                dropofflng: {"in":"query","name":"dropofflng","required":true,"dataType":"double"},
                 vehicleType: {"in":"query","name":"vehicleType","required":true,"ref":"VehicleType"},
         };
         app.get('/ride/estimatefare',

@@ -7,7 +7,7 @@ const BookRides = () => {
     <div>
         <Navbar />
         <ConformRides />
-        hello book rides
+      
     </div>
   )
 }

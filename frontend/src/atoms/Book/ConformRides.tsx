@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import Map from '../map/Map'
 import { Button } from '../../components/ui/button'
+import { useQuery } from '@tanstack/react-query'
+import { api } from '../../api/Api'
 
 const vechicles = [
   {
@@ -9,7 +11,7 @@ const vechicles = [
     spec: "confortable 1-4 persons"
   },
   {
-    type: "Bike",
+    type: "BIKE",
     icons: "🏍️",
     spec: "fastest for 1 persons",
   },
@@ -25,31 +27,74 @@ type LocationType ={
   lng: number
 }
 
+const sendLocations = async (
+  pickuplat: number | null,
+  pickuplng: number | null,
+  dropofflat: number | null,
+  dropofflng: number | null,
+  vehicleType: string | null
+)=>{
+  const res = await api.get("/ride/estimatefare",{
+    params:{
+      pickuplat,
+      pickuplng,
+      dropofflat,
+      dropofflng,
+      vehicleType
+    }
+  })
+  return res.data;
+
+}
+
 const ConformRides = () => {
   const [Locations, setLocations] = useState<LocationType | null>(null)
   const [Destination, setDestination] = useState<LocationType | null>(null)
   const [isActive, SetIsActive] = useState(null)
-  const [vechiclestype, setVechiclestype] = useState(null);
-  const [pickuplat, setPickuplat] = useState(null)
-  const [pickuplng, setPickuplng] = useState(null)
-  const [dropofflat, setDropofflat] = useState(null)
-  const [dropofflng, setDropofflng] = useState(null)
+  const [vehicleType, setVechiclestype] = useState(null);
+  const [pickuplat, setPickuplat] =useState< number | null>(null)
+  const [pickuplng, setPickuplng] = useState<number| null>(null)
+  const [dropofflat, setDropofflat] = useState<number | null>(null)
+  const [dropofflng, setDropofflng] = useState<number | null>(null)
   const [Next, setNext] = useState(1);
-  
-  console.log("the vehicles is ",vechiclestype)
+  const [Time, setTime] =  useState<string | null>(null)
+  const [Distanceinkm , setDistanceinkm] =  useState<string | null>(null)
+  const [fare, setFare] = useState<string | null>(null)
+
+  console.log("the vehicles is ",vehicleType)
   console.log("the Locations", Locations)
   console.log("Destination",Destination)
-   const handleRouting = ()=>{
-  
+
+  const {data} = useQuery({
+    queryKey: ["locations", pickuplat, pickuplng, dropofflat, dropofflng, vehicleType],
+    queryFn: ()=>sendLocations(pickuplat, pickuplng, dropofflat, dropofflng, vehicleType),
+
+    enabled:
+    pickuplat !== null &&
+    pickuplng !== null &&
+    dropofflat !== null &&
+    dropofflng !== null &&
+    vehicleType !== null,
+    
+  })
+
+   const handlesubmit = ()=>{
+    setPickuplat(Locations?.lat ?? null)
+    setPickuplng(Locations?.lng ?? null)
+    setDropofflat(Destination?.lat ?? null)
+    setDropofflng(Destination?.lng ?? null)
    }
   return (
-    <div className="w-full h-screen flex  justify-center bg-[#08080F] text-white ">
+    <div className="w-full h-screen flex  justify-center bg-[#08080F] text-white overflow-auto ">
       <div className='flex-1 mt-5 rounded-2xl '>
         <Map 
         setLocations={setLocations} 
          Locations={Locations}  
          setDestination = {setDestination}
          Destination = {Destination}
+         setTime={setTime}
+         setDistanceinkm={setDistanceinkm}
+         setFare={setFare}
          />
       </div>
     {
@@ -99,8 +144,8 @@ const ConformRides = () => {
                     <span className='text-sm text-gray-500'>{v.spec}</span> </p>
                 </div>
                 <div className='flex flex-col gap-1'>
-                  <p className='font-bold'>NRP :20</p>
-                  <p className='text-sm text-gray-600'>3 MIN</p>
+                  <p className='font-bold'>NRP :{fare}</p>
+                  <p className='text-sm text-gray-600'>{Time} MIN</p>
 
                 </div>
 
@@ -108,9 +153,13 @@ const ConformRides = () => {
             </div>
           ))}
         </div>
-        <Button onClick={()=>setNext(2)} className='w-full p-5 rounded-2xl bg-blue-800 mt-4 '>
+        <Button onClick={()=>{
+          handlesubmit()
+          setNext(2)}
+          } className='w-full p-5 rounded-2xl bg-blue-800 mt-4 '>
           Continue - fare estimation
           </Button>
+         
       </div>
       )
   }
@@ -118,6 +167,9 @@ const ConformRides = () => {
     <div className='flex-1 flex-col m-5'>
      <div className='bg-[#161628] p-4 rounded-lg border-2 border-[#3B3B4F]'>
       <p className='font-medium text-white'>Fare breakdown</p>
+     <p>{Time}min</p>
+     <p>{Distanceinkm}km</p>
+     
      </div>
     </div>
   )}

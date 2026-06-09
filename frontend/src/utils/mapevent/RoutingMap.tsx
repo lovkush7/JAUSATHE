@@ -6,9 +6,12 @@ import { useMap } from 'react-leaflet'
 type props = {
     pickup: [number, number],
     destination: [number, number]
+    setTime: React.Dispatch<React.SetStateAction<any>>
+    setDistanceinkm: React.Dispatch<React.SetStateAction<any>>
+    setFare: React.Dispatch<React.SetStateAction<any>>
 }
 
-const RoutingMap = ({ pickup, destination }: props) => {
+const RoutingMap = ({ pickup, destination, setTime, setDistanceinkm,setFare}: props) => {
     const map = useMap();
 
     useEffect(() => {
@@ -48,11 +51,15 @@ const RoutingMap = ({ pickup, destination }: props) => {
   // Nepal realistic estimate
   // 1 km = 3 min
   const realisticTime = distanceKm * 3;
+  const fare = distanceKm * 5;
+  setFare(fare.toFixed(2))
+  setDistanceinkm(distanceKm.toFixed(2))
 
   console.log("Distance KM:", distanceKm.toFixed(2));
 
   console.log("OSRM Time:", osrmTime.toFixed(1));
 
+  setTime(realisticTime.toFixed(1))
   console.log(
     "Realistic Nepal ETA:",
     realisticTime.toFixed(1),

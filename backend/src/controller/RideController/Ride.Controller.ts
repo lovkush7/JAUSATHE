@@ -8,13 +8,13 @@ export class RideController extends Controller{
     @Get("estimatefare")
     async estimatefare(
         @Query() pickuplat: number,
-        @Query() pickuplong: number,
+        @Query() pickuplng: number,
         @Query() dropofflat: number,
-        @Query() dropofflong: number,    
+        @Query() dropofflng: number,    
         @Query() vehicleType: VehicleType
     
     ){
-        return await RideServices.estimateFare(pickuplat, pickuplong, dropofflat, dropofflong, vehicleType)
+        return await RideServices.estimateFare(pickuplat, pickuplng, dropofflat, dropofflng, vehicleType)
     
 
     }

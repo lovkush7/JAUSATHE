@@ -15,9 +15,12 @@ type LocationType = {
    Locations: LocationType | null
     setDestination: React.Dispatch<React.SetStateAction<any> >
      Destination: LocationType | null
+     setTime : React.Dispatch<React.SetStateAction<any> >
+     setDistanceinkm: React.Dispatch<React.SetStateAction<any> >
+     setFare: React.Dispatch<React.SetStateAction<any> >
    
  }
-const Map = ({setLocations,Locations,setDestination,Destination}:props) => {
+const Map = ({setLocations,Locations,setDestination,Destination, setTime, setDistanceinkm,setFare}:props) => {
 
     // const [Locations, setLocations] = useState<LocationType | null>(null)
     const [Location, setLocation] = useState<LocationType | null>(null)
@@ -91,7 +94,13 @@ const Map = ({setLocations,Locations,setDestination,Destination}:props) => {
                 {
                     Locations && Destination &&
 
-                    <RoutingMap pickup={[Locations?.lat, Locations?.lng]} destination={[Destination?.lat, Destination?.lng]} />
+                    <RoutingMap 
+                     pickup={[Locations?.lat, Locations?.lng]} 
+                     destination={[Destination?.lat, Destination?.lng]}
+                     setTime={setTime}
+                     setDistanceinkm={setDistanceinkm}
+                     setFare={setFare}
+                     />
                 }
             </MapContainer>
 

@@ -763,7 +763,7 @@
 					},
 					{
 						"in": "query",
-						"name": "pickuplong",
+						"name": "pickuplng",
 						"required": true,
 						"schema": {
 							"format": "double",
@@ -781,7 +781,7 @@
 					},
 					{
 						"in": "query",
-						"name": "dropofflong",
+						"name": "dropofflng",
 						"required": true,
 						"schema": {
 							"format": "double",
