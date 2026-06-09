@@ -1,7 +1,21 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useQuery } from '@tanstack/react-query'
 import { CarFront, CarTaxiFront, Motorbike, Van } from 'lucide-react'
 import React from 'react'
+import { api } from '../../api/Api'
+
+const sendlocations = async(
+    Locations: any
+)=>{
+    const res = await api.get("/geocoading/reversecode",{
+        params:{
+            lat: Locations?.lat,
+            lng: Locations?.lng
+        }
+    })
+    return res.data;
+}
 
 const BookRide = ({Locations}:any) => {
     console.log("mero location", Locations)
@@ -23,6 +37,11 @@ const BookRide = ({Locations}:any) => {
             icons: <Van />
         }
     ]
+    const {data} = useQuery({
+        queryKey: ["locations"],
+        queryFn: ()=>sendlocations(Locations),
+        enabled: Locations !== null
+    })
     return (
         <div className='flex flex-col gap-2 mt-4 w-full items-center justify-center bg-[#161628] rounded-xl pb-6 pt-4 border border-gray-700 pl-1 pr-1'>
             <div className='flex justify-start'>
@@ -33,7 +52,7 @@ const BookRide = ({Locations}:any) => {
                     <div className='w-2 h-2 rounded-full bg-green-600'></div>
                     <p  
                     className='outline- placeholder:text-white bg-[#222233] text-gray-400 border
-                     border-gray-500 rounded-md w-full p-4' >{Locations?.lat}, {Locations?.lng}</p>
+                     border-gray-500 rounded-md w-full p-4' >{data}</p>
                 </div>
                 <div className='flex gap-2 items-center justify-center'>
                     <div className='w-2 h-2 rounded-full bg-purple-600'></div>

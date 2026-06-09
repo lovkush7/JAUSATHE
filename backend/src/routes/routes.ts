@@ -10,6 +10,8 @@ import { UserController } from './../controller/userauth/UserController/User.con
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { RideController } from './../controller/RideController/Ride.Controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { Geocoading } from './../controller/Geocoading/Geocoading.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { DriverController } from './../controller/DriverController/Driver.controller';
 import { expressAuthentication } from './../Middlewares/ExpressAuthentication';
 // @ts-ignore - no great way to install types from subpackage
@@ -395,6 +397,67 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'estimatefare',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsGeocoading_GeocoadeAddress: Record<string, TsoaRoute.ParameterSchema> = {
+                address: {"in":"query","name":"address","required":true,"dataType":"string"},
+        };
+        app.get('/geocoading/geocode',
+            ...(fetchMiddlewares<RequestHandler>(Geocoading)),
+            ...(fetchMiddlewares<RequestHandler>(Geocoading.prototype.GeocoadeAddress)),
+
+            async function Geocoading_GeocoadeAddress(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsGeocoading_GeocoadeAddress, request, response });
+
+                const controller = new Geocoading();
+
+              await templateService.apiHandler({
+                methodName: 'GeocoadeAddress',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsGeocoading_reversegeoAddress: Record<string, TsoaRoute.ParameterSchema> = {
+                lat: {"in":"query","name":"lat","required":true,"dataType":"string"},
+                lng: {"in":"query","name":"lng","required":true,"dataType":"string"},
+        };
+        app.get('/geocoading/reversecode',
+            ...(fetchMiddlewares<RequestHandler>(Geocoading)),
+            ...(fetchMiddlewares<RequestHandler>(Geocoading.prototype.reversegeoAddress)),
+
+            async function Geocoading_reversegeoAddress(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsGeocoading_reversegeoAddress, request, response });
+
+                const controller = new Geocoading();
+
+              await templateService.apiHandler({
+                methodName: 'reversegeoAddress',
                 controller,
                 response,
                 next,
