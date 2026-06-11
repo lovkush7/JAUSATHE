@@ -5,6 +5,7 @@ import { Bike, Car, CarFront, CarTaxiFront, Dot, Motorbike, Van } from 'lucide-r
 import React, { useEffect, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
 import { motion, useDragControls } from "framer-motion"
+import uselocation from '../../zustand/location'
 
 type LocationType = {
     lat: number,
@@ -25,9 +26,8 @@ const Map = ({setLocations,Locations,setDestination,Destination, setTime, setDis
     // const [Locations, setLocations] = useState<LocationType | null>(null)
     const [Location, setLocation] = useState<LocationType | null>(null)
     const [openform, setopenform] = useState(false)
-    // const [Destination, setDestination] = useState<LocationType | null>(null)
-    // const [height, setheight] = useState(250)
-
+     
+   const {currentLocation, destination} = uselocation()
     // const control = useDragControls()
 
 
@@ -40,6 +40,10 @@ const Map = ({setLocations,Locations,setDestination,Destination, setTime, setDis
         navigator.geolocation.getCurrentPosition((position) => {
             setLocations({
                 lat: position.coords.latitude,
+                lng: position.coords.longitude
+            })
+            currentLocation({
+                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             })
         },

@@ -1,23 +1,35 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { CarFront, CarTaxiFront, Motorbike, Van } from 'lucide-react'
-import React from 'react'
+import React, { useState } from 'react'
 import { api } from '../../api/Api'
-
+import uselocation from '../../zustand/location'
+type locationType ={
+    lat: number,
+    lng: number
+}
 const sendlocations = async(
-    Locations: any
+   locations: any
 )=>{
-    const res = await api.get("/geocoading/reversecode",{
+    
+    const res = await api.get("/geocoading/geocode",{
         params:{
-            lat: Locations?.lat,
-            lng: Locations?.lng
+        address: locations
         }
+    
     })
     return res.data;
 }
+const [Locations , setLocations] = useState<locationType | null>(null)
+const {currentdestination} = uselocation()
+const handlesubmit = (e:any) =>{
+e.preventDefault()
 
-const BookRide = ({Locations}:any) => {
+
+}
+
+const BookRide = () => {
     console.log("mero location", Locations)
     const vechicles = [
         {
@@ -42,6 +54,8 @@ const BookRide = ({Locations}:any) => {
         queryFn: ()=>sendlocations(Locations),
         enabled: Locations !== null
     })
+
+
     return (
         <div className='flex flex-col gap-2 mt-4 w-full items-center justify-center bg-[#161628] rounded-xl pb-6 pt-4 border border-gray-700 pl-1 pr-1'>
             <div className='flex justify-start'>
@@ -56,7 +70,8 @@ const BookRide = ({Locations}:any) => {
                 </div>
                 <div className='flex gap-2 items-center justify-center'>
                     <div className='w-2 h-2 rounded-full bg-purple-600'></div>
-                    <Input placeholder='Where to go?' className='outline- placeholder:text-white bg-[#222233] text-gray-400 border border-gray-500 rounded-md w-full p-4' />
+                    <Input placeholder='Where to go?'  onChange={(e)=>sendlocations(e.target.value)} className='outline- placeholder:text-white bg-[#222233]
+                     text-gray-400 border border-gray-500 rounded-md w-full p-4' />
                 </div>
             </div>
             <div className="flex flex-wrap gap-4 p-2 justify-center">
@@ -72,7 +87,7 @@ const BookRide = ({Locations}:any) => {
                     </div>
                 ))}
             </div>
-            <Button className=' m-3 p-5 w-full bg-[#1B96D9]'>Book Ride</Button>
+            <Button onClick={handlesubmit} className=' m-3 p-5 w-full bg-[#1B96D9]'>Book Ride</Button>
         </div>
 
     )
