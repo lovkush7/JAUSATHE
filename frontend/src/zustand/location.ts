@@ -21,7 +21,7 @@ const uselocation = create<locationstore>((set:any)=>({
     currentLocation: (data)=>{
       try{
           set({locations: data})
-          console.log(data)
+          console.log("the locca",data)
       }catch(err){
         console.log(err)
       
@@ -30,7 +30,7 @@ const uselocation = create<locationstore>((set:any)=>({
     currentdestination: (data)=>{
         try{
             set({destination: data})
-            console.log(data)
+            console.log("the desssst",data)
         }catch(err){
             console.log(err)
         }

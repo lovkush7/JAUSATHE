@@ -5,12 +5,14 @@ import { CarFront, CarTaxiFront, Motorbike, Van } from 'lucide-react'
 import React, { useState } from 'react'
 import { api } from '../../api/Api'
 import uselocation from '../../zustand/location'
-type locationType ={
+import { useNavigate } from '@tanstack/react-router'
+
+ type locationType = {
     lat: number,
     lng: number
-}
+ }
 const sendlocations = async(
-   locations: any
+   locations: string
 )=>{
     
     const res = await api.get("/geocoading/geocode",{
@@ -19,18 +21,30 @@ const sendlocations = async(
         }
     
     })
+    console.log("mero des", locations)
     return res.data;
 }
-const [Locations , setLocations] = useState<locationType | null>(null)
-const {currentdestination} = uselocation()
-const handlesubmit = (e:any) =>{
-e.preventDefault()
-
-
+const sendaddress = async( 
+    mylocation: locationType
+    
+)=>{
+  const res = await api.get("/geocoading/reversecode",{
+    params:{
+        lat: mylocation.lat,
+        lng: mylocation.lng
+    }
+  })
+  console.log("mero location", mylocation)
+  return res.data;
 }
 
+
+
 const BookRide = () => {
+    const [Locations , setLocations] = useState("")
+    const {currentdestination,locations:mylocation} = uselocation()
     console.log("mero location", Locations)
+    const nav = useNavigate()
     const vechicles = [
         {
             type: "Electric",
@@ -49,12 +63,32 @@ const BookRide = () => {
             icons: <Van />
         }
     ]
-    const {data} = useQuery({
-        queryKey: ["locations"],
+const handlesubmit =async (e:any) =>{
+e.preventDefault()
+const result =await refetch()
+
+if(result.data){
+    currentdestination(result.data)
+    setLocations("")
+    nav({to: "/Book/BookRides"})
+}
+ 
+
+}
+    const {data: destinationlocation , refetch} = useQuery({
+        queryKey: ["locations",Locations],
         queryFn: ()=>sendlocations(Locations),
-        enabled: Locations !== null
+        // enabled: Locations !== null   
+        enabled: false   
     })
 
+   const {data} = useQuery({
+    queryKey: ["mylocation", mylocation],
+    queryFn: ()=>sendaddress(mylocation!),
+    enabled: !!mylocation
+   })
+   console.log("zustadn mylocation",mylocation)
+          
 
     return (
         <div className='flex flex-col gap-2 mt-4 w-full items-center justify-center bg-[#161628] rounded-xl pb-6 pt-4 border border-gray-700 pl-1 pr-1'>
@@ -70,7 +104,7 @@ const BookRide = () => {
                 </div>
                 <div className='flex gap-2 items-center justify-center'>
                     <div className='w-2 h-2 rounded-full bg-purple-600'></div>
-                    <Input placeholder='Where to go?'  onChange={(e)=>sendlocations(e.target.value)} className='outline- placeholder:text-white bg-[#222233]
+                    <Input placeholder='Where to go?' value={Locations}  onChange={(e)=>setLocations(e.target.value)} className='outline- placeholder:text-white bg-[#222233]
                      text-gray-400 border border-gray-500 rounded-md w-full p-4' />
                 </div>
             </div>

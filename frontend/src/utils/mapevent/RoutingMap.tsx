@@ -5,13 +5,14 @@ import "leaflet-routing-machine"
 import { useMap } from 'react-leaflet'
 type props = {
     pickup: [number, number],
-    destination: [number, number]
+    // destination: [number, number],
+    mydestination: [number, number],
     setTime: React.Dispatch<React.SetStateAction<any>>
     setDistanceinkm: React.Dispatch<React.SetStateAction<any>>
     setFare: React.Dispatch<React.SetStateAction<any>>
 }
 
-const RoutingMap = ({ pickup, destination, setTime, setDistanceinkm,setFare}: props) => {
+const RoutingMap = ({ pickup, setTime, setDistanceinkm,setFare,mydestination}: props) => {
     const map = useMap();
 
     useEffect(() => {
@@ -20,7 +21,8 @@ const RoutingMap = ({ pickup, destination, setTime, setDistanceinkm,setFare}: pr
         const routingControl = L.Routing.control({
             waypoints: [
                 L.latLng(pickup[0], pickup[1]),
-                L.latLng(destination[0], destination[1])
+                // L.latLng(destination[0], destination[1])
+                L.latLng(mydestination[0], mydestination[1])
             ],
             router: (L.Routing as any).osrmv1({
                 serviceUrl: "https://router.project-osrm.org/route/v1",
@@ -70,7 +72,7 @@ const RoutingMap = ({ pickup, destination, setTime, setDistanceinkm,setFare}: pr
         return () => {
             map.removeControl(routingControl)
         }
-    }, [map, pickup, destination])
+    }, [map, pickup, mydestination])
     return null;
 }
 

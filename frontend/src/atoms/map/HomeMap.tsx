@@ -5,6 +5,7 @@ import { Bike, Car, CarFront, CarTaxiFront, Dot, Home, Motorbike, Van } from 'lu
 import React, { useEffect, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
 import { motion, useDragControls } from "framer-motion"
+import uselocation from '../../zustand/location'
 
 type LocationType = {
     lat: number,
@@ -13,7 +14,7 @@ type LocationType = {
 const HomeMap = ({setLocations, Locations}: any) => {
     // const [Locations, setLocations] = useState<LocationType | null>(null)
  
-
+  const {currentLocation,} = uselocation()
     // const control = useDragControls()
 
 
@@ -26,6 +27,10 @@ const HomeMap = ({setLocations, Locations}: any) => {
         navigator.geolocation.getCurrentPosition((position) => {
             setLocations({
                 lat: position.coords.latitude,
+                lng: position.coords.longitude
+            })
+              currentLocation({
+                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             })
         },

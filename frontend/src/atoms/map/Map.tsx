@@ -27,7 +27,7 @@ const Map = ({setLocations,Locations,setDestination,Destination, setTime, setDis
     const [Location, setLocation] = useState<LocationType | null>(null)
     const [openform, setopenform] = useState(false)
      
-   const {currentLocation, destination} = uselocation()
+   const { destination:mapdestination ,locations:mylocation} = uselocation()
     // const control = useDragControls()
 
 
@@ -42,17 +42,18 @@ const Map = ({setLocations,Locations,setDestination,Destination, setTime, setDis
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             })
-            currentLocation({
-                 lat: position.coords.latitude,
-                lng: position.coords.longitude
-            })
+            // currentLocation({
+            //      lat: position.coords.latitude,
+            //     lng: position.coords.longitude
+            // })
         },
             (error) => {
                 console.log(error)
             }
         )
     }, [])
-
+    console.log("mapdestination",mapdestination)
+     console.log("my loccaatt",mylocation)
     console.log("my current locations is ", Locations)
     return (
 
@@ -81,6 +82,14 @@ const Map = ({setLocations,Locations,setDestination,Destination, setTime, setDis
 
                         </Popup>
                     </Marker>}
+                    {
+                        mapdestination &&
+                        <Marker position={[mapdestination.lat, mapdestination.lng]}>
+                            <Popup>
+                                  your destination
+                            </Popup>
+                        </Marker>
+                    }
 
                 {Location &&
                     <Marker position={[Location.lat, Location.lng]}>
@@ -96,11 +105,12 @@ const Map = ({setLocations,Locations,setDestination,Destination, setTime, setDis
                         </Popup>
                     </Marker>}
                 {
-                    Locations && Destination &&
+                    Locations  && mapdestination &&
 
                     <RoutingMap 
                      pickup={[Locations?.lat, Locations?.lng]} 
-                     destination={[Destination?.lat, Destination?.lng]}
+                    //  destination={[Destination?.lat, Destination?.lng]}
+                     mydestination = {[mapdestination?.lat, mapdestination?.lng]}
                      setTime={setTime}
                      setDistanceinkm={setDistanceinkm}
                      setFare={setFare}
