@@ -1,4 +1,7 @@
+import type CreateRideDto from "../../dto/Ridecreate.dto.ts";
 import { FareConfig } from "../../entity/FareConfig.entities.ts";
+import { Ride } from "../../entity/Ride.entities.ts";
+import { User } from "../../entity/User.entities.ts";
 import type { VehicleType } from "../../enum/enum.details.ts";
 
 class RideService {
@@ -42,6 +45,50 @@ class RideService {
       estimatedDurationMinutes,
     };
 
+    }
+    async CreateRide(
+      body: CreateRideDto,
+      userid: string
+    ){
+      const est = await this.estimateFare(
+        body.pickuplat,
+        body.pickuplng,
+        body.dropofflat,
+        body.dropofflng,
+        body.vehicleType
+
+      );
+
+      const existance = await User.findOne({
+        where:{
+          id: userid
+        }
+      });
+      if(!existance){
+        throw new Error("user doesnot exist")
+      
+      }
+      const ride = new Ride();
+      ride.pickupAddress = body.PickupAddress;
+      ride.pickupLocation = {
+        type: "Point",
+        coordinates: [body.pickuplat, body.pickuplng],
+      
+      }
+      ride.DropoffAddress = body.DropoffAddress;
+      ride.DropoffLocation ={
+        type: "Point",
+        coordinates: [body.dropofflat, body.dropofflng],
+      
+      }
+      ride.reqVehicleType = body.vehicleType;
+      ride.estimatedFare = est.estimatedFare;
+      ride.estimatedDistance = est.estimatedDistanceKm;
+      ride.DurationMinutes = est.estimatedDurationMinutes;
+      ride.rider = existance;
+      await ride.save();
+      return ride;
+       
     }
 }
 export default new RideService();
