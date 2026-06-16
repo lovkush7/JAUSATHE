@@ -57,9 +57,9 @@ export class RideController extends Controller{
     async AcceptRides(
         @Body()  vechicleId: string,
         @Request() req: any,
-        @Path() rideid: string
+        @Path() id: string
     ){
-      return await RideServices.AcceptRide(vechicleId, req.user!.id, rideid)
+      return await RideServices.AcceptRide(vechicleId, req.user!.id, id)
 
     }
 

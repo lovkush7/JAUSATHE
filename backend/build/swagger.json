@@ -130,6 +130,7 @@
 			"RideStatus": {
 				"enum": [
 					"REQUESTED",
+					"SEARCHING",
 					"ACCEPTED",
 					"ARRIVING",
 					"STARTED",
@@ -219,6 +220,148 @@
 					"BUSY"
 				],
 				"type": "string"
+			},
+			"Ride": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"DeletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"CreatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"pickupAddress": {
+						"type": "string"
+					},
+					"pickupLocation": {
+						"$ref": "#/components/schemas/Point"
+					},
+					"DropoffAddress": {
+						"type": "string"
+					},
+					"DropoffLocation": {
+						"$ref": "#/components/schemas/Point"
+					},
+					"routepath": {
+						"$ref": "#/components/schemas/LineString"
+					},
+					"estimatedFare": {
+						"type": "number",
+						"format": "double"
+					},
+					"FinalFare": {
+						"type": "number",
+						"format": "double"
+					},
+					"estimatedDistance": {
+						"type": "number",
+						"format": "double"
+					},
+					"ActualDistance": {
+						"type": "number",
+						"format": "double"
+					},
+					"DurationMinutes": {
+						"type": "number",
+						"format": "double"
+					},
+					"reqVehicleType": {
+						"$ref": "#/components/schemas/VehicleType"
+					},
+					"ridestauts": {
+						"$ref": "#/components/schemas/RideStatus"
+					},
+					"cancledby": {
+						"$ref": "#/components/schemas/Cancledby"
+					},
+					"cancellationResion": {
+						"type": "string"
+					},
+					"cancelAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"driverAcceptedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"driverArrivedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"tripStartAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"tripEndAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"promoCode": {
+						"type": "string"
+					},
+					"isScheduled": {
+						"type": "boolean"
+					},
+					"ScheduledAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"specialInstruction": {
+						"type": "string"
+					},
+					"rider": {
+						"$ref": "#/components/schemas/User"
+					},
+					"vechicle": {
+						"$ref": "#/components/schemas/Vechicles"
+					},
+					"driver": {
+						"$ref": "#/components/schemas/Driver"
+					}
+				},
+				"required": [
+					"id",
+					"DeletedAt",
+					"UpdatedAt",
+					"CreatedAt",
+					"pickupAddress",
+					"pickupLocation",
+					"DropoffAddress",
+					"DropoffLocation",
+					"routepath",
+					"estimatedFare",
+					"FinalFare",
+					"estimatedDistance",
+					"ActualDistance",
+					"DurationMinutes",
+					"reqVehicleType",
+					"ridestauts",
+					"cancledby",
+					"cancellationResion",
+					"cancelAt",
+					"driverAcceptedAt",
+					"driverArrivedAt",
+					"tripStartAt",
+					"tripEndAt",
+					"promoCode",
+					"isScheduled",
+					"ScheduledAt",
+					"specialInstruction",
+					"rider",
+					"vechicle",
+					"driver"
+				],
+				"type": "object",
+				"additionalProperties": false
 			},
 			"Vechicles": {
 				"properties": {
@@ -330,6 +473,12 @@
 					"CurrentLocation": {
 						"$ref": "#/components/schemas/Point"
 					},
+					"ridesasDriver": {
+						"items": {
+							"$ref": "#/components/schemas/Ride"
+						},
+						"type": "array"
+					},
 					"vechicles": {
 						"$ref": "#/components/schemas/Vechicles"
 					},
@@ -352,129 +501,9 @@
 					"rating",
 					"isApproped",
 					"CurrentLocation",
+					"ridesasDriver",
 					"vechicles",
 					"user"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Ride": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"DeletedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"UpdatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"CreatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"pickupAddress": {
-						"type": "string"
-					},
-					"pickupLocation": {
-						"$ref": "#/components/schemas/Point"
-					},
-					"DropoffAddress": {
-						"type": "string"
-					},
-					"DropoffLocation": {
-						"$ref": "#/components/schemas/Point"
-					},
-					"routepath": {
-						"$ref": "#/components/schemas/LineString"
-					},
-					"estimatedFare": {
-						"type": "number",
-						"format": "double"
-					},
-					"FinalFare": {
-						"type": "number",
-						"format": "double"
-					},
-					"estimatedDistance": {
-						"type": "number",
-						"format": "double"
-					},
-					"ActualDistance": {
-						"type": "number",
-						"format": "double"
-					},
-					"DurationMinutes": {
-						"type": "number",
-						"format": "double"
-					},
-					"reqVehicleType": {
-						"$ref": "#/components/schemas/VehicleType"
-					},
-					"ridestauts": {
-						"$ref": "#/components/schemas/RideStatus"
-					},
-					"cancledby": {
-						"$ref": "#/components/schemas/Cancledby"
-					},
-					"cancellationResion": {
-						"type": "string"
-					},
-					"cancelAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"driverAcceptedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"driverArrivedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"tripStartAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"tripEndAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"rider": {
-						"$ref": "#/components/schemas/User"
-					},
-					"vechicle": {
-						"$ref": "#/components/schemas/Vechicles"
-					}
-				},
-				"required": [
-					"id",
-					"DeletedAt",
-					"UpdatedAt",
-					"CreatedAt",
-					"pickupAddress",
-					"pickupLocation",
-					"DropoffAddress",
-					"DropoffLocation",
-					"routepath",
-					"estimatedFare",
-					"FinalFare",
-					"estimatedDistance",
-					"ActualDistance",
-					"DurationMinutes",
-					"reqVehicleType",
-					"ridestauts",
-					"cancledby",
-					"cancellationResion",
-					"cancelAt",
-					"driverAcceptedAt",
-					"driverArrivedAt",
-					"tripStartAt",
-					"tripEndAt",
-					"rider",
-					"vechicle"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -883,6 +912,71 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/CreateRideDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/ride/active": {
+			"get": {
+				"operationId": "GetActiveRide",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Ride"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/ride/{id}/accept": {
+			"patch": {
+				"operationId": "AcceptRides",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Ride"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "string"
 							}
 						}
 					}

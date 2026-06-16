@@ -76,7 +76,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "RideStatus": {
         "dataType": "refEnum",
-        "enums": ["REQUESTED","ACCEPTED","ARRIVING","STARTED","COMPLETED","CANCELED"],
+        "enums": ["REQUESTED","SEARCHING","ACCEPTED","ARRIVING","STARTED","COMPLETED","CANCELED"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Cancledby": {
@@ -107,6 +107,43 @@ const models: TsoaRoute.Models = {
     "Driverstatus": {
         "dataType": "refEnum",
         "enums": ["ONLINE","OFFLINE","BUSY"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Ride": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "DeletedAt": {"dataType":"datetime","required":true},
+            "UpdatedAt": {"dataType":"datetime","required":true},
+            "CreatedAt": {"dataType":"datetime","required":true},
+            "pickupAddress": {"dataType":"string","required":true},
+            "pickupLocation": {"ref":"Point","required":true},
+            "DropoffAddress": {"dataType":"string","required":true},
+            "DropoffLocation": {"ref":"Point","required":true},
+            "routepath": {"ref":"LineString","required":true},
+            "estimatedFare": {"dataType":"double","required":true},
+            "FinalFare": {"dataType":"double","required":true},
+            "estimatedDistance": {"dataType":"double","required":true},
+            "ActualDistance": {"dataType":"double","required":true},
+            "DurationMinutes": {"dataType":"double","required":true},
+            "reqVehicleType": {"ref":"VehicleType","required":true},
+            "ridestauts": {"ref":"RideStatus","required":true},
+            "cancledby": {"ref":"Cancledby","required":true},
+            "cancellationResion": {"dataType":"string","required":true},
+            "cancelAt": {"dataType":"datetime","required":true},
+            "driverAcceptedAt": {"dataType":"datetime","required":true},
+            "driverArrivedAt": {"dataType":"datetime","required":true},
+            "tripStartAt": {"dataType":"datetime","required":true},
+            "tripEndAt": {"dataType":"datetime","required":true},
+            "promoCode": {"dataType":"string","required":true},
+            "isScheduled": {"dataType":"boolean","required":true},
+            "ScheduledAt": {"dataType":"datetime","required":true},
+            "specialInstruction": {"dataType":"string","required":true},
+            "rider": {"ref":"User","required":true},
+            "vechicle": {"ref":"Vechicles","required":true},
+            "driver": {"ref":"Driver","required":true},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Vechicles": {
@@ -144,40 +181,9 @@ const models: TsoaRoute.Models = {
             "rating": {"dataType":"double","required":true},
             "isApproped": {"dataType":"boolean","required":true},
             "CurrentLocation": {"ref":"Point","required":true},
+            "ridesasDriver": {"dataType":"array","array":{"dataType":"refObject","ref":"Ride"},"required":true},
             "vechicles": {"ref":"Vechicles","required":true},
             "user": {"ref":"User","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Ride": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"string","required":true},
-            "DeletedAt": {"dataType":"datetime","required":true},
-            "UpdatedAt": {"dataType":"datetime","required":true},
-            "CreatedAt": {"dataType":"datetime","required":true},
-            "pickupAddress": {"dataType":"string","required":true},
-            "pickupLocation": {"ref":"Point","required":true},
-            "DropoffAddress": {"dataType":"string","required":true},
-            "DropoffLocation": {"ref":"Point","required":true},
-            "routepath": {"ref":"LineString","required":true},
-            "estimatedFare": {"dataType":"double","required":true},
-            "FinalFare": {"dataType":"double","required":true},
-            "estimatedDistance": {"dataType":"double","required":true},
-            "ActualDistance": {"dataType":"double","required":true},
-            "DurationMinutes": {"dataType":"double","required":true},
-            "reqVehicleType": {"ref":"VehicleType","required":true},
-            "ridestauts": {"ref":"RideStatus","required":true},
-            "cancledby": {"ref":"Cancledby","required":true},
-            "cancellationResion": {"dataType":"string","required":true},
-            "cancelAt": {"dataType":"datetime","required":true},
-            "driverAcceptedAt": {"dataType":"datetime","required":true},
-            "driverArrivedAt": {"dataType":"datetime","required":true},
-            "tripStartAt": {"dataType":"datetime","required":true},
-            "tripEndAt": {"dataType":"datetime","required":true},
-            "rider": {"ref":"User","required":true},
-            "vechicle": {"ref":"Vechicles","required":true},
         },
         "additionalProperties": false,
     },
@@ -447,6 +453,70 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'CreateRide',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsRideController_GetActiveRide: Record<string, TsoaRoute.ParameterSchema> = {
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+        };
+        app.get('/ride/active',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(RideController)),
+            ...(fetchMiddlewares<RequestHandler>(RideController.prototype.GetActiveRide)),
+
+            async function RideController_GetActiveRide(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsRideController_GetActiveRide, request, response });
+
+                const controller = new RideController();
+
+              await templateService.apiHandler({
+                methodName: 'GetActiveRide',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsRideController_AcceptRides: Record<string, TsoaRoute.ParameterSchema> = {
+                vechicleId: {"in":"body","name":"vechicleId","required":true,"dataType":"string"},
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
+        };
+        app.patch('/ride/:id/accept',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(RideController)),
+            ...(fetchMiddlewares<RequestHandler>(RideController.prototype.AcceptRides)),
+
+            async function RideController_AcceptRides(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsRideController_AcceptRides, request, response });
+
+                const controller = new RideController();
+
+              await templateService.apiHandler({
+                methodName: 'AcceptRides',
                 controller,
                 response,
                 next,

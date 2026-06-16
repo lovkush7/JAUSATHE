@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Map from '../map/Map'
 import { Button } from '../../components/ui/button'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { api } from '../../api/Api'
 import uselocation from '../../zustand/location'
 
@@ -43,6 +43,27 @@ const payment = [
 type LocationType = {
   lat: number
   lng: number
+}
+const conformride = async(
+  pickupAddress: string,
+  pickuplng: number,
+  pickuplat: number,
+  DropoffAddress: string,
+  dropofflat: Number,
+  dropofflng: number,
+  vehicleType: string,
+)=>{
+  const res = await api.post("rides/conformride",{
+    pickupAddress,
+    pickuplat,
+    pickuplng,
+    DropoffAddress,
+    dropofflat,
+    dropofflng,
+    vehicleType
+  })
+  return res.data;
+
 }
 const location = async (
   mylocation: LocationType
@@ -132,6 +153,26 @@ const ConformRides = () => {
       vehicleType !== null,
 
   })
+ const mutation = useMutation({
+  mutationFn: (rideData: {
+    pickupAddress: string
+    pickuplat: number
+    pickuplng: number
+    dropoffAddress: string
+    dropofflat: number
+    dropofflng: number
+    vehicleType: string
+  }) =>
+    conformride(
+      rideData.pickupAddress,
+      rideData.pickuplng,
+      rideData.pickuplat,
+      rideData.dropoffAddress,
+      rideData.dropofflat,
+      rideData.dropofflng,
+      rideData.vehicleType
+    ),
+})
 
   const handlesubmit = () => {
     setPickuplat(Locations?.lat ?? null)
@@ -266,7 +307,19 @@ const ConformRides = () => {
                 </div>
               ))}
           </div>
-          <Button className='w-full p-5 rounded-2xl bg-blue-800 mt-4 '>
+          <Button 
+              onClick={() => {
+   mutation.mutate({
+  pickupAddress: mydta,
+  pickuplat: pickuplat!,
+  pickuplng: pickuplng!,
+  dropoffAddress: des,
+  dropofflat: dropofflat!,
+  dropofflng: dropofflng!,
+  vehicleType: vehicleType!,
+})
+  }}
+          className='w-full p-5 rounded-2xl bg-blue-800 mt-4 '>
             Book Ride
           </Button>
         </div>
