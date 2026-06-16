@@ -2,7 +2,7 @@ import type CreateRideDto from "../../dto/Ridecreate.dto.ts";
 import { FareConfig } from "../../entity/FareConfig.entities.ts";
 import { Ride } from "../../entity/Ride.entities.ts";
 import { User } from "../../entity/User.entities.ts";
-import type { VehicleType } from "../../enum/enum.details.ts";
+import { RideStatus, type UserRole, type VehicleType } from "../../enum/enum.details.ts";
 
 class RideService {
     async estimateFare(
@@ -72,23 +72,89 @@ class RideService {
       ride.pickupAddress = body.PickupAddress;
       ride.pickupLocation = {
         type: "Point",
-        coordinates: [body.pickuplat, body.pickuplng],
+        coordinates: [body.pickuplng, body.pickuplat],
       
       }
       ride.DropoffAddress = body.DropoffAddress;
       ride.DropoffLocation ={
         type: "Point",
-        coordinates: [body.dropofflat, body.dropofflng],
+        coordinates: [body.dropofflng, body.dropofflat],
       
       }
       ride.reqVehicleType = body.vehicleType;
       ride.estimatedFare = est.estimatedFare;
       ride.estimatedDistance = est.estimatedDistanceKm;
       ride.DurationMinutes = est.estimatedDurationMinutes;
+      ride.specialInstruction = body.SpecialInstruction;
+      ride.promoCode = body.PromoCode;
+      ride.isScheduled = body.isScheduled ?? false;
+      ride.ScheduledAt = body.ScheduledAt;
+      ride.ridestauts = RideStatus.REQUESTED;
+
       ride.rider = existance;
       await ride.save();
       return ride;
        
+    }
+    async GetActiveRide(
+      role: UserRole,
+      userid: string
+    ){
+      try{
+        const Activestatus = [
+          RideStatus.REQUESTED,
+          RideStatus.ACCEPTED,
+          RideStatus.ARRIVING,
+          RideStatus.STARTED,
+
+        ]
+        const find =await Ride.createQueryBuilder("r")
+        .where(`r.${role === 'PASSENGERS' ? "riderid": "driverid"} =:userid`,{userid})
+        .andWhere('r.status IN (:...status) ', {status: Activestatus})
+        .leftJoinAndSelect("r.rider ","rider")
+        .leftJoinAndSelect("r.vechicle","vechicle")
+        .leftJoinAndSelect("r.driver","driver")
+        .leftJoinAndSelect("driver.user","driveruser")
+        .getOne();
+
+        return find;
+
+
+      }catch(err){
+        throw err;
+      }
+
+    }
+    async AcceptRide(
+      vechicleId: string,
+      driverid: string,
+      rideId: string
+    ){
+      try{
+        const ride = await Ride.findOne({
+          where:{
+            id: rideId,
+            
+          },
+          
+        })
+        if(!ride){
+          throw new Error("ride doesnot exist")
+        }
+        if(ride?.ridestauts !== RideStatus.REQUESTED && ride?.ridestauts !== RideStatus.SEARCHING){
+          throw new Error("ride no longer existance")
+        }
+          await Ride.update(rideId,{
+           vechicle: {id: vechicleId} ,
+          driver: {id: driverid},
+          ridestauts: RideStatus.ACCEPTED,
+          driverAcceptedAt: new Date(),
+          })
+          return ride;
+      }catch(err){
+        throw err;
+      }
+
     }
 }
 export default new RideService();

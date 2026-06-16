@@ -182,6 +182,24 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateRideDto": {
+        "dataType": "refObject",
+        "properties": {
+            "PickupAddress": {"dataType":"string","required":true},
+            "pickuplat": {"dataType":"double","required":true},
+            "pickuplng": {"dataType":"double","required":true},
+            "DropoffAddress": {"dataType":"string","required":true},
+            "dropofflat": {"dataType":"double","required":true},
+            "dropofflng": {"dataType":"double","required":true},
+            "vehicleType": {"ref":"VehicleType","required":true},
+            "PromoCode": {"dataType":"string","required":true},
+            "SpecialInstruction": {"dataType":"string","required":true},
+            "isScheduled": {"dataType":"boolean","required":true},
+            "ScheduledAt": {"dataType":"datetime","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Driverdto": {
         "dataType": "refObject",
         "properties": {
@@ -397,6 +415,38 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'estimatefare',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsRideController_CreateRide: Record<string, TsoaRoute.ParameterSchema> = {
+                body: {"in":"body","name":"body","required":true,"ref":"CreateRideDto"},
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+        };
+        app.post('/ride/createride',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(RideController)),
+            ...(fetchMiddlewares<RequestHandler>(RideController.prototype.CreateRide)),
+
+            async function RideController_CreateRide(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsRideController_CreateRide, request, response });
+
+                const controller = new RideController();
+
+              await templateService.apiHandler({
+                methodName: 'CreateRide',
                 controller,
                 response,
                 next,

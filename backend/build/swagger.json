@@ -479,6 +479,63 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"CreateRideDto": {
+				"properties": {
+					"PickupAddress": {
+						"type": "string"
+					},
+					"pickuplat": {
+						"type": "number",
+						"format": "double"
+					},
+					"pickuplng": {
+						"type": "number",
+						"format": "double"
+					},
+					"DropoffAddress": {
+						"type": "string"
+					},
+					"dropofflat": {
+						"type": "number",
+						"format": "double"
+					},
+					"dropofflng": {
+						"type": "number",
+						"format": "double"
+					},
+					"vehicleType": {
+						"$ref": "#/components/schemas/VehicleType"
+					},
+					"PromoCode": {
+						"type": "string"
+					},
+					"SpecialInstruction": {
+						"type": "string"
+					},
+					"isScheduled": {
+						"type": "boolean"
+					},
+					"ScheduledAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"PickupAddress",
+					"pickuplat",
+					"pickuplng",
+					"DropoffAddress",
+					"dropofflat",
+					"dropofflng",
+					"vehicleType",
+					"PromoCode",
+					"SpecialInstruction",
+					"isScheduled",
+					"ScheduledAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Driverdto": {
 				"properties": {
 					"licenseNumber": {
@@ -797,6 +854,39 @@
 						}
 					}
 				]
+			}
+		},
+		"/ride/createride": {
+			"post": {
+				"operationId": "CreateRide",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Ride"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateRideDto"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/geocoading/geocode": {

@@ -3,6 +3,7 @@ import { CommonEntity } from "./commonentity.ts";
 import { Cancledby, RideStatus, VehicleType } from "../enum/enum.details.ts";
 import { Vechicles } from "./Vechiles.entity.ts";
 import { User } from "./User.entities.ts";
+import { Driver } from "./Driver.entities.ts";
 
 @Entity("ride")
 export class Ride extends CommonEntity{
@@ -69,6 +70,20 @@ export class Ride extends CommonEntity{
    @Column({type: "date", nullable: true})
    tripEndAt: Date;
 
+   @Column({type:"text",nullable:true})
+   promoCode: string;
+
+   @Column({type:"boolean", default: false})
+   isScheduled: boolean;
+
+   @Column({type: "date", nullable: true})
+   ScheduledAt: Date;
+
+
+   @Column({type: "text",nullable: true})
+   specialInstruction: string;
+
+
    @ManyToOne(()=>User, (user)=>user.rides, {nullable:true})
    @JoinColumn({name: "riderId"})
    rider: User
@@ -77,7 +92,11 @@ export class Ride extends CommonEntity{
    @JoinColumn({name: "vechicleId"})
    vechicle: Vechicles;
 
-
+  
+   
+   @ManyToOne(()=>Driver, (driver)=>driver.ridesasDriver, {nullable:true})
+   @JoinColumn({name: "driverId"})
+   driver: Driver;
 
 
 

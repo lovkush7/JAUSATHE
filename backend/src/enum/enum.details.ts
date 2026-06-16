@@ -28,6 +28,7 @@ export enum Driverstatus {
 
 export enum RideStatus{
     REQUESTED = "REQUESTED",
+    SEARCHING ="SEARCHING",
     ACCEPTED = "ACCEPTED",
     ARRIVING = "ARRIVING",
     STARTED = "STARTED",
