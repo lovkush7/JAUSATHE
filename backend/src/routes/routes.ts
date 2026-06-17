@@ -135,10 +135,10 @@ const models: TsoaRoute.Models = {
             "driverArrivedAt": {"dataType":"datetime","required":true},
             "tripStartAt": {"dataType":"datetime","required":true},
             "tripEndAt": {"dataType":"datetime","required":true},
-            "promoCode": {"dataType":"string","required":true},
-            "isScheduled": {"dataType":"boolean","required":true},
-            "ScheduledAt": {"dataType":"datetime","required":true},
-            "specialInstruction": {"dataType":"string","required":true},
+            "promoCode": {"dataType":"string"},
+            "isScheduled": {"dataType":"boolean"},
+            "ScheduledAt": {"dataType":"datetime"},
+            "specialInstruction": {"dataType":"string"},
             "rider": {"ref":"User","required":true},
             "vechicle": {"ref":"Vechicles","required":true},
             "driver": {"ref":"Driver","required":true},
@@ -294,6 +294,35 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'signup',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsAuthentication_logout: Record<string, TsoaRoute.ParameterSchema> = {
+        };
+        app.post('/auth/logout',
+            ...(fetchMiddlewares<RequestHandler>(Authentication)),
+            ...(fetchMiddlewares<RequestHandler>(Authentication.prototype.logout)),
+
+            async function Authentication_logout(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsAuthentication_logout, request, response });
+
+                const controller = new Authentication();
+
+              await templateService.apiHandler({
+                methodName: 'logout',
                 controller,
                 response,
                 next,

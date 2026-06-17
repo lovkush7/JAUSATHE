@@ -19,7 +19,7 @@ const Home = () => {
         <HomeMap  setLocations={setLocations}  Locations={Locations} />
         </div>
         <div className='w-[350px] border-l p-3 '>
-          <BookRide Locations={Locations} />
+          <BookRide />
         </div>
       </div>
         <div className='text-white'>

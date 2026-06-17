@@ -352,10 +352,6 @@
 					"driverArrivedAt",
 					"tripStartAt",
 					"tripEndAt",
-					"promoCode",
-					"isScheduled",
-					"ScheduledAt",
-					"specialInstruction",
 					"rider",
 					"vechicle",
 					"driver"
@@ -681,6 +677,37 @@
 						}
 					}
 				}
+			}
+		},
+		"/auth/logout": {
+			"post": {
+				"operationId": "Logout",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										},
+										"success": {
+											"type": "boolean"
+										}
+									},
+									"required": [
+										"message",
+										"success"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
 			}
 		},
 		"/auth/checkauth": {

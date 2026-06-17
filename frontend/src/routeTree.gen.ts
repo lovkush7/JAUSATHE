@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DriverDashboardRouteImport } from './routes/DriverDashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SplashIndexRouteImport } from './routes/Splash/index'
 import { Route as ProfileIndexRouteImport } from './routes/Profile/index'
@@ -21,6 +22,11 @@ import { Route as BookPaymentIndexRouteImport } from './routes/Book/Payment/inde
 import { Route as BookMyRidesIndexRouteImport } from './routes/Book/MyRides/index'
 import { Route as BookBookRidesIndexRouteImport } from './routes/Book/BookRides/index'
 
+const DriverDashboardRoute = DriverDashboardRouteImport.update({
+  id: '/DriverDashboard',
+  path: '/DriverDashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -79,6 +85,7 @@ const BookBookRidesIndexRoute = BookBookRidesIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/DriverDashboard': typeof DriverDashboardRoute
   '/Profile/': typeof ProfileIndexRoute
   '/Splash/': typeof SplashIndexRoute
   '/Book/BookRides/': typeof BookBookRidesIndexRoute
@@ -92,6 +99,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/DriverDashboard': typeof DriverDashboardRoute
   '/Profile': typeof ProfileIndexRoute
   '/Splash': typeof SplashIndexRoute
   '/Book/BookRides': typeof BookBookRidesIndexRoute
@@ -106,6 +114,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/DriverDashboard': typeof DriverDashboardRoute
   '/Profile/': typeof ProfileIndexRoute
   '/Splash/': typeof SplashIndexRoute
   '/Book/BookRides/': typeof BookBookRidesIndexRoute
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/DriverDashboard'
     | '/Profile/'
     | '/Splash/'
     | '/Book/BookRides/'
@@ -134,6 +144,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/DriverDashboard'
     | '/Profile'
     | '/Splash'
     | '/Book/BookRides'
@@ -147,6 +158,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/DriverDashboard'
     | '/Profile/'
     | '/Splash/'
     | '/Book/BookRides/'
@@ -161,6 +173,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DriverDashboardRoute: typeof DriverDashboardRoute
   ProfileIndexRoute: typeof ProfileIndexRoute
   SplashIndexRoute: typeof SplashIndexRoute
   BookBookRidesIndexRoute: typeof BookBookRidesIndexRoute
@@ -175,6 +188,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/DriverDashboard': {
+      id: '/DriverDashboard'
+      path: '/DriverDashboard'
+      fullPath: '/DriverDashboard'
+      preLoaderRoute: typeof DriverDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -257,6 +277,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DriverDashboardRoute: DriverDashboardRoute,
   ProfileIndexRoute: ProfileIndexRoute,
   SplashIndexRoute: SplashIndexRoute,
   BookBookRidesIndexRoute: BookBookRidesIndexRoute,

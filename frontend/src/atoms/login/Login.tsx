@@ -39,10 +39,16 @@ const Login = () => {
     mutationFn:  sendlogin,
 
 
-
-    onSuccess:()=>{
+    onSuccess:(data)=>{
       console.log("success")
+      const role = data.user.Role;
+      if(role === "PASSENGERS"){
+
       navigate({to: "/"})
+      }
+      if(role === "DRIVER"){
+        navigate({to: "/DriverDashboard"})
+      }
     }
    })
    const handlesubmit = (e: any )=>{

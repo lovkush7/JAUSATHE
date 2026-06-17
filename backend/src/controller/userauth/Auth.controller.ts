@@ -40,6 +40,21 @@ async signup(
   return newUser;
 
 }
+@Post("logout")
+async logout(
+ 
+){
+    const isproduction = Envconfig.NODE_ENV === "production";
+  this.setHeader(
+    "Set-Cookie",
+    `jwt=; HttpOnly; Max-Age=0; Path=/; SameSite=${isproduction ? "None" : "Lax"}; ${isproduction ? "Secure;" : ""}`
+  );
+  return {
+    success: true,
+    message: "logout successfully"
+
+  }
+}
 
 @Get("checkauth")
 @Security("jwt")

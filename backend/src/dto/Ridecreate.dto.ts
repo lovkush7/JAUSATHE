@@ -25,18 +25,18 @@ class CreateRideDto {
 
     @IsOptional()
     @IsString()
-    PromoCode?: string;
+    PromoCode: string;
      
     
     @IsString()
-    SpecialInstruction?: string;
+    SpecialInstruction: string;
 
   
     @IsBoolean()
-    isScheduled?: boolean;
+    isScheduled: boolean;
 
     @IsDate()
-    ScheduledAt?: Date;
+    ScheduledAt: Date;
 
 }
 export default CreateRideDto;
