@@ -46,7 +46,7 @@ class RideService {
     };
 
     }
-    async CreateRide(
+    async  CreateRide(
       body: CreateRideDto,
       userid: string
     ){

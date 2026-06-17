@@ -45,7 +45,7 @@ type LocationType = {
   lng: number
 }
 const conformride = async(
-  pickupAddress: string,
+  PickupAddress: string,
   pickuplng: number,
   pickuplat: number,
   DropoffAddress: string,
@@ -53,8 +53,8 @@ const conformride = async(
   dropofflng: number,
   vehicleType: string,
 )=>{
-  const res = await api.post("rides/conformride",{
-    pickupAddress,
+  const res = await api.post("ride/createride",{
+    PickupAddress,
     pickuplat,
     pickuplng,
     DropoffAddress,
@@ -174,8 +174,7 @@ const ConformRides = () => {
     ),
 })
 //hello world
-console.log("hellow")
-console.log("hwllowworld")
+
   const handlesubmit = () => {
     setPickuplat(Locations?.lat ?? null)
     setPickuplng(Locations?.lng ?? null)

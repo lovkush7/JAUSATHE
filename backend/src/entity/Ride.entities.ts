@@ -71,17 +71,17 @@ export class Ride extends CommonEntity{
    tripEndAt: Date;
 
    @Column({type:"text",nullable:true})
-   promoCode: string;
+   promoCode?: string;
 
    @Column({type:"boolean", default: false})
-   isScheduled: boolean;
+   isScheduled?: boolean;
 
    @Column({type: "date", nullable: true})
-   ScheduledAt: Date;
+   ScheduledAt?: Date;
 
 
    @Column({type: "text",nullable: true})
-   specialInstruction: string;
+   specialInstruction?: string;
 
 
    @ManyToOne(()=>User, (user)=>user.rides, {nullable:true})

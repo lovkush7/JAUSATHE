@@ -1,4 +1,4 @@
-import { IsBoolean, IsDate, IsEnum, IsNumber, IsString } from "class-validator";
+import { IsBoolean, IsDate, IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
 import { VehicleType } from "../enum/enum.details.ts";
 
 class CreateRideDto {
@@ -23,17 +23,20 @@ class CreateRideDto {
     @IsEnum(VehicleType)
     vehicleType: VehicleType;
 
+    @IsOptional()
     @IsString()
-    PromoCode: string;
-
+    PromoCode?: string;
+     
+    
     @IsString()
-    SpecialInstruction: string;
+    SpecialInstruction?: string;
 
+  
     @IsBoolean()
-    isScheduled: boolean;
+    isScheduled?: boolean;
 
     @IsDate()
-    ScheduledAt: Date;
+    ScheduledAt?: Date;
 
 }
 export default CreateRideDto;
