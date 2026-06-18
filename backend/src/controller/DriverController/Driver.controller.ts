@@ -8,7 +8,7 @@ import { Driver } from "../../entity/Driver.entities.ts";
 @Route("driver")
 export class DriverController extends Controller{
 
-    @Post("register-driver")
+    @Post("registerdriver")
     @Middlewares(Drivermiddleware)
     @Security("jwt")
     async registerDriver(

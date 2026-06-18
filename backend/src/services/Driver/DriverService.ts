@@ -25,6 +25,8 @@ class DriverServices {
             newdriver.licenseNumber = body.licenseNumber;
             newdriver.licenseExpery = body.licenseExpery;
             newdriver.citizenshipNumber = body.citizenshipNumber;
+            newdriver.vechicles.type = body.vehicleType;
+            newdriver.user = existinguser;
             existinguser.Driver = newdriver;
             await newdriver.save()
 

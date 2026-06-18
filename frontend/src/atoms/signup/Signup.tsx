@@ -35,7 +35,7 @@ export const SignupForm = () => {
     Email: '',
     password: '',
     Phone: '',
-    Role: 'EMPLOYEE',
+    Role: 'PASSENGERS',
   })
   const navigate = useNavigate()
  const sendreq = async(text : any)=>{
@@ -55,7 +55,7 @@ const mutation = useMutation({
    navigate({to: "/"})
     }
     if(role === "DRIVER"){
-      navigate({to: "/DriverDashboard"})
+      navigate({to: "/Driver/auth"})
     }
   }
 })
