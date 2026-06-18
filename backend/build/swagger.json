@@ -573,15 +573,35 @@
 					"citizenshipNumber": {
 						"type": "string"
 					},
+					"vehicleType": {
+						"$ref": "#/components/schemas/VehicleType"
+					},
 					"status": {
 						"$ref": "#/components/schemas/Driverstatus"
+					},
+					"Vechiclemodel": {
+						"type": "string"
+					},
+					"plateNumber": {
+						"type": "string"
+					},
+					"seatCapacity": {
+						"type": "string"
+					},
+					"color": {
+						"type": "string"
 					}
 				},
 				"required": [
 					"licenseNumber",
 					"licenseExpery",
 					"citizenshipNumber",
-					"status"
+					"vehicleType",
+					"status",
+					"Vechiclemodel",
+					"plateNumber",
+					"seatCapacity",
+					"color"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1070,7 +1090,7 @@
 				]
 			}
 		},
-		"/driver/register-driver": {
+		"/driver/registerdriver": {
 			"post": {
 				"operationId": "RegisterDriver",
 				"responses": {

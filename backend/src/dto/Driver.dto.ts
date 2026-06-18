@@ -1,4 +1,4 @@
-import { IsDate, IsEnum, IsString } from "class-validator";
+import { IsDate, IsEnum, IsOptional, IsString } from "class-validator";
 import { Driverstatus, VehicleType } from "../enum/enum.details.ts";
 
 export class Driverdto {
@@ -16,9 +16,23 @@ export class Driverdto {
     vehicleType: VehicleType;
 
     
-
+    @IsOptional()
     @IsEnum(Driverstatus)
     status: Driverstatus;
+
+    @IsString()
+    Vechiclemodel: string;
+
+    @IsString()
+    plateNumber: string;
+
+    @IsString()
+    seatCapacity: string;
+
+    @IsString()
+    color: string;
+
+
 
 
 }

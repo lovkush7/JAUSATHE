@@ -1,6 +1,7 @@
 import type { Driverdto } from "../../dto/Driver.dto.ts";
 import { Driver } from "../../entity/Driver.entities.ts";
 import { User } from "../../entity/User.entities.ts";
+import { Vechicles } from "../../entity/Vechiles.entity.ts";
 import { Driverstatus, type VehicleType } from "../../enum/enum.details.ts";
 
 class DriverServices {
@@ -20,15 +21,29 @@ class DriverServices {
             if(!existinguser){
                    throw new Error("the driver doesnot exist")
             }
+            if(existinguser.Driver){
+                throw new Error("the driver already exist")
+            }
+
+            
 
             const newdriver = new Driver()
             newdriver.licenseNumber = body.licenseNumber;
             newdriver.licenseExpery = body.licenseExpery;
             newdriver.citizenshipNumber = body.citizenshipNumber;
-            newdriver.vechicles.type = body.vehicleType;
             newdriver.user = existinguser;
-            existinguser.Driver = newdriver;
             await newdriver.save()
+
+            const vecicle = new Vechicles()
+            vecicle.model = body.Vechiclemodel;
+            vecicle.plateNumber=body.plateNumber;
+            vecicle.seatCapacity = body.seatCapacity;
+            vecicle.type = body.vehicleType;
+             vecicle.driver = newdriver;
+            await vecicle.save();
+
+            newdriver.vechicles = vecicle;
+            await newdriver.save();
 
             return newdriver;
          }catch(err){

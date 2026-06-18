@@ -10,6 +10,13 @@ export const Route = createFileRoute('/')({
   const user =await checkauth()
   console.log( "the user is ",user)
 
+  if(user && user.Role === "DRIVER"){
+    throw redirect({to: "/Driver/auth"})
+  }
+  if(user && user.Role === "PASSENGER"){
+    throw redirect({to: "/"})
+  }
+
   if(!user){
     throw redirect({to: "/Splash"})
   }

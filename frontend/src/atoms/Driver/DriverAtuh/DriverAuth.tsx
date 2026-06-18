@@ -55,7 +55,7 @@ function DriverAuth() {
        
     })
     return (
-        <div className='bg-[#08080F] flex h-screen w-full justify-center items-center'>
+        <div className='bg-[#08080F] flex h-full w-full justify-center items-center p-7'>
             <Card size="sm" className="overflow-y-auto bg-[#161628] text-white border-2 border-[#3B3B4F] mx-auto w-full max-w-sm p-4 ">
                 <CardHeader>
                     <CardTitle>Driver Verification</CardTitle>
@@ -123,6 +123,7 @@ function DriverAuth() {
                             </SelectContent>
                         </Select>
                     </Field>
+                    <br />
                      <Field>
                         <FieldLabel htmlFor="email">VecileModel</FieldLabel>
                         <Input
