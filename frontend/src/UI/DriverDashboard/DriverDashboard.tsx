@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import DriverNavbar from '../../lib/DriverNavbar'
 import HomeMap from '../../atoms/map/HomeMap'
+import Driverhome from '../../atoms/Driver/DriverHome/Driverhome'
 
 type LocationsType={
     lat: number,
@@ -18,7 +19,7 @@ const DriverDashboard = () => {
                     Locations={Locations!} />
                 </div>
                 <div className='w-[350px] border-l p-3 '>
-                    <p>hellow world</p>
+                      <Driverhome/>
                 </div>
             </div>
 

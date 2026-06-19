@@ -18,6 +18,7 @@ import { Route as BoardingPage2IndexRouteImport } from './routes/boarding/page2/
 import { Route as BoardingPage1IndexRouteImport } from './routes/boarding/page1/index'
 import { Route as AuthLoginIndexRouteImport } from './routes/auth/login/index'
 import { Route as AuthSignupIndexRouteImport } from './routes/auth/Signup/index'
+import { Route as DriverTripsIndexRouteImport } from './routes/Driver/trips/index'
 import { Route as DriverAuthIndexRouteImport } from './routes/Driver/auth/index'
 import { Route as BookPaymentIndexRouteImport } from './routes/Book/Payment/index'
 import { Route as BookMyRidesIndexRouteImport } from './routes/Book/MyRides/index'
@@ -68,6 +69,11 @@ const AuthSignupIndexRoute = AuthSignupIndexRouteImport.update({
   path: '/auth/Signup/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DriverTripsIndexRoute = DriverTripsIndexRouteImport.update({
+  id: '/Driver/trips/',
+  path: '/Driver/trips/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DriverAuthIndexRoute = DriverAuthIndexRouteImport.update({
   id: '/Driver/auth/',
   path: '/Driver/auth/',
@@ -98,6 +104,7 @@ export interface FileRoutesByFullPath {
   '/Book/MyRides/': typeof BookMyRidesIndexRoute
   '/Book/Payment/': typeof BookPaymentIndexRoute
   '/Driver/auth/': typeof DriverAuthIndexRoute
+  '/Driver/trips/': typeof DriverTripsIndexRoute
   '/auth/Signup/': typeof AuthSignupIndexRoute
   '/auth/login/': typeof AuthLoginIndexRoute
   '/boarding/page1/': typeof BoardingPage1IndexRoute
@@ -113,6 +120,7 @@ export interface FileRoutesByTo {
   '/Book/MyRides': typeof BookMyRidesIndexRoute
   '/Book/Payment': typeof BookPaymentIndexRoute
   '/Driver/auth': typeof DriverAuthIndexRoute
+  '/Driver/trips': typeof DriverTripsIndexRoute
   '/auth/Signup': typeof AuthSignupIndexRoute
   '/auth/login': typeof AuthLoginIndexRoute
   '/boarding/page1': typeof BoardingPage1IndexRoute
@@ -129,6 +137,7 @@ export interface FileRoutesById {
   '/Book/MyRides/': typeof BookMyRidesIndexRoute
   '/Book/Payment/': typeof BookPaymentIndexRoute
   '/Driver/auth/': typeof DriverAuthIndexRoute
+  '/Driver/trips/': typeof DriverTripsIndexRoute
   '/auth/Signup/': typeof AuthSignupIndexRoute
   '/auth/login/': typeof AuthLoginIndexRoute
   '/boarding/page1/': typeof BoardingPage1IndexRoute
@@ -146,6 +155,7 @@ export interface FileRouteTypes {
     | '/Book/MyRides/'
     | '/Book/Payment/'
     | '/Driver/auth/'
+    | '/Driver/trips/'
     | '/auth/Signup/'
     | '/auth/login/'
     | '/boarding/page1/'
@@ -161,6 +171,7 @@ export interface FileRouteTypes {
     | '/Book/MyRides'
     | '/Book/Payment'
     | '/Driver/auth'
+    | '/Driver/trips'
     | '/auth/Signup'
     | '/auth/login'
     | '/boarding/page1'
@@ -176,6 +187,7 @@ export interface FileRouteTypes {
     | '/Book/MyRides/'
     | '/Book/Payment/'
     | '/Driver/auth/'
+    | '/Driver/trips/'
     | '/auth/Signup/'
     | '/auth/login/'
     | '/boarding/page1/'
@@ -192,6 +204,7 @@ export interface RootRouteChildren {
   BookMyRidesIndexRoute: typeof BookMyRidesIndexRoute
   BookPaymentIndexRoute: typeof BookPaymentIndexRoute
   DriverAuthIndexRoute: typeof DriverAuthIndexRoute
+  DriverTripsIndexRoute: typeof DriverTripsIndexRoute
   AuthSignupIndexRoute: typeof AuthSignupIndexRoute
   AuthLoginIndexRoute: typeof AuthLoginIndexRoute
   BoardingPage1IndexRoute: typeof BoardingPage1IndexRoute
@@ -264,6 +277,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignupIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/Driver/trips/': {
+      id: '/Driver/trips/'
+      path: '/Driver/trips'
+      fullPath: '/Driver/trips/'
+      preLoaderRoute: typeof DriverTripsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/Driver/auth/': {
       id: '/Driver/auth/'
       path: '/Driver/auth'
@@ -304,6 +324,7 @@ const rootRouteChildren: RootRouteChildren = {
   BookMyRidesIndexRoute: BookMyRidesIndexRoute,
   BookPaymentIndexRoute: BookPaymentIndexRoute,
   DriverAuthIndexRoute: DriverAuthIndexRoute,
+  DriverTripsIndexRoute: DriverTripsIndexRoute,
   AuthSignupIndexRoute: AuthSignupIndexRoute,
   AuthLoginIndexRoute: AuthLoginIndexRoute,
   BoardingPage1IndexRoute: BoardingPage1IndexRoute,

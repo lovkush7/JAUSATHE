@@ -19,8 +19,8 @@ const DriverNavbar = () => {
               >
               Dashboard
               </li>
-            <li className={ menu === "/Book/BookRides" ? " text-[#1E18AA] border-b-2 border-[#1E18AA]" : ""}
-             onClick={()=>navigate({to: "/Book/BookRides"})}> 
+            <li className={ menu === "/Driver/trips" ? " text-[#1E18AA] border-b-2 border-[#1E18AA]" : ""}
+             onClick={()=>navigate({to: "/Driver/trips"})}> 
              My trips
               </li>
             <li className={ menu === "/Book/MyRides" ? " text-[#1E18AA] border-b-2 border-[#1E18AA]" : ""}

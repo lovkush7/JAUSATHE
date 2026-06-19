@@ -1087,7 +1087,63 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Driver"
+									"properties": {
+										"vehicle": {
+											"properties": {
+												"seatCapacity": {
+													"type": "string"
+												},
+												"type": {
+													"$ref": "#/components/schemas/VehicleType"
+												},
+												"plateNumber": {
+													"type": "string"
+												},
+												"model": {
+													"type": "string"
+												},
+												"id": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"seatCapacity",
+												"type",
+												"plateNumber",
+												"model",
+												"id"
+											],
+											"type": "object"
+										},
+										"driver": {
+											"properties": {
+												"citizenshipNumber": {
+													"type": "string"
+												},
+												"licenseNumber": {
+													"type": "string"
+												},
+												"id": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"citizenshipNumber",
+												"licenseNumber",
+												"id"
+											],
+											"type": "object"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"vehicle",
+										"driver",
+										"message"
+									],
+									"type": "object"
 								}
 							}
 						}
