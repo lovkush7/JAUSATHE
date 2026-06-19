@@ -20,7 +20,7 @@ interface driververificationPayload{
     citizenshipNumber: string
     licenseExpery: string
     vehicleType: string
-    vechicleModel: string
+    Vechiclemodel: string
     plateNumber: string
     seatCapacity: string
 }
@@ -169,7 +169,7 @@ function DriverAuth() {
                         citizenshipNumber,
                         licenseExpery,
                         vehicleType: Vechicle.vehicleType,
-                        vechicleModel: VecileModel,
+                        Vechiclemodel: VecileModel,
                         plateNumber: PlateNumber,
                         seatCapacity: SeatCapacity
                     })} className="w-full bg-blue-600">

@@ -16,7 +16,7 @@ const Home = () => {
       <Navbar />
       <div className='flex '>
         <div className='flex-1 ml-4 mt-4'>
-        <HomeMap  setLocations={setLocations}  Locations={Locations} />
+        <HomeMap  setLocations={setLocations}  Locations={Locations!} />
         </div>
         <div className='w-[350px] border-l p-3 '>
           <BookRide />

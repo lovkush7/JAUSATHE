@@ -45,7 +45,21 @@ class DriverServices {
             newdriver.vechicles = vecicle;
             await newdriver.save();
 
-            return newdriver;
+            return {
+    message: "Driver registered successfully",
+    driver: {
+        id: newdriver.id,
+        licenseNumber: newdriver.licenseNumber,
+        citizenshipNumber: newdriver.citizenshipNumber,
+    },
+    vehicle: {
+        id: vecicle.id,
+        model: vecicle.model,
+        plateNumber: vecicle.plateNumber,
+        type: vecicle.type,
+        seatCapacity: vecicle.seatCapacity,
+    }
+};
          }catch(err){
             throw err;
          }

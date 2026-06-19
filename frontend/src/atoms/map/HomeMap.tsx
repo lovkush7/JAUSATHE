@@ -11,7 +11,11 @@ type LocationType = {
     lat: number,
     lng: number
 }
-const HomeMap = ({setLocations, Locations}: any) => {
+interface props{
+    setLocations: React.Dispatch<React.SetStateAction<any>>
+    Locations: LocationType
+}
+const HomeMap = ({setLocations, Locations}: props) => {
     // const [Locations, setLocations] = useState<LocationType | null>(null)
  
   const {currentLocation,} = uselocation()

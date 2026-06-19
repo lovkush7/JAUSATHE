@@ -13,8 +13,8 @@ export class Vechicles extends CommonEntity {
     @Column({ type: "text", unique: true })
     plateNumber: string;
 
-    @Column({ type: "text" })
-    color: string;
+    // @Column({ type: "text" })
+    // color: string;
 
     @Column({
         type: "enum",

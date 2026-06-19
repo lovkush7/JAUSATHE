@@ -16,9 +16,9 @@ export class Driverdto {
     vehicleType: VehicleType;
 
     
-    @IsOptional()
-    @IsEnum(Driverstatus)
-    status: Driverstatus;
+    // @IsOptional()
+    // @IsEnum(Driverstatus)
+    // status: Driverstatus;
 
     @IsString()
     Vechiclemodel: string;
@@ -29,8 +29,8 @@ export class Driverdto {
     @IsString()
     seatCapacity: string;
 
-    @IsString()
-    color: string;
+    // @IsString()
+    // color: string;
 
 
 

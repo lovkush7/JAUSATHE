@@ -50,8 +50,8 @@ const mutation = useMutation({
   onSuccess: (data)=>{
     console.log("data",data)
     const role = data.Role;
-
-    if(role === " PASSENGERS"){
+  console.log("the role is ",role)
+    if(role ===  "PASSENGERS"){
    navigate({to: "/"})
     }
     if(role === "DRIVER"){

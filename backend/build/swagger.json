@@ -382,9 +382,6 @@
 					"plateNumber": {
 						"type": "string"
 					},
-					"color": {
-						"type": "string"
-					},
 					"type": {
 						"$ref": "#/components/schemas/VehicleType"
 					},
@@ -408,7 +405,6 @@
 					"CreatedAt",
 					"model",
 					"plateNumber",
-					"color",
 					"type",
 					"seatCapacity",
 					"driver",
@@ -576,9 +572,6 @@
 					"vehicleType": {
 						"$ref": "#/components/schemas/VehicleType"
 					},
-					"status": {
-						"$ref": "#/components/schemas/Driverstatus"
-					},
 					"Vechiclemodel": {
 						"type": "string"
 					},
@@ -587,9 +580,6 @@
 					},
 					"seatCapacity": {
 						"type": "string"
-					},
-					"color": {
-						"type": "string"
 					}
 				},
 				"required": [
@@ -597,11 +587,9 @@
 					"licenseExpery",
 					"citizenshipNumber",
 					"vehicleType",
-					"status",
 					"Vechiclemodel",
 					"plateNumber",
-					"seatCapacity",
-					"color"
+					"seatCapacity"
 				],
 				"type": "object",
 				"additionalProperties": false
