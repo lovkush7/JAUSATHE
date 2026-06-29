@@ -1,7 +1,13 @@
 import React from 'react'
 import { Button } from '../../../components/ui/button'
 import { Check, Cross, User, X } from 'lucide-react'
+import { api } from '../../../api/Api'
+import { useQuery } from '@tanstack/react-query'
+const getride = async()=>{
+  const req = await api.get("ride/active")
+  return req.data
 
+}
 export default function Driverhome() {
   const data = [
     {
@@ -13,6 +19,12 @@ export default function Driverhome() {
       away: "2"
     }
   ]
+
+  const {data: rides} = useQuery({
+    queryKey: [getride],
+    queryFn: ()=>getride()
+  })
+  console.log("the rides are ", rides)
   return (
 
     <div className='bg-[#0E1328] p-4 rounded-lg border-2 border-[#3B3B4F]'>

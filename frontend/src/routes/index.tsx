@@ -5,23 +5,29 @@ import { checkauth } from '@/utils/Checkauth'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
- beforeLoad:async ()=>{
+   beforeLoad: async () => {
+    try {
+      const user = await checkauth();
 
-  const user =await checkauth()
-  console.log( "the user is is",user)
-   if(!user){
-    throw redirect({to: "/boarding/page1"})
-  }
- if(user && user.Role === "PASSENGERS"){
-    return
-  }
+      if (!user) {
+        throw redirect({ to: "/boarding/page1" });
+      }
 
-  if(user && user.Role === "DRIVER"){
-    throw redirect({to: "/Driver/auth"})
-  }
-  
- 
- },
+      if (user.Role === "PASSENGERS") {
+        return;
+      }
+
+      if (user.Role === "DRIVER") {
+        throw redirect({ to: "/Driver/auth" });
+      }
+    } catch (err) {
+      console.log(err);
+
+      throw redirect({
+        to: "/boarding/page1",
+      });
+    }
+  }, 
   component: Home,
 })
 

@@ -8,6 +8,7 @@ export const Route = createFileRoute('/auth/login/')({
     
   //     const user = await checkauth()
   //     console.log("the log user ",user)
+  //     const role = user.role;
       
   //     if(user){
   //       throw redirect({to: "/"})

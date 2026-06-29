@@ -41,7 +41,8 @@ const Login = () => {
 
     onSuccess:(data)=>{
       console.log("success")
-      const role = data.user.Role;
+      console.log(data)
+      const role = data.Role;
       if(role === "PASSENGERS"){
 
       navigate({to: "/"})

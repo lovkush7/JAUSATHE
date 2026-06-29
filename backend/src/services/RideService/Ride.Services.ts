@@ -109,9 +109,9 @@ class RideService {
 
         ]
         const find =await Ride.createQueryBuilder("r")
-        .where(`r.${role === 'PASSENGERS' ? "riderid": "driverid"} =:userid`,{userid})
-        .andWhere('r.status IN (:...status) ', {status: Activestatus})
-        .leftJoinAndSelect("r.rider ","rider")
+        .where(`r.${role === 'PASSENGERS' ? "riderId": "driverId"} =:userid`,{userid})
+        .andWhere('r.ridestauts  IN (:...status) ', {status: Activestatus})
+        .leftJoinAndSelect("r.rider","rider")
         .leftJoinAndSelect("r.vechicle","vechicle")
         .leftJoinAndSelect("r.driver","driver")
         .leftJoinAndSelect("driver.user","driveruser")
