@@ -18,12 +18,14 @@ import { Input } from "@/components/ui/input"
 import { Link, useNavigate } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 import { api } from '@/api/Api'
+import useScoket from '../../zustand/socket.config'
 
 const Login = () => {
   const [value, setvalue] = useState({
     Email: '',
     password: '',
   })
+  const {connectsocket} = useScoket()
   const navigate = useNavigate()
        const sendlogin = async (value: any)=>{
         try{
@@ -41,6 +43,7 @@ const Login = () => {
 
     onSuccess:(data)=>{
       console.log("success")
+      connectsocket()
       console.log(data)
       const role = data.Role;
       if(role === "PASSENGERS"){

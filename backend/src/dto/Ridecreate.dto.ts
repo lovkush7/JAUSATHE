@@ -27,14 +27,15 @@ class CreateRideDto {
     @IsString()
     PromoCode: string;
      
-    
+      @IsOptional()
     @IsString()
     SpecialInstruction: string;
 
-  
+    @IsOptional()
     @IsBoolean()
     isScheduled: boolean;
-
+    
+  @IsOptional()
     @IsDate()
     ScheduledAt: Date;
 

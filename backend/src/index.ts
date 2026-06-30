@@ -5,8 +5,9 @@ import Envconfig from "./config/Envconfig.ts"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import { RegisterRoutes } from "./routes/routes.ts"
+import { app, server } from "./config/socket.config.ts"
 
-const app = express()
+
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
@@ -25,7 +26,7 @@ RegisterRoutes(app);
     fields: err.fields,
   })
 })
-app.listen(Envconfig.PORT!,()=>{
+server.listen(Envconfig.PORT!,()=>{
     console.log(`the server is running ON ${Envconfig.PORT!}` )
 })
 
