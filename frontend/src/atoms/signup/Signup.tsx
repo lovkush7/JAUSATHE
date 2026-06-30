@@ -27,6 +27,7 @@ import { Link, redirect, useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
 import { api } from "@/api/Api"
 import { useMutation } from "@tanstack/react-query"
+import useScoket from "../../zustand/socket.config"
 
 
 export const SignupForm = () => {
@@ -37,9 +38,11 @@ export const SignupForm = () => {
     Phone: '',
     Role: 'PASSENGERS',
   })
+  const {connectsocket} = useScoket()
   const navigate = useNavigate()
  const sendreq = async(text : any)=>{
   const res = await api.post("/auth/signup", text )
+  
   return res.data;
  }
 
@@ -49,6 +52,7 @@ const mutation = useMutation({
 
   onSuccess: (data)=>{
     console.log("data",data)
+    connectsocket();
     const role = data.Role;
   console.log("the role is ",role)
     if(role ===  "PASSENGERS"){

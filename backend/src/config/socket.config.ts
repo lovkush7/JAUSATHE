@@ -11,9 +11,12 @@ const io = new Server(server,{
         origin: "http://localhost:5173"
     }
 });
+const userSocketmap = {} //userid:socketid
 
 io.on("connection", (socket)=>{
     console.log("a user connected", socket.id)
+
+    const userId = socket.handshake.query.userId as string
 
 
     socket.on("disconnect",()=>{

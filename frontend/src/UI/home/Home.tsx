@@ -1,8 +1,9 @@
 import BookRide from '@/atoms/Book/BookRide'
 import Map from '@/atoms/map/Map'
 import Navbar from '@/molecules/navbar/Navbar'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import HomeMap from '../../atoms/map/HomeMap'
+import useScoket from '../../zustand/socket.config'
 
 type LocationType = {
     lat: number,
@@ -11,6 +12,11 @@ type LocationType = {
 
 const Home = () => {
    const [Locations, setLocations] = useState<LocationType | null>(null)
+   const {authUser, checkauth} = useScoket.getState()
+   useEffect(()=>{
+    checkauth()
+   },[authUser])
+   console.log("the auth user is ", authUser)
   return (
     <div className=' bg-[#08080F] h-screen w-full'>
       <Navbar />
