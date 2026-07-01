@@ -85,9 +85,12 @@ class RideService {
       ride.estimatedFare = est.estimatedFare;
       ride.estimatedDistance = est.estimatedDistanceKm;
       ride.DurationMinutes = est.estimatedDurationMinutes;
+      if(body.SpecialInstruction)
       ride.specialInstruction = body.SpecialInstruction;
+       if(body.PromoCode)
       ride.promoCode = body.PromoCode;
       ride.isScheduled = body.isScheduled ?? false;
+      if(body.ScheduledAt)
       ride.ScheduledAt = body.ScheduledAt;
       ride.ridestauts = RideStatus.REQUESTED;
 
@@ -125,6 +128,14 @@ class RideService {
       }
 
     }
+    async GetAvailableRides() {
+    return await Ride.createQueryBuilder("r")
+        .where("r.ridestauts = :status", {
+            status: RideStatus.REQUESTED,
+        })
+        .leftJoinAndSelect("r.rider", "rider")
+        .getMany();
+}
     async AcceptRide(
       vechicleId: string,
       driverid: string,

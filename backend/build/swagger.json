@@ -548,11 +548,7 @@
 					"DropoffAddress",
 					"dropofflat",
 					"dropofflng",
-					"vehicleType",
-					"PromoCode",
-					"SpecialInstruction",
-					"isScheduled",
-					"ScheduledAt"
+					"vehicleType"
 				],
 				"type": "object",
 				"additionalProperties": false

@@ -4,8 +4,14 @@ import { Check, Cross, User, X } from 'lucide-react'
 import { api } from '../../../api/Api'
 import { useQuery } from '@tanstack/react-query'
 const getride = async()=>{
-  const req = await api.get("ride/active")
-  return req.data
+  try{
+    const req = await api.get("ride/active")
+    console.log("the ride is ", req.data)
+    return req.data;
+  } catch (error) {
+    console.error("Error fetching ride data:", error)
+    throw error
+  }
 
 }
 export default function Driverhome() {
@@ -21,7 +27,7 @@ export default function Driverhome() {
   ]
 
   const {data: rides} = useQuery({
-    queryKey: [getride],
+    queryKey: ["rides"],
     queryFn: ()=>getride()
   })
   console.log("the rides are ", rides)

@@ -35,6 +35,7 @@ export class RideController extends Controller{
         }
         
     }
+    @Get("/availableRides")
     @Get("active")
     @Security("jwt")
     async GetActiveRide(
