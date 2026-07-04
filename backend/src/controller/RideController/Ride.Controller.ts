@@ -35,7 +35,15 @@ export class RideController extends Controller{
         }
         
     }
-    @Get("/availableRides")
+    @Get("availableRides")
+    @Middlewares(Drivermiddleware)
+    async GetAvailableRides(
+        @Query("page") page: number,
+        @Query("limit") limit: number
+    ){
+        return await RideServices.GetAvailableRides(page, limit)
+    }
+
     @Get("active")
     @Security("jwt")
     async GetActiveRide(

@@ -76,7 +76,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "RideStatus": {
         "dataType": "refEnum",
-        "enums": ["REQUESTED","SEARCHING","ACCEPTED","ARRIVING","STARTED","COMPLETED","CANCELED"],
+        "enums": ["REQUESTED","SEARCHING","ACCEPTED","ARRIVING","STARTED","COMPLETED","CANCELED","DRIVERNOTFOUND"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Cancledby": {
@@ -215,17 +215,6 @@ const models: TsoaRoute.Models = {
             "Vechiclemodel": {"dataType":"string","required":true},
             "plateNumber": {"dataType":"string","required":true},
             "seatCapacity": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "LocationInfoDto": {
-        "dataType": "refObject",
-        "properties": {
-            "lat": {"dataType":"double","required":true},
-            "lng": {"dataType":"double","required":true},
-            "radious": {"dataType":"double","required":true},
-            "vehicleType": {"ref":"VehicleType","required":true},
         },
         "additionalProperties": false,
     },
@@ -495,6 +484,37 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsRideController_GetAvailableRides: Record<string, TsoaRoute.ParameterSchema> = {
+                page: {"in":"query","name":"page","required":true,"dataType":"double"},
+                limit: {"in":"query","name":"limit","required":true,"dataType":"double"},
+        };
+        app.get('/ride/availableRides',
+            ...(fetchMiddlewares<RequestHandler>(RideController)),
+            ...(fetchMiddlewares<RequestHandler>(RideController.prototype.GetAvailableRides)),
+
+            async function RideController_GetAvailableRides(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsRideController_GetAvailableRides, request, response });
+
+                const controller = new RideController();
+
+              await templateService.apiHandler({
+                methodName: 'GetAvailableRides',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsRideController_GetActiveRide: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
         };
@@ -736,36 +756,6 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'updateDriverStatus',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: undefined,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsDriverController_getNearbyDrivers: Record<string, TsoaRoute.ParameterSchema> = {
-                body: {"in":"queries","name":"body","required":true,"ref":"LocationInfoDto"},
-        };
-        app.get('/driver/nearby',
-            ...(fetchMiddlewares<RequestHandler>(DriverController)),
-            ...(fetchMiddlewares<RequestHandler>(DriverController.prototype.getNearbyDrivers)),
-
-            async function DriverController_getNearbyDrivers(request: ExRequest, response: ExResponse, next: any) {
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsDriverController_getNearbyDrivers, request, response });
-
-                const controller = new DriverController();
-
-              await templateService.apiHandler({
-                methodName: 'getNearbyDrivers',
                 controller,
                 response,
                 next,

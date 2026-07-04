@@ -1,5 +1,6 @@
 import type { Driverdto } from "../../dto/Driver.dto.ts";
 import { Driver } from "../../entity/Driver.entities.ts";
+import { Ride } from "../../entity/Ride.entities.ts";
 import { User } from "../../entity/User.entities.ts";
 import { Vechicles } from "../../entity/Vechiles.entity.ts";
 import { Driverstatus, type VehicleType } from "../../enum/enum.details.ts";
@@ -167,6 +168,10 @@ class DriverServices {
             .leftJoinAndSelect("dq.user", "user")
             .leftJoinAndSelect("dq.vechicles", "vechicles", 'vechicles."isDefault" = true')
             .where("dq.status = :status",{status: Driverstatus.ONLINE })
+            .andWhere("dq.isApproped = :isApproped",{isApproped: true})
+            .andWhere("dq.status !== :status",
+                {status: Driverstatus.BUSY}
+            )
             .andWhere(
                 `ST_DWithin(
                  dq."currentLocation"::geography,
@@ -186,6 +191,9 @@ class DriverServices {
             if(vehicleType){
              qb  =  qb.andWhere('vechicles.type = :type',{type: vehicleType})
             }
+
+          
+
             return (await qb.orderBy("distanceMeters", "ASC").limit(10).getRawAndEntities().then(r => r.entities))
         }catch(err){
             throw err;

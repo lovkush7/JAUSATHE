@@ -75,22 +75,22 @@ export class DriverController extends Controller{
         }
     }
    
-    @Get("nearby")
-    async getNearbyDrivers(
-      @Queries() body:  LocationInfoDto
+    // @Get("nearby")
+    // async getNearbyDrivers(
+    //   @Queries() body:  LocationInfoDto
         
-    ){
-        try{
-            if(body.lat == null || body.lng == null){
-                throw new Error("latitude and longitude are required")
-            }
+    // ){
+    //     try{
+    //         if(body.lat == null || body.lng == null){
+    //             throw new Error("latitude and longitude are required")
+    //         }
 
-            await DriverService.getNearbyDrivers(body.lat, body.lng, body.vehicleType , body.radious ? body.radious : 5000)
+    //         await DriverService.getNearbyDrivers(body.lat, body.lng, body.vehicleType , body.radious ? body.radious : 5000)
 
-        }catch(err){
-            throw err;
-        }
-    }
+    //     }catch(err){
+    //         throw err;
+    //     }
+    // }
     @Get("getapprovedDriver")
     @Middlewares(Adminmiddleware)
     async getApprovedDriver(){

@@ -34,6 +34,7 @@ export enum RideStatus{
     STARTED = "STARTED",
     COMPLETED = "COMPLETED",
     CANCELED = "CANCELED",
+    DRIVERNOTFOUND="DRIVERNOTFOUND"
 
 }
 

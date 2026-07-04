@@ -5,7 +5,14 @@ import { api } from '../../../api/Api'
 import { useQuery } from '@tanstack/react-query'
 const getride = async()=>{
   try{
-    const req = await api.get("ride/active")
+    const req = await api.get("ride/availableRides",
+      {
+        params:{
+          page : 1,
+          limit: 1
+        }
+      }
+    )
     console.log("the ride is ", req.data)
     return req.data;
   } catch (error) {

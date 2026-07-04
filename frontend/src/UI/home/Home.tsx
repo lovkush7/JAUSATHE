@@ -12,11 +12,12 @@ type LocationType = {
 
 const Home = () => {
    const [Locations, setLocations] = useState<LocationType | null>(null)
-   const {authUser, checkauth} = useScoket.getState()
+   const {authUser, checkauth,onlineUsers} = useScoket.getState()
    useEffect(()=>{
     checkauth()
    },[authUser])
    console.log("the auth user is ", authUser)
+   console.log("the online users are ", onlineUsers)
   return (
     <div className=' bg-[#08080F] h-screen w-full'>
       <Navbar />

@@ -5,6 +5,7 @@ import { api } from "../api/Api";
 const useScoket = create((set:any, get:any)=>({
     Socket: null,
     authUser: null,
+    onlineUsers: [],
 
 
      checkauth:async ()=>{
@@ -30,6 +31,11 @@ const useScoket = create((set:any, get:any)=>({
           })
           socket.connect()
           set({Socket:socket})
+
+          socket.on("online-users",(userId: string)=>{
+            set({onlineUsers: userId})
+
+          })
         }catch(err){
             console.log("errrori s",err)
         }

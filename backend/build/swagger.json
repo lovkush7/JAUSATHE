@@ -135,7 +135,8 @@
 					"ARRIVING",
 					"STARTED",
 					"COMPLETED",
-					"CANCELED"
+					"CANCELED",
+					"DRIVERNOTFOUND"
 				],
 				"type": "string"
 			},
@@ -589,33 +590,6 @@
 				],
 				"type": "object",
 				"additionalProperties": false
-			},
-			"LocationInfoDto": {
-				"properties": {
-					"lat": {
-						"type": "number",
-						"format": "double"
-					},
-					"lng": {
-						"type": "number",
-						"format": "double"
-					},
-					"radious": {
-						"type": "number",
-						"format": "double"
-					},
-					"vehicleType": {
-						"$ref": "#/components/schemas/VehicleType"
-					}
-				},
-				"required": [
-					"lat",
-					"lng",
-					"radious",
-					"vehicleType"
-				],
-				"type": "object",
-				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -920,15 +894,8 @@
 			"post": {
 				"operationId": "CreateRide",
 				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/Ride"
-								}
-							}
-						}
+					"204": {
+						"description": "No content"
 					}
 				},
 				"security": [
@@ -947,6 +914,47 @@
 						}
 					}
 				}
+			}
+		},
+		"/ride/availableRides": {
+			"get": {
+				"operationId": "GetAvailableRides",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Ride"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
 			}
 		},
 		"/ride/active": {
@@ -1285,54 +1293,6 @@
 						}
 					}
 				}
-			}
-		},
-		"/driver/nearby": {
-			"get": {
-				"operationId": "GetNearbyDrivers",
-				"responses": {
-					"204": {
-						"description": "No content"
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "lat",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					},
-					{
-						"in": "query",
-						"name": "lng",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					},
-					{
-						"in": "query",
-						"name": "radious",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					},
-					{
-						"in": "query",
-						"name": "vehicleType",
-						"required": true,
-						"schema": {
-							"$ref": "#/components/schemas/VehicleType"
-						}
-					}
-				]
 			}
 		},
 		"/driver/getapprovedDriver": {
