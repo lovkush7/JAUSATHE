@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { use, useEffect } from 'react'
 import { Button } from '../../../components/ui/button'
 import { Check, Cross, User, X } from 'lucide-react'
 import { api } from '../../../api/Api'
 import { useQuery } from '@tanstack/react-query'
+import useScoket from '../../../zustand/socket.config'
 const getride = async()=>{
   try{
     const req = await api.get("ride/availableRides",
@@ -32,6 +33,15 @@ export default function Driverhome() {
       away: "2"
     }
   ]
+  const {listenToRides, Socket, nonlistentorides,newRide} = useScoket.getState()
+  useEffect(()=>{
+if(!Socket) return;
+
+  listenToRides()
+
+return ()=> nonlistentorides()
+  },[Socket])
+  console.log("the new ride is ", newRide)
 
   const {data: rides} = useQuery({
     queryKey: ["rides"],

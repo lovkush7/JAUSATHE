@@ -1,12 +1,41 @@
 import { create } from "zustand"
-import io from "socket.io-client"
+import io, { type Socket } from "socket.io-client"
 import { api } from "../api/Api";
 
-const useScoket = create((set:any, get:any)=>({
+interface Authuser{
+id: string,
+name?: string,
+email?: string,
+role?: string
+}
+interface rideData{
+    rideId: string,
+    pickupAddress: string,
+    DropoffAddress: string,
+    estimatefare: number,
+    vechicletype: string
+}
+interface SocketStore{
+    Socket: Socket | null;
+    authUser: Authuser | null;
+    onlineUsers: string[];
+    newRide: rideData | null;
+
+    checkauth: () => Promise<void>;
+    connectsocket: () => void;
+    DisconnectSocket: () => void;
+    listenToRides: () => void;
+    nonlistentorides: () => void;
+    clearride: () => void;
+}
+
+
+
+const useScoket = create<SocketStore>((set, get)=>({
     Socket: null,
     authUser: null,
     onlineUsers: [],
-
+    newRide: null,
 
      checkauth:async ()=>{
         try{
@@ -32,7 +61,7 @@ const useScoket = create((set:any, get:any)=>({
           socket.connect()
           set({Socket:socket})
 
-          socket.on("online-users",(userId: string)=>{
+          socket.on("online-users",(userId: string[])=>{
             set({onlineUsers: userId})
 
           })
@@ -41,11 +70,35 @@ const useScoket = create((set:any, get:any)=>({
         }
     },
     DisconnectSocket: ()=>{
-        if(get().Socket?.connected)
+        const {Socket} = get()
+        if(Socket?.connected)
         {
-            get().Socket.disconnect();
+           Socket.disconnect();
         }
+        set({
+            Socket: null,
+            onlineUsers: []
+        })
     },
+    listenToRides: ()=>{
+        const {Socket} = get()
+        if(!Socket) return;
+
+        Socket.on("new-ride",(ride: rideData)=>{
+            set({newRide: ride})
+            alert(`New ride request received: ${ride.rideId}`)
+
+        })
+        
+    },
+    nonlistentorides:()=>{
+        const {Socket} = get()
+        Socket?.off("new-ride")
+    }
+    ,
+    clearride:()=>{
+        set({newRide: null})
+    }
      
 }))
 export default useScoket;

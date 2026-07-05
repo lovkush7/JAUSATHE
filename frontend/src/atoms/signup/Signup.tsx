@@ -76,10 +76,11 @@ mutation.mutate(Text)
       <div  >
         <Card className="p-3 h-full bg-[#08080F] text-gray-400 shadow-lg">
           <CardHeader className="text-center">
+             <p><span className='text-3xl text-white  font-bold'>जाऔँ</span  ><span className='text-3xl text-blue-500 font-bold'>SATHE</span></p>
             <CardTitle className="text-xl">Create an account</CardTitle>
-            <CardDescription className="">
+            {/* <CardDescription className="">
               Login with your Apple or Google account
-            </CardDescription>
+            </CardDescription> */}
           </CardHeader>
           <CardContent>
             <form onSubmit={handlesubmit}>
