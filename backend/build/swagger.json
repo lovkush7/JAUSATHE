@@ -383,6 +383,9 @@
 					"plateNumber": {
 						"type": "string"
 					},
+					"isDefault": {
+						"type": "boolean"
+					},
 					"type": {
 						"$ref": "#/components/schemas/VehicleType"
 					},
@@ -406,6 +409,7 @@
 					"CreatedAt",
 					"model",
 					"plateNumber",
+					"isDefault",
 					"type",
 					"seatCapacity",
 					"driver",

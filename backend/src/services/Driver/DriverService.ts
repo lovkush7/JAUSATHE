@@ -9,24 +9,24 @@ class DriverServices {
     async createDriver(
         userId: string,
         body: Driverdto,
-    ){
-         try{
+    ) {
+        try {
             const existinguser = await User.findOne({
-                where:{
+                where: {
                     id: userId
                 },
-                relations:{
+                relations: {
                     Driver: true
                 }
             })
-            if(!existinguser){
-                   throw new Error("the driver doesnot exist")
+            if (!existinguser) {
+                throw new Error("the driver doesnot exist")
             }
-            if(existinguser.Driver){
+            if (existinguser.Driver) {
                 throw new Error("the driver already exist")
             }
 
-            
+
 
             const newdriver = new Driver()
             newdriver.licenseNumber = body.licenseNumber;
@@ -37,56 +37,56 @@ class DriverServices {
 
             const vecicle = new Vechicles()
             vecicle.model = body.Vechiclemodel;
-            vecicle.plateNumber=body.plateNumber;
+            vecicle.plateNumber = body.plateNumber;
             vecicle.seatCapacity = body.seatCapacity;
             vecicle.type = body.vehicleType;
-             vecicle.driver = newdriver;
+            vecicle.driver = newdriver;
             await vecicle.save();
 
             newdriver.vechicles = vecicle;
             await newdriver.save();
 
             return {
-    message: "Driver registered successfully",
-    driver: {
-        id: newdriver.id,
-        licenseNumber: newdriver.licenseNumber,
-        citizenshipNumber: newdriver.citizenshipNumber,
-    },
-    vehicle: {
-        id: vecicle.id,
-        model: vecicle.model,
-        plateNumber: vecicle.plateNumber,
-        type: vecicle.type,
-        seatCapacity: vecicle.seatCapacity,
-    }
-};
-         }catch(err){
+                message: "Driver registered successfully",
+                driver: {
+                    id: newdriver.id,
+                    licenseNumber: newdriver.licenseNumber,
+                    citizenshipNumber: newdriver.citizenshipNumber,
+                },
+                vehicle: {
+                    id: vecicle.id,
+                    model: vecicle.model,
+                    plateNumber: vecicle.plateNumber,
+                    type: vecicle.type,
+                    seatCapacity: vecicle.seatCapacity,
+                }
+            };
+        } catch (err) {
             throw err;
-         }
+        }
 
     }
     async getDriverprofile(
-     userId: string,
-    ){
-        try{
+        userId: string,
+    ) {
+        try {
             const existingUser = await User.findOne({
-                where:{
+                where: {
                     id: userId,
                 },
-                relations:{
-                   Driver: {
-                     vechicles: true,
-                   },
-                   
+                relations: {
+                    Driver: {
+                        vechicles: true,
+                    },
+
                 }
             })
-            if(!existingUser){
+            if (!existingUser) {
                 throw new Error("the driver doesnot exist")
             }
             return existingUser.Driver;
 
-        }catch(err){
+        } catch (err) {
             throw err;
         }
     }
@@ -95,86 +95,95 @@ class DriverServices {
         lat: number,
         lng: number,
         bearing: number
-    ){
-        try{
-            const qb =  Driver.createQueryBuilder()
-            .update(Driver)
-            .set({
-               CurrentLocation: ()=>
-                `ST_SetSRID(
+    ) {
+        try {
+            const qb = Driver.createQueryBuilder()
+                .update(Driver)
+                .set({
+                    CurrentLocation: () =>
+                        `ST_SetSRID(
                     ST_MakePoint(${lng}, ${lat}),
                     4326)`,
-                lastLocationUpdate: new Date(),
-                currentBearing: bearing ?? 0,
-            })
-            .where("userId = :userId", {userId})
+                    lastLocationUpdate: new Date(),
+                    currentBearing: bearing ?? 0,
+                })
+                .where("userId = :userId", { userId })
             await qb.execute();
-             return {message: "location updated successfully"}
+            return { message: "location updated successfully" }
 
-        }catch(err){
+        } catch (err) {
             throw err;
         }
     }
     async updateDriverStatus(
         status: Driverdto["status"],
         userId: string,
-    ){
-        try{
+    ) {
+        try {
             const exdriver = await Driver.findOne({
-                where:{
-                    user:{
+                where: {
+                    user: {
                         id: userId
                     }
                 }
             })
-            if(!exdriver){
+            if (!exdriver) {
                 throw new Error("the driver doesnot exist")
             }
             exdriver.status = status;
             await exdriver.save();
-            return {message: "status updated successfully"}
+            return { message: "status updated successfully" }
 
-        }catch(err){
+        } catch (err) {
             throw err;
         }
 
     }
-          
+
     async getNearbyDrivers(
         lat: number,
         lng: number,
         vehicleType: VehicleType,
         radious: number = 5000
-    ){
-        try{
+    ) {
+        try {
             let qb = Driver.createQueryBuilder("dq")
-            .select([
-                "dq.id",
-                "dq.userId",
-                "dq.status",
-                "dq.currentBearing",
-                "dq.rating"
-            ])
-            .addSelect(
-                `ST_Distance(
-                   dq."CurrentLocation"::geography,
-                   ST_SetSRID(
+                .select([
+                    "dq.id",
+                    "dq.userId",
+                    "dq.status",
+                    "dq.currentBearing",
+                    "dq.rating"
+                ])
+                // .addSelect(
+                //     `ST_Distance(
+                //        dq."CurrentLocation"::geography,
+                //        ST_SetSRID(
+                //          ST_MakePoint(:lng, :lat),
+                //          4326
+                //        )::geography
+                //     )`,
+                //     'distanceMeters'
+                // )
+                .addSelect(`
+                     ST_Distance(
+                     dq."CurrentLocation"::geography,
+                     ST_SetSRID(
                      ST_MakePoint(:lng, :lat),
                      4326
-                   )::geography
-                )`,
-                'distanceMeters'
-            )
-            .leftJoinAndSelect("dq.user", "user")
-            .leftJoinAndSelect("dq.vechicles", "vechicles", 'vechicles."isDefault" = true')
-            .where("dq.status = :status",{status: Driverstatus.ONLINE })
-            .andWhere("dq.isApproped = :isApproped",{isApproped: true})
-            .andWhere("dq.status !== :status",
-                {status: Driverstatus.BUSY}
-            )
-            .andWhere(
-                `ST_DWithin(
-                 dq."currentLocation"::geography,
+                      )::geography
+                     )
+                     `)
+                .leftJoinAndSelect("dq.user", "user")
+                .leftJoinAndSelect("dq.vechicles", "vechicles", 'vechicles."isDefault" = true')
+                .where("dq.status = :status", { status: Driverstatus.ONLINE })
+                .andWhere("dq.isApproped = :isApproped", { isApproped: true })
+                // .andWhere("dq.status != :busystatus",
+                //     {busystatus: Driverstatus.BUSY}
+                // )
+                .andWhere(
+                    `ST_DWithin(
+                 dq."CurrentLocation"::geography,
                  ST_SetSRID(
                    ST_MakePoint(:lng, :lat),
                      4326
@@ -182,41 +191,49 @@ class DriverServices {
                  :radious
                      )`
 
-            )
-            .setParameters({
-                lat: lat,
-                lng: lng,
-                radious: radious 
-            })
-            if(vehicleType){
-             qb  =  qb.andWhere('vechicles.type = :type',{type: vehicleType})
+                )
+                .setParameters({
+                    lat: lat,
+                    lng: lng,
+                    radious: radious
+                })
+            if (vehicleType) {
+                qb = qb.andWhere('vechicles.type = :type', { type: vehicleType })
             }
 
-          
 
-            return (await qb.orderBy("distanceMeters", "ASC").limit(10).getRawAndEntities().then(r => r.entities))
-        }catch(err){
+
+            return (await qb.orderBy(`
+  ST_Distance(
+    dq."CurrentLocation"::geography,
+    ST_SetSRID(
+      ST_MakePoint(:lng, :lat),
+      4326
+    )::geography
+  )
+`, "ASC").limit(10).getRawAndEntities().then(r => r.entities))
+        } catch (err) {
             throw err;
         }
     }
     async ApproveDriver(
         id: string
-    ){
-      const existance = await Driver.findOne({
-        where:{
-            user: {
-                id
+    ) {
+        const existance = await Driver.findOne({
+            where: {
+                user: {
+                    id
+                }
             }
-        }
-      })
-      if(!existance){
-        throw new Error("the driver doesnot exist")
+        })
+        if (!existance) {
+            throw new Error("the driver doesnot exist")
 
-      }
-      existance.isApproped = true;
-      await existance.save();
-      return {message: "driver approved successfully"}
-        
+        }
+        existance.isApproped = true;
+        await existance.save();
+        return { message: "driver approved successfully" }
+
     }
 }
 export default new DriverServices();

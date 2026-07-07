@@ -1,0 +1,81 @@
+version: "3.9"
+
+services:
+  postgres:
+     image: postgres:15.3-alpine
+     container_name: postgress-container_name
+     restart: unless-stopped
+     environment:
+        postgres_user: ${POSTGRES_USER :- dev-user}
+        postgres_password: ${POSTGRES_PASSWORD :- lovkush}
+        postgres_db: ${POSTGRES_DB :- dev-db}
+
+     ports:
+       - "5432:5432" 
+
+     volumes:
+       - postgres_data:/var/lib/postgresql/postgres_data
+       - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+     networks:
+       - backend-network    
+
+     healthcheck:
+       test: ["CMD", "Pg-isready -U ${POSTGRES_USER :- dev-user} "]     
+       interval: 10s
+       timeout: 5s
+       retries: 5
+       start_period: 30s
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis-container_name
+    restart: unless-stopped
+
+    ports:
+      - "6279:6379"
+
+    volumes:
+      - redis_data:/data 
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1os
+      timeout: 5s
+      retires: 5
+      start_period: 30s
+
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile       
+      target: builder
+
+    container_name: backend-container_name
+    restart: unless-stopped
+    ports:
+      -"8000:8000"
+
+    environment:
+      - NODE_ENV=development
+      - PORT=8000
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-dev-user}:${POSTGRES_PASSWORD:-lovkush}@postgres:5432/${POSTGRES_DB:-dev-db}
+      - REDIS_URL=redis://redis:6379  
+
+    depends_on:
+      postgres:
+        condition: services_healthy
+
+      redis:
+        condition: services_healthy
+
+
+  React:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile           
+      target: builder
+      container_name: frontend-conta
+
+

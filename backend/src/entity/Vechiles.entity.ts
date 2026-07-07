@@ -13,6 +13,11 @@ export class Vechicles extends CommonEntity {
     @Column({ type: "text", unique: true })
     plateNumber: string;
 
+    @Column({
+        type:"boolean",
+    default: false
+})
+isDefault: boolean;
     // @Column({ type: "text" })
     // color: string;
 

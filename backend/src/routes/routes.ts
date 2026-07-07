@@ -155,6 +155,7 @@ const models: TsoaRoute.Models = {
             "CreatedAt": {"dataType":"datetime","required":true},
             "model": {"dataType":"string","required":true},
             "plateNumber": {"dataType":"string","required":true},
+            "isDefault": {"dataType":"boolean","required":true},
             "type": {"ref":"VehicleType","required":true},
             "seatCapacity": {"dataType":"string","required":true},
             "driver": {"ref":"Driver","required":true},

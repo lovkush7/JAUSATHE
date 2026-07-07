@@ -107,6 +107,9 @@ class RideService {
       
 
     );
+
+console.log("Nearby Drivers:", driver);
+console.log("Driver Count:", driver.length);
     if (driver.length > 0) {
       ride.ridestauts = RideStatus.SEARCHING;
       await ride.save();
