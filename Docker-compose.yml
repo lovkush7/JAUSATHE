@@ -6,22 +6,22 @@ services:
      container_name: postgress-container_name
      restart: unless-stopped
      environment:
-        postgres_user: ${POSTGRES_USER :- dev-user}
-        postgres_password: ${POSTGRES_PASSWORD :- lovkush}
-        postgres_db: ${POSTGRES_DB :- dev-db}
+        POSTGRES_USER: ${POSTGRES_USER:-dev-user}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-lovkush}
+        POSTGRES_DB: ${POSTGRES_DB:-dev-db}
 
      ports:
        - "5432:5432" 
 
      volumes:
-       - postgres_data:/var/lib/postgresql/postgres_data
+       - postgres_data:/var/lib/postgresql/data
        - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
 
      networks:
-       - backend-network    
+       - jausathe   
 
      healthcheck:
-       test: ["CMD", "Pg-isready -U ${POSTGRES_USER :- dev-user} "]     
+       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-dev-user}"]   
        interval: 10s
        timeout: 5s
        retries: 5
@@ -40,9 +40,9 @@ services:
 
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-      interval: 1os
+      interval: 10s
       timeout: 5s
-      retires: 5
+      retries: 5
       start_period: 30s
 
 
@@ -55,27 +55,62 @@ services:
     container_name: backend-container_name
     restart: unless-stopped
     ports:
-      -"8000:8000"
+      - "8000:8000"
 
     environment:
       - NODE_ENV=development
       - PORT=8000
       - DATABASE_URL=postgresql://${POSTGRES_USER:-dev-user}:${POSTGRES_PASSWORD:-lovkush}@postgres:5432/${POSTGRES_DB:-dev-db}
-      - REDIS_URL=redis://redis:6379  
+      - REDIS_URL=redis://redis:6379 
+
+    volumes:
+      - ./backend/src:/app/src  
+      - /app/node_modules
+
+
+    networks:
+      - jausathe  
 
     depends_on:
       postgres:
-        condition: services_healthy
+        condition: service_healthy
 
       redis:
-        condition: services_healthy
+        condition: service_healthy
 
 
-  React:
+  frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile           
       target: builder
-      container_name: frontend-conta
+    container_name: frontend-container
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+
+    volumes:
+      - ./frontend/src:/app/src
+      - /app/node_modules  
+
+    depends_on:
+        - backend
+
+    networks:
+      - jausathe
+
+volumes:
+  postgres_data:
+    driver: local
+
+  redis_data:
+    driver: local
+
+
+networks:
+  jausathe:
+     driver: bridge    
+
+            
 
 
