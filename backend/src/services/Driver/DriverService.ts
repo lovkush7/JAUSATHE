@@ -108,7 +108,8 @@ class DriverServices {
                     currentBearing: bearing ?? 0,
                 })
                 .where("userId = :userId", { userId })
-            await qb.execute();
+         const result =   await qb.execute();
+         console.log(result)
             return { message: "location updated successfully" }
 
         } catch (err) {
@@ -116,8 +117,8 @@ class DriverServices {
         }
     }
     async updateDriverStatus(
-        status: Driverdto["status"],
         userId: string,
+        status: Driverstatus
     ) {
         try {
             const exdriver = await Driver.findOne({
@@ -130,7 +131,7 @@ class DriverServices {
             if (!exdriver) {
                 throw new Error("the driver doesnot exist")
             }
-            exdriver.status = status;
+            exdriver.status = status  ;
             await exdriver.save();
             return { message: "status updated successfully" }
 

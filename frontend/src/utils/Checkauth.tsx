@@ -1,6 +1,8 @@
 import { api } from "@/api/Api"
 import useScoket from "../zustand/socket.config"
 
+
+
     export const checkauth =async()=>{
 
     const {connectsocket}=useScoket.getState()

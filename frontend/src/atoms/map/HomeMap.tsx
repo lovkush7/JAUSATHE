@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
 import { motion, useDragControls } from "framer-motion"
 import uselocation from '../../zustand/location'
+import useScoket from '../../zustand/socket.config'
 
 type LocationType = {
     lat: number,
@@ -20,15 +21,27 @@ const HomeMap = ({setLocations, Locations}: props) => {
  
   const {currentLocation,} = uselocation()
     // const control = useDragControls()
+  const {Socket,checkauth, authUser} = useScoket()
 
-
-
+    useEffect(()=>{
+    checkauth()
+     console.log('the authuser iss ',authUser)
+    },[])
+    
     useEffect(() => {
         if (!navigator.geolocation) {
             console.log("Geolocation not supported");
             return;
         }
-        navigator.geolocation.getCurrentPosition((position) => {
+        // if(!Socket?.connected) return;
+        navigator.geolocation.watchPosition((position) => {
+
+             Socket?.emit("updateLocation",{
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+                bearing: position.coords.heading ?? 0
+            })
+
             setLocations({
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
@@ -40,24 +53,41 @@ const HomeMap = ({setLocations, Locations}: props) => {
         },
             (error) => {
                 console.log(error)
+            },
+            {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 10000
             }
         )
-    }, [])
+    }, [authUser])
+
+    
+
 
     console.log("my current locations is ", Locations)
     return (
 
         <div className='w-full h-[500px]'>
             <MapContainer
-                center={[27.6180, 85.5380]}
-                zoom={13}
+                center={[27.6199, 85.5466]}
+                zoom={16.2}
                 scrollWheelZoom={true}
                 className='w-full h-full'
 
             >
-                <TileLayer
+                {/* <TileLayer
                     attribution='&copy; OpenStreetMap contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                /> */}
+
+                       <TileLayer
+                    attribution='&copy; OpenStreetMap contributors'
+                    url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                />
+                            <TileLayer
+                    attribution='&copy; OpenStreetMap contributors'
+                    url="https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
                 />
 
                 {/* <Mapclickhandler

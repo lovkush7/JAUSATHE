@@ -51,29 +51,29 @@ export class DriverController extends Controller{
             if(body.lat == null || body.lng == null){
                 throw new Error("latitude and longitude are required")
             }
-            return  await DriverService.updateDriverLocation(request.user.id, body.lat, body.lng, body.bearing)
+            // return  await DriverService.updateDriverLocation(request.user.id, body.lat, body.lng, body.bearing)
         }catch(err){
             throw err;
         }
 
     }
 
-    @Patch("/updateStauts")
-    @Security("jwt")
-    @Middlewares(Drivermiddleware)
-    async updateDriverStatus(
-        @Body()  body: Driverdto,
-        @Request() request: any
-    ){
-        try{
-          if(body.status == null){
-            throw new Error("status is required")
-          }
-            return await DriverService.updateDriverStatus(body.status,request.user.id)
-        }catch(err){
-            throw err;
-        }
-    }
+    // @Patch("/updateStauts")
+    // @Security("jwt")
+    // @Middlewares(Drivermiddleware)
+    // async updateDriverStatus(
+    //     @Body()  body: Driverdto,
+    //     @Request() request: any
+    // ){
+    //     try{
+    //     //   if(body.status == null){
+    //         throw new Error("status is required")
+    //       }
+    //         // return await DriverService.updateDriverStatus(body.status,request.user.id)
+    //     }catch(err){
+    //         throw err;
+    //     }
+    // }
    
     // @Get("nearby")
     // async getNearbyDrivers(

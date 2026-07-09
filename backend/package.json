@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsoa spec-and-routes && tsx watch ./src/index.ts",
+    "build": "tsoa spec-and-routes && tsc",
     "seed": "tsx  ./src/seed.ts"
   },
   "keywords": [],
@@ -37,6 +38,7 @@
     "typeorm": "^0.3.28"
   },
   "devDependencies": {
-    "@types/express": "^5.0.6"
+    "@types/express": "^5.0.6",
+    "typescript": "^6.0.3"
   }
 }

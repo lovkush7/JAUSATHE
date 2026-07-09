@@ -6,7 +6,7 @@ interface Authuser{
 id: string,
 name?: string,
 email?: string,
-role?: string
+Role?: string
 }
 interface rideData{
     rideId: string,
@@ -21,7 +21,7 @@ interface SocketStore{
     onlineUsers: string[];
     newRide: rideData | null;
 
-    checkauth: () => Promise<void>;
+    checkauth: () => Promise<Authuser | null>;
     connectsocket: () => void;
     DisconnectSocket: () => void;
     listenToRides: () => void;
@@ -41,34 +41,53 @@ const useScoket = create<SocketStore>((set, get)=>({
         try{
          const res =await api.get("/auth/checkauth")
          set({authUser: res.data})
+         console.log("the auth user is ",res.data)
          get().connectsocket()
-         console.log(res.data)
+         return res.data
         }catch(err){
             console.log(err)
         }
       },
 
-    connectsocket:()=>{
-        try{
-            const {authUser} = get()
-          if(!authUser || get().Socket?.connected) return;
+   connectsocket: () => {
 
-          const socket = io("http://localhost:8000",{
-            query:{
-                userId: authUser.id
-            }
-          })
-          socket.connect()
-          set({Socket:socket})
+    const { authUser, Socket } = get();
 
-          socket.on("online-users",(userId: string[])=>{
-            set({onlineUsers: userId})
+    if (!authUser)
+        return;
 
-          })
-        }catch(err){
-            console.log("errrori s",err)
-        }
-    },
+    if (Socket?.connected)
+        return;
+
+    const socket = io("http://localhost:8000", {
+        query: {
+            userId: authUser.id,
+            role: authUser.Role,
+        },
+    });
+
+    socket.on("connect", () => {
+        console.log("Connected", socket.id);
+    });
+
+    socket.on("disconnect", () => {
+        console.log("Disconnected");
+    });
+
+    socket.on("connect_error", (err) => {
+        console.log(err);
+    });
+
+    socket.on("online-users", (users) => {
+        set({
+            onlineUsers: users,
+        });
+    });
+
+    set({
+        Socket: socket,
+    });
+},
     DisconnectSocket: ()=>{
         const {Socket} = get()
         if(Socket?.connected)

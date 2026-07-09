@@ -1,45 +1,41 @@
-FROM node:20-alpine as builder
+FROM node:22-alpine AS builder
+
+RUN corepack enable
 
 WORKDIR /app
 
-COPY package.*json ./
-
-COPY tsconfig.*json ./
-
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
-COPY src/ ./src/
+COPY . .
 
-RUN pnpm run builder
+RUN pnpm run build
 
-CMD ["pnpm", "start"]
+# ------------------------
 
-#prod
-
-FROM node:20-alpine as production
+FROM node:22-alpine AS production
 
 RUN apk add --no-cache dumb-init
 
+RUN corepack enable
+
 WORKDIR /app
 
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodeuser -u 1001 -G nodejs
+RUN addgroup -S nodejs && \
+    adduser -S nodeuser -G nodejs
 
-COPY package.*json ./
+COPY package.json pnpm-lock.yaml ./
 
-RUN pnpm install --omit=dev --frozen-lockfile && \
-     pnpm cache clean --force
+RUN pnpm install --prod --frozen-lockfile
 
-COPY --from=builder  /app/dist  ./app
+COPY --from=builder /app/dist ./dist
 
 RUN chown -R nodeuser:nodejs /app
 
-
 USER nodeuser
+
+ENV NODE_ENV=production
 
 EXPOSE 8000
 
-ENV nodeuser=production
-
-CMD [ "dumb-init" , "node", "dist/index.js" ]
-     
+CMD ["dumb-init", "node", "dist/index.js"]
