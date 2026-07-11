@@ -16,7 +16,8 @@ class DriverServices {
                     id: userId
                 },
                 relations: {
-                    Driver: true
+                    Driver: true,
+                    
                 }
             })
             if (!existinguser) {

@@ -16,7 +16,7 @@ interface props{
     setLocations: React.Dispatch<React.SetStateAction<any>>
     Locations: LocationType
 }
-const HomeMap = ({setLocations, Locations}: props) => {
+const Trialmap = ({setLocations, Locations}: props) => {
     // const [Locations, setLocations] = useState<LocationType | null>(null)
  
   const {currentLocation,} = uselocation()
@@ -36,11 +36,11 @@ const HomeMap = ({setLocations, Locations}: props) => {
         // if(!Socket?.connected) return;
         navigator.geolocation.watchPosition((position) => {
 
-            //  Socket?.emit("updateLocation",{
-            //     lat: position.coords.latitude,
-            //     lng: position.coords.longitude,
-            //     bearing: position.coords.heading ?? 0
-            // })
+             Socket?.emit("updateLocation",{
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+                bearing: position.coords.heading ?? 0
+            })
 
             setLocations({
                 lat: position.coords.latitude,
@@ -54,11 +54,11 @@ const HomeMap = ({setLocations, Locations}: props) => {
             (error) => {
                 console.log(error)
             },
-            // {
-            //     enableHighAccuracy: true,
-            //     maximumAge: 0,
-            //     timeout: 10000
-            // }
+            {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 10000
+            }
         )
     }, [authUser])
 
@@ -127,4 +127,4 @@ const HomeMap = ({setLocations, Locations}: props) => {
     )
 }
 
-export default HomeMap
+export default Trialmap;

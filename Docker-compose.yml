@@ -2,13 +2,13 @@ version: "3.9"
 
 services:
   postgres:
-     image: postgres:15.3-alpine
-     container_name: postgress-container_name
+     image: postgis/postgis:15-3.4
+     container_name: postgress-container
      restart: unless-stopped
      environment:
-        POSTGRES_USER: ${POSTGRES_USER:-dev-user}
+        POSTGRES_USER: ${POSTGRES_USER:-postgres}
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-lovkush}
-        POSTGRES_DB: ${POSTGRES_DB:-dev-db}
+        POSTGRES_DB: ${POSTGRES_DB:-jausathe}
 
      ports:
        - "5432:5432" 
@@ -21,7 +21,7 @@ services:
        - jausathe   
 
      healthcheck:
-       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-dev-user}"]   
+       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-jausathe}"] 
        interval: 10s
        timeout: 5s
        retries: 5
@@ -29,7 +29,7 @@ services:
 
   redis:
     image: redis:7.2-alpine
-    container_name: redis-container_name
+    container_name: redis-container
     restart: unless-stopped
 
     ports:
@@ -52,16 +52,26 @@ services:
       dockerfile: Dockerfile       
       target: builder
 
-    container_name: backend-container_name
+    container_name: backend-container
     restart: unless-stopped
     ports:
       - "8000:8000"
 
+    # environment:
+    #   - NODE_ENV=development
+    #   - PORT=8000
+    #   - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-lovkush}@postgres:5432/${POSTGRES_DB:-jausathe}
+    #   - REDIS_URL=redis://redis:6379 
     environment:
-      - NODE_ENV=development
-      - PORT=8000
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-dev-user}:${POSTGRES_PASSWORD:-lovkush}@postgres:5432/${POSTGRES_DB:-dev-db}
-      - REDIS_URL=redis://redis:6379 
+     NODE_ENV: development
+     PORT: 8000
+     DB_HOST: postgres
+     DB_PORT: 5432
+     DB_USERNAME: postgres
+     DB_PASSWORD: lovkush
+     DB_DATABASE: jausathe
+     JWT_SECRET: DLKSJFKSDHSKLDGHSUGSGHS
+     REDIS_URL: redis://redis:6379
 
     volumes:
       - ./backend/src:/app/src  

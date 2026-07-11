@@ -105,6 +105,7 @@ const useScoket = create<SocketStore>((set, get)=>({
 
         Socket.on("new-ride",(ride: rideData)=>{
             set({newRide: ride})
+            console.log("the new ride is ", ride)
             alert(`New ride request received: ${ride.rideId}`)
 
         })

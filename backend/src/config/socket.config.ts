@@ -31,6 +31,8 @@ export function notifyDriversnewRides(
         const socketId = onlineDrivers[driverIds]?.socketId;
         if (socketId) {
             io.to(socketId).emit("new-ride", rideData);
+        }else{
+            console.log("driver not found")
         }
     })
 

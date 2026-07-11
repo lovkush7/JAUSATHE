@@ -5,6 +5,7 @@ import Driverhome from '../../atoms/Driver/DriverHome/Driverhome'
 import { useMutation } from '@tanstack/react-query'
 import { api } from '../../api/Api'
 import useScoket from '../../zustand/socket.config'
+import Trialmap from '../../atoms/map/Trial'
 
 type LocationsType={
     lat: number,
@@ -56,7 +57,7 @@ useEffect(() => {
             <DriverNavbar />
             <div className='flex '>
                 <div className='flex-1 ml-4 mt-4'>
-                    <HomeMap setLocations={setLocations}
+                    <Trialmap setLocations={setLocations}
                     Locations={Locations!} />
                 </div>
                 <div className='w-[350px] border-l p-3 '>
