@@ -57,7 +57,7 @@ const Trialmap = ({setLocations, Locations}: props) => {
             {
                 enableHighAccuracy: true,
                 maximumAge: 0,
-                timeout: 10000
+                timeout: 100000000
             }
         )
     }, [authUser])

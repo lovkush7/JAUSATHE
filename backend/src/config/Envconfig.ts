@@ -11,6 +11,7 @@ static NODE_ENV = process.env.NODE_ENV;
 
 static PORT = process.env.PORT;
 
+static REDIS_URL = process.env.REDIS_URL;
 }
 
 export default Envconfig;

@@ -123,7 +123,7 @@ if(result.data){
             </div>
             <Button onClick={handlesubmit} className=' m-3 p-5 w-full bg-[#1B96D9]'>Book Ride</Button>
         </div>
-
+                                                             
     )
 }
 

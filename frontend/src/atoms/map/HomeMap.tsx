@@ -33,8 +33,8 @@ const HomeMap = ({setLocations, Locations}: props) => {
             console.log("Geolocation not supported");
             return;
         }
-        // if(!Socket?.connected) return;
-        navigator.geolocation.watchPosition((position) => {
+        // if(!Socket?.connected) recturn;
+        navigator.geolocation.getCurrentPosition((position) => {
 
             //  Socket?.emit("updateLocation",{
             //     lat: position.coords.latitude,
