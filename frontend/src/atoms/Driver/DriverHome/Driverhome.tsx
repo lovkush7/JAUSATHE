@@ -21,15 +21,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 const getride = async () => {
   try {
-    const req = await api.get("ride/availableRides",
-      {
-        params: {
-          page: 1,
-          limit: 1
-        }
-      }
-    )
-    console.log("the ride is ", req.data)
+    const req = await api.get("driver/myprofile" )
+    console.log("my driverisid ", req.data)
     return req.data;
   } catch (error) {
     console.error("Error fetching ride data:", error)
@@ -49,6 +42,7 @@ export default function Driverhome() {
       away: "2"
     }
   ]
+  const {authUser} = useScoket()
   const { listenToRides, Socket, nonlistentorides, newRide } = useScoket()
   useEffect(() => {
     if (!Socket) return;
@@ -65,11 +59,11 @@ export default function Driverhome() {
   },[newRide])
   console.log("the new ride is ", newRide)
 
-  const { data: rides } = useQuery({
+  const { data: driver } = useQuery({
     queryKey: ["rides"],
     queryFn: () => getride()
   })
-  console.log("the rides are ", rides)
+  console.log("the rides are ", driver?.id)
   return (
    
    
@@ -101,9 +95,33 @@ export default function Driverhome() {
                     <p className='text-purple-700 text-sm'>{}</p>
                   </div>
                   <div className='flex gap-4 justify-center mt-5'>
-                    <Button onClick={()=>setopen(false)} className='px-8 py-6 rounded-lg border-2 border-gray-400
+                    <Button onClick={()=>
+                    {
+                      Socket?.emit("reject-ride",  {
+                           rideId:newRide.rideId,
+                           DriverId: driver?.id,
+                           vechiclesId:  driver?.vechicles?.id
+                          })
+                      setopen(false)} 
+                    }className='px-8 py-6 rounded-lg border-2 border-gray-400
                       text-red-600 bg-transparent'><span><X /> </span> Decline</Button>
-                    <Button className='px-8 py-6 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500  text-white '><span><Check /> </span> Accept</Button>
+                    <Button onClick={
+                      ()=>{
+                        Socket?.emit("ride-accept", 
+
+                          {
+                           rideId:newRide.rideId,
+                           DriverId: authUser?.id,
+                           vechiclesId:  driver?.vechicles?.id
+                          }
+                        
+                        )
+                        setopen(false)
+                      }
+                    }
+                    
+                    className='px-8 py-6 rounded-lg bg-gradient-to-r
+                     from-cyan-500 to-blue-500  text-white '><span><Check /> </span> Accept</Button>
                   </div>
                 </div>
               ))

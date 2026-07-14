@@ -68,7 +68,7 @@ export class RideController extends Controller{
         @Request() req: any,
         @Path() id: string
     ){
-      return await RideServices.AcceptRide(vechicleId, req.user!.id, id)
+    //   return await RideServices.AcceptRide(vechicleId, req.user!.id, id)
 
     }
 

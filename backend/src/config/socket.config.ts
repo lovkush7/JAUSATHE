@@ -3,6 +3,7 @@ import http from "http"
 import express, { type Express } from "express"
 import DriverService from "../services/Driver/DriverService.ts"
 import { Driverstatus, UserRole } from "../enum/enum.details.ts"
+import RideServices from "../services/RideService/Ride.Services.ts"
 
 const app: Express = express()
 
@@ -41,6 +42,11 @@ interface onlineUsers {
     socketId: string;
     role: "PASSENGERS" | "DRIVER";
 }
+interface RideData {
+     rideId: string
+    DriverId: string
+    vechiclesId: string
+}
 const onlinePassengers: Record<string, onlineUsers> = {} //userid:socketid
 const onlineDrivers: Record<string, onlineUsers> = {} //userid:socketid
 
@@ -77,6 +83,13 @@ io.on("connection", (socket) => {
         )
     })
 
+    socket.on("ride-accept", async(data:RideData)=>{
+        RideServices.AcceptRide(
+            data.vechiclesId,
+            data.DriverId,
+            data.rideId)
+        
+    })
     socket.on("driveronline", async () => {
         console.log("driver active success")
         await DriverService.updateDriverStatus(
