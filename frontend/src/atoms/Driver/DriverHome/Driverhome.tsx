@@ -110,8 +110,8 @@ export default function Driverhome() {
                         Socket?.emit("ride-accept", 
 
                           {
-                           rideId:newRide.rideId,
-                           DriverId: authUser?.id,
+                            rideId:newRide.rideId,
+                           DriverId: driver?.id,
                            vechiclesId:  driver?.vechicles?.id
                           }
                         
