@@ -580,6 +580,36 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsRideController_getacceptRide: Record<string, TsoaRoute.ParameterSchema> = {
+                rideId: {"in":"query","name":"rideId","required":true,"dataType":"string"},
+        };
+        app.get('/ride/getacceptRide',
+            ...(fetchMiddlewares<RequestHandler>(RideController)),
+            ...(fetchMiddlewares<RequestHandler>(RideController.prototype.getacceptRide)),
+
+            async function RideController_getacceptRide(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsRideController_getacceptRide, request, response });
+
+                const controller = new RideController();
+
+              await templateService.apiHandler({
+                methodName: 'getacceptRide',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsGeocoading_GeocoadeAddress: Record<string, TsoaRoute.ParameterSchema> = {
                 address: {"in":"query","name":"address","required":true,"dataType":"string"},
         };

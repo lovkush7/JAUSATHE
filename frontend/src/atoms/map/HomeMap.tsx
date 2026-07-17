@@ -23,10 +23,10 @@ const HomeMap = ({setLocations, Locations}: props) => {
     // const control = useDragControls()
   const {Socket,checkauth, authUser} = useScoket()
 
-    useEffect(()=>{
-    checkauth()
-     console.log('the authuser iss ',authUser)
-    },[])
+    // useEffect(()=>{
+    // checkauth()
+    //  console.log('the authuser iss ',authUser)
+    // },[])
     
     useEffect(() => {
         if (!navigator.geolocation) {
@@ -60,7 +60,7 @@ const HomeMap = ({setLocations, Locations}: props) => {
             //     timeout: 10000
             // }
         )
-    }, [authUser])
+    }, [ ])
 
     
 

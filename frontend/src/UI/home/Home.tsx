@@ -12,10 +12,10 @@ type LocationType = {
 
 const Home = () => {
    const [Locations, setLocations] = useState<LocationType | null>(null)
-   const {authUser, checkauth,onlineUsers} = useScoket.getState()
+   const {authUser, checkauth,onlineUsers} = useScoket()
    useEffect(()=>{
     checkauth()
-   },[authUser])
+   },[])
    console.log("the auth user is ", authUser)
    console.log("the online users are ", onlineUsers)
   return (

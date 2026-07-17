@@ -72,4 +72,14 @@ export class RideController extends Controller{
 
     }
 
+    @Get("getacceptRide")
+    // @Middlewares(Drivermiddleware)
+    
+    async getacceptRide(
+        @Query() rideId: string,
+      
+    ){
+        return await RideServices.getAcceptRide(rideId)
+    }
+
 }

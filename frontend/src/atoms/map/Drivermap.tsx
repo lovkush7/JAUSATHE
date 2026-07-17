@@ -59,35 +59,7 @@ const Drivermap = () => {
                     attribution='&copy; OpenStreetMap contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-
-                {/* <Mapclickhandler
-                    setLocation={setLocation}
-                    setDestination={setDestination}
-                    setopenform={setopenform}
-                /> */}
-                {/* {Locations &&
-                    <Marker position={[Locations.lat, Locations.lng]}>
-                        <Popup>
-                            your cuttent locations <br />
-
-                        </Popup>
-                    </Marker>} */}
-
-                {/* {Location &&
-                    <Marker position={[Location.lat, Location.lng]}>
-                        <Popup>
-                            your choose  locations <br />
-                        </Popup>
-                    </Marker>} */}
-
-                {/* {Destination &&
-                    <Marker position={[Destination.lat, Destination.lng]}>
-                        <Popup>
-                            your choose  destinations{Destination.lat} <br />
-                        </Popup>
-                    </Marker>} */}
-                  
-                
+   
                
             </MapContainer>
 

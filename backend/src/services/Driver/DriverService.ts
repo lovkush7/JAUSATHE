@@ -237,5 +237,7 @@ class DriverServices {
         return { message: "driver approved successfully" }
 
     }
+
+   
 }
 export default new DriverServices();

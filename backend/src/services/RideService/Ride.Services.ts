@@ -223,5 +223,32 @@ console.log("Driver Count:", driver.length);
     }
 
   }
+   async getAcceptRide(
+        rideId: string,
+      
+    ){
+      try{
+       const active = await Ride.findOne(
+        {
+         where:{
+          id: rideId
+         },
+          relations:{
+            driver: true,
+            rider: true,
+            vechicle: true
+          }
+        }
+      
+       )
+         if(!active){
+          throw new Error("ride not found")
+        }
+        return active;
+      }catch(err){
+        console.log("the error is ", err)
+      }
+
+    }
 }
 export default new RideService();

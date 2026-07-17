@@ -19,6 +19,7 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useNavigate } from '@tanstack/react-router'
 const getride = async () => {
   try {
     const req = await api.get("driver/myprofile" )
@@ -32,6 +33,7 @@ const getride = async () => {
 }
 export default function Driverhome() {
   const [open, setopen] = useState(false)
+  const navigation = useNavigate()
   const data = [
     {
       cost: "95",
@@ -117,11 +119,14 @@ export default function Driverhome() {
                         
                         )
                         setopen(false)
+                        navigation({to:"/Driver/trips"})
+                        
                       }
                     }
                     
                     className='px-8 py-6 rounded-lg bg-gradient-to-r
-                     from-cyan-500 to-blue-500  text-white '><span><Check /> </span> Accept</Button>
+                     from-cyan-500 to-blue-500  text-white '><span><Check />
+                      </span> Accept</Button>
                   </div>
                 </div>
               ))
