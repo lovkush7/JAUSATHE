@@ -6,19 +6,20 @@ import React, { useEffect, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
 import { motion, useDragControls } from "framer-motion"
 import uselocation from '../../zustand/location'
+import Driverrouting from '../../utils/mapevent/Driverrouting'
 
 type LocationType = {
     lat: number,
     lng: number
 }
-interface props{
+interface props {
     setLocations: React.Dispatch<React.SetStateAction<any>>
     Locations: LocationType
 }
 const Drivermap = () => {
     // const [Locations, setLocations] = useState<LocationType | null>(null)
- 
-  const {currentLocation,} = uselocation()
+
+    const { currentLocation, driverloc, riderloc, passdestination, routemode } = uselocation()
     // const control = useDragControls()
 
 
@@ -33,8 +34,8 @@ const Drivermap = () => {
             //     lat: position.coords.latitude,
             //     lng: position.coords.longitude
             // })
-              currentLocation({
-                 lat: position.coords.latitude,
+            currentLocation({
+                lat: position.coords.latitude,
                 lng: position.coords.longitude
             })
         },
@@ -59,9 +60,27 @@ const Drivermap = () => {
                     attribution='&copy; OpenStreetMap contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-   
-               
+
+                {routemode === "driver" &&
+                    driverloc &&
+                    riderloc && (
+                        <Driverrouting
+                          start={[driverloc.lat, driverloc.lng]}
+                            end={[riderloc.lat, riderloc.lng]}
+                        />
+                    )}
+
+                {routemode === "trip" &&
+                    driverloc &&
+                    passdestination && (
+                        <Driverrouting
+                            start={[driverloc.lat, driverloc.lng]}
+                          end ={[passdestination.lat, passdestination.lng]}
+                        />
+                    )}
+
             </MapContainer>
+
 
 
         </div>

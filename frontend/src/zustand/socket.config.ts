@@ -1,6 +1,7 @@
 import { create } from "zustand"
 import io, { type Socket } from "socket.io-client"
 import { api } from "../api/Api";
+import uselocation from "./location";
 
 interface Authuser{
 id: string,
@@ -101,10 +102,14 @@ const useScoket = create<SocketStore>((set, get)=>({
     },
     listenToRides: ()=>{
         const {Socket} = get()
+        const {setroutemode} = uselocation.getState()
         if(!Socket) return;
 
         Socket.on("new-ride",(ride: rideData)=>{
+            
             set({newRide: ride})
+            setroutemode("driver")
+            
             console.log("the new ride is ", ride)
             // alert(`New ride request received: ${ride.rideId}`)
 

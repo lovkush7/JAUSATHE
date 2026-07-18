@@ -1,10 +1,11 @@
 import { ArrowBigLeft, Check, MessageCircleMore, MoveRight, Phone, X } from 'lucide-react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '../../../components/ui/button'
 import { api } from '../../../api/Api'
 import useScoket from '../../../zustand/socket.config'
 import { useQuery } from '@tanstack/react-query'
 import Driverrouting from '../../../utils/mapevent/Driverrouting'
+import uselocation from '../../../zustand/location'
 
 const acceptride = async (rideId: string) => {
     const req = await api.get("/ride/getacceptRide", {
@@ -17,6 +18,7 @@ const acceptride = async (rideId: string) => {
 }
 
 const AcceptRides = () => {
+    const [complete, setcomplete] = useState(true)
     const { newRide } = useScoket()
     const { data } = useQuery({
         queryKey: [newRide],
@@ -46,21 +48,46 @@ const AcceptRides = () => {
 
 
     ]
-  const driverPosition =
-  data?.driver?.CurrentLocation
-    ? [
-        data.driver.CurrentLocation.coordinates[1],
-        data.driver.CurrentLocation.coordinates[0],
-      ] as [number, number]
-    : undefined;
+    const {driverposition, riderpostion,passengerdestination,setroutemode} = uselocation()
+   useEffect(() => {
+  if (data?.driver?.CurrentLocation) {
+    driverposition({
+      lat: data.driver.CurrentLocation.coordinates[1],
+      lng: data.driver.CurrentLocation.coordinates[0],
+    });
+  }
 
-const riderPosition =
-  data?.pickupLocation
-    ? [
-        data.pickupLocation.coordinates[1],
-        data.pickupLocation.coordinates[0],
-      ] as [number, number]
-    : undefined;
+  if (data?.pickupLocation) {
+    riderpostion({
+      lat: data.pickupLocation.coordinates[1],
+      lng: data.pickupLocation.coordinates[0],
+    });
+  }
+   if (data?.DropoffLocation) {
+    passengerdestination({
+      lat: data.DropoffLocation.coordinates[1],
+      lng: data.DropoffLocation.coordinates[0],
+    });
+  }
+}, [data, driverposition, riderpostion]);
+//   const driverPositions =
+//   data?.driver?.CurrentLocation
+//     ? [
+//         data.driver.CurrentLocation.coordinates[1],
+//         data.driver.CurrentLocation.coordinates[0],
+//       ] as [number, number]
+//     : undefined;
+
+// const riderPosition =
+//   data?.pickupLocation
+//     ? [
+//         data.pickupLocation.coordinates[1],
+//         data.pickupLocation.coordinates[0],
+//       ] as [number, number]
+//     : undefined;
+
+    
+
     return (
         <div>
             {
@@ -103,15 +130,30 @@ const riderPosition =
                     </div>
                 </div>
                 <div className='flex gap-4 justify-center mt-5'>
-                    <Button
+                  {complete ?<>
+                   <Button
                         className='px-8 py-6 rounded-lg border-2 border-gray-400
                       text-white  bg-red-500'><span><X /> </span> cancle</Button>
                     <Button
-
+                         onClick={()=>{
+                            setroutemode("trip")
+                            setcomplete(!true)
+                        }}
 
                         className='px-8 py-6 rounded-lg bg-gradient-to-r
                      from-cyan-500 to-blue-500  text-white '><span><Check /> </span> Pickup</Button>
+                  
+                  </>  : <>
+                   <Button
+                   onClick={()=>{
+                    
+                   }}
+                        className='px-8 w-full py-6 rounded-lg border-2 border-gray-400
+                      text-white  bg-blue-500 hover:bg-blue-500'><span><Check /> </span> complete</Button>
+                  </>}
+                   
                 </div>
+                
             </div>}
             <div className="bg-[#0E1328] mt-2.5 text-white rounded-lg border-2 border-[#3B3B4F] p-4">
                 <p className="font-bold">Today's completed trips</p>

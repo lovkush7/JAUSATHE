@@ -4,22 +4,21 @@ import "leaflet-routing-machine"
 
 import { useMap } from 'react-leaflet'
 
+type Props = {
+  start: [number, number];
+  end: [number, number];
+};
 
-type props = {
-    driverlocation: [number, number]
-    userlocation: [number, number]
-}
-
-const Driverrouting = ({ driverlocation, userlocation }: props) => {
+const Driverrouting = ( {start,end}: Props ) => {
     const map = useMap()
     useEffect(() => {
         if (!map) return;
-
+        { start && end 
         const routingcontrol = L.Routing.control(
             {
                 waypoints: [
-                    L.latLng(driverlocation[0], driverlocation[1]),
-                    L.latLng(userlocation[0], userlocation[1])
+                    L.latLng(start[0], start[1]),
+                    L.latLng(end[0], end[1])
                 ],
                 router: (L.Routing as any).osrmv1({
                     serviceUrl: "https://router.project-osrm.org/route/v1",
@@ -36,11 +35,13 @@ const Driverrouting = ({ driverlocation, userlocation }: props) => {
                 show: false,
             }
         ).addTo(map)
-
+    
           return () => {
             map.removeControl(routingcontrol)
         }
-    }, [map,driverlocation,userlocation])
+    }
+
+    }, [map,start,end])
     return (
         <div>
 

@@ -4,18 +4,31 @@ type locationType ={
     lat: number
     lng: number
 }
+type Routemode = "driver" | "trip"
  type locationstore ={
     locations: locationType | null
     destination: locationType | null
+    driverloc: locationType| null
+    riderloc: locationType | null
+    routemode: Routemode,
+    passdestination: locationType | null
 
     currentLocation: (data: locationType)=>void
     currentdestination: (data: locationType)=>void
+    passengerdestination: (data: locationType)=>void
+    driverposition:(data: locationType) =>void
+    riderpostion: (data: locationType) => void
+    setroutemode: (route: Routemode) => void
 
  }
 
-const uselocation = create<locationstore>((set:any)=>({
+const uselocation = create<locationstore>((set)=>({
     locations:  null,
     destination: null,
+    passdestination: null,
+    driverloc: null,
+    riderloc: null,
+    routemode: "driver",
 
 
     currentLocation: (data)=>{
@@ -27,6 +40,7 @@ const uselocation = create<locationstore>((set:any)=>({
       
       }
     },
+
     currentdestination: (data)=>{
         try{
             set({destination: data})
@@ -34,7 +48,29 @@ const uselocation = create<locationstore>((set:any)=>({
         }catch(err){
             console.log(err)
         }
-    }
+    },
+ 
+     driverposition:(data)=>{
+        try{
+            set({driverloc: data})
+        }catch(err){
+            console.log(err)
+        }
+     },
+     riderpostion:(data)=>{
+      try{
+        set({riderloc: data})
+      }catch(err){
+
+      }
+     },
+     setroutemode: (mode)=>{
+        set({routemode: mode})
+     },
+     passengerdestination: (data)=>{
+        set({passdestination: data})
+     }
+
 }))
 
 export default uselocation;
