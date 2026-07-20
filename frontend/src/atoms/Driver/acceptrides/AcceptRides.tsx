@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { Button } from '../../../components/ui/button'
 import { api } from '../../../api/Api'
 import useScoket from '../../../zustand/socket.config'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import Driverrouting from '../../../utils/mapevent/Driverrouting'
 import uselocation from '../../../zustand/location'
+import { useNavigate } from '@tanstack/react-router'
 
 const acceptride = async (rideId: string) => {
     const req = await api.get("/ride/getacceptRide", {
@@ -16,16 +17,46 @@ const acceptride = async (rideId: string) => {
     })
     return req.data;
 }
+const completeride = async (rideId: string)=>{
+    const res = await api.patch(`ride/complete/${rideId}`)
+    return res.data;
+}
 
 const AcceptRides = () => {
+     const {driverposition, riderpostion,passengerdestination,setroutemode} = uselocation()
+     const {clearride,nonlistentorides} = useScoket()
     const [complete, setcomplete] = useState(true)
     const { newRide } = useScoket()
+    const navagation = useNavigate()
     const { data } = useQuery({
         queryKey: [newRide],
         queryFn: () => acceptride(newRide?.rideId!),
         enabled: !!newRide?.rideId
     })
     console.log("the new ride ", data)
+    const mutation = useMutation({
+        mutationKey: ["ridecomplete",complete],
+        mutationFn: (rideId: string)=>completeride(rideId),
+        onSuccess: () => {
+  // Hide active ride card
+    setcomplete(true);
+
+
+    clearride();
+
+  
+    nonlistentorides();
+
+    
+    setroutemode("driver");
+
+    
+    driverposition(null);
+    riderpostion(null);
+    passengerdestination(null);
+     navagation({to: "/DriverDashboard"})
+  },
+    })
     const Trips = [
         {
             Name: " priya sharma",
@@ -48,7 +79,7 @@ const AcceptRides = () => {
 
 
     ]
-    const {driverposition, riderpostion,passengerdestination,setroutemode} = uselocation()
+   
    useEffect(() => {
   if (data?.driver?.CurrentLocation) {
     driverposition({
@@ -137,7 +168,7 @@ const AcceptRides = () => {
                     <Button
                          onClick={()=>{
                             setroutemode("trip")
-                            setcomplete(!true)
+                            setcomplete(!complete)
                         }}
 
                         className='px-8 py-6 rounded-lg bg-gradient-to-r
@@ -146,7 +177,7 @@ const AcceptRides = () => {
                   </>  : <>
                    <Button
                    onClick={()=>{
-                    
+                    mutation.mutate(newRide?.rideId)
                    }}
                         className='px-8 w-full py-6 rounded-lg border-2 border-gray-400
                       text-white  bg-blue-500 hover:bg-blue-500'><span><Check /> </span> complete</Button>

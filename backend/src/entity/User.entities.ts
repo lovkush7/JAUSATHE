@@ -25,6 +25,8 @@ export class User extends CommonEntity {
     @Column({type: "enum", enum: Userstatus, default: Userstatus.ACTIVE})
     status: Userstatus;
 
+    @Column("simple-array", {nullable: true})
+    address:  string[]
 
     @Column({type:"enum", enum: UserRole, default: UserRole.PASSENGERS})
     Role: UserRole;

@@ -4,6 +4,7 @@ import RideServices from "../../services/RideService/Ride.Services.ts";
 import type CreateRideDto from "../../dto/Ridecreate.dto.ts";
 import { Drivermiddleware } from "../../Middlewares/AdminMiddleware.ts";
 
+
 @Route("ride")
 export class RideController extends Controller{
 
@@ -80,6 +81,13 @@ export class RideController extends Controller{
       
     ){
         return await RideServices.getAcceptRide(rideId)
+    }
+
+    @Patch("complete/{rideId}")
+    async completeRide(
+      @Path()  rideId: string
+    ){
+        await RideServices.completeRide(rideId)
     }
 
 }

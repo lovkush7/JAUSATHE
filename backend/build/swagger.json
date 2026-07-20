@@ -1054,6 +1054,27 @@
 				]
 			}
 		},
+		"/ride/complete/{rideId}": {
+			"patch": {
+				"operationId": "CompleteRide",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "rideId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/geocoading/geocode": {
 			"get": {
 				"operationId": "GeocoadeAddress",

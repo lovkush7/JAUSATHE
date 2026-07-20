@@ -1,9 +1,10 @@
 import { notifyDriversnewRides, notifyNoDriverFound,  } from "../../config/socket.config.ts";
 import type CreateRideDto from "../../dto/Ridecreate.dto.ts";
+import { Driver } from "../../entity/Driver.entities.ts";
 import { FareConfig } from "../../entity/FareConfig.entities.ts";
 import { Ride } from "../../entity/Ride.entities.ts";
 import { User } from "../../entity/User.entities.ts";
-import { RideStatus, type UserRole, type VehicleType } from "../../enum/enum.details.ts";
+import { Driverstatus, RideStatus, type UserRole, type VehicleType } from "../../enum/enum.details.ts";
 import DriverService from "../Driver/DriverService.ts";
 
 class RideService {
@@ -203,6 +204,9 @@ console.log("Driver Count:", driver.length);
           id: rideId,
 
         },
+        relations:{
+          driver: true
+        }
 
       })
       if (!ride) {
@@ -211,17 +215,61 @@ console.log("Driver Count:", driver.length);
       if (ride?.ridestauts !== RideStatus.REQUESTED && ride?.ridestauts !== RideStatus.SEARCHING) {
         throw new Error("ride no longer existance")
       }
+      const driverexis = await Driver.findOne({
+        where: {
+          id: driverid
+        }
+      })
+      if(!driverexis){
+        throw new Error("no driver found ")
+      }
       await Ride.update(rideId, {
         vechicle: { id: vechicleId },
         driver: { id: driverid },
         ridestauts: RideStatus.ACCEPTED,
         driverAcceptedAt: new Date(),
       })
-      return ride;
+       driverexis.status = Driverstatus.BUSY
+       await driverexis.save()
+        const updatedRide = await Ride.findOne({
+      where: {
+        id: rideId,
+      },
+      relations: {
+        driver: true,
+        rider: true,
+        vechicle: true,
+      },
+    });
+
+    return updatedRide;
     } catch (err) {
       throw err;
     }
 
+  }
+  async completeRide(
+    rideId: string
+  ){
+    const existance = await Ride.findOne({
+      where:{
+        id: rideId
+      },
+      relations:{
+        driver: true
+      }
+      
+    })
+    if(!existance){
+      throw new Error("ride never exist")
+    }
+   
+    existance.ridestauts = RideStatus.COMPLETED
+    existance.driver.status = Driverstatus.ONLINE;
+    await existance.driver.save()
+    await existance.save()
+
+    return "ride completed successfully"
   }
    async getAcceptRide(
         rideId: string,

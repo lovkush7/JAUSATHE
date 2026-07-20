@@ -15,9 +15,9 @@ type Routemode = "driver" | "trip"
 
     currentLocation: (data: locationType)=>void
     currentdestination: (data: locationType)=>void
-    passengerdestination: (data: locationType)=>void
-    driverposition:(data: locationType) =>void
-    riderpostion: (data: locationType) => void
+    passengerdestination: (data: locationType | null)=>void
+    driverposition:(data: locationType| null) =>void
+    riderpostion: (data: locationType | null) => void
     setroutemode: (route: Routemode) => void
 
  }
