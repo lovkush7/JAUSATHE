@@ -298,5 +298,23 @@ console.log("Driver Count:", driver.length);
       }
 
     }
+    async getstatus(
+      rideId: string
+    ){
+      try{
+           const status = await Ride.findOne({
+            where:{
+              id: rideId
+            }
+           })
+           if(!status){
+            throw new Error("no ride found")
+           }
+           return status.ridestauts
+      }catch(err){
+        console.log(err)
+      }
+
+    }
 }
 export default new RideService();

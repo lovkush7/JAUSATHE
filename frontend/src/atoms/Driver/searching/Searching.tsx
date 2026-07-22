@@ -1,14 +1,32 @@
 import { BluetoothSearchingIcon } from 'lucide-react'
 import React, { useState } from 'react'
 import { Spinner } from '../../../components/ui/spinner'
+import useride from '../../../zustand/userride'
+import { api } from '../../../api/Api'
+import { useQuery } from '@tanstack/react-query'
+
+const ride = async(rideId: string)=>{
+    const req = await api.get("ride/getstatus",{
+        params:{
+            rideId
+        }
+    })
+}
 
 const Searching = () => {
+    const {rides} = useride()
+
+    
     const [blur, setblur] = useState(true)
+    const query = useQuery({
+        queryKey:["rides"],
+        queryFn:()=>ride()
+    })
     return (
 
         <div className="fixed inset-0 z-50 flex items-center justify-center">
 
-
+               
 
             {blur &&
                 <>

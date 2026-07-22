@@ -90,4 +90,12 @@ export class RideController extends Controller{
         await RideServices.completeRide(rideId)
     }
 
+    @Get("getstatus")
+    async status(
+        @Query() rideId: string
+    ){
+        return await RideServices.getstatus(rideId)
+        
+    }
+
 }

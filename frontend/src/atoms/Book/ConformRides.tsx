@@ -5,6 +5,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { api } from '../../api/Api'
 import uselocation from '../../zustand/location'
 import { useNavigate } from '@tanstack/react-router'
+import useride from '../../zustand/userride'
 
 const vechicles = [
   {
@@ -126,6 +127,7 @@ const ConformRides = () => {
   const [fare, setFare] = useState<string | null>(null)
 
   const { locations: mylocation, destination: mydestination } = uselocation()
+  const {setrides} = useride()
   const navagation = useNavigate()
 
   console.log("the vehicles is ", vehicleType)
@@ -146,7 +148,7 @@ const ConformRides = () => {
   const { data } = useQuery({
     queryKey: ["locations", pickuplat, pickuplng, dropofflat, dropofflng, vehicleType],
     queryFn: () => sendLocations(pickuplat, pickuplng, dropofflat, dropofflng, vehicleType),
-
+  
 
     enabled:
       pickuplat !== null &&
@@ -155,8 +157,10 @@ const ConformRides = () => {
       dropofflng !== null &&
       vehicleType !== null,
 
+    
+
   })
-  const mutation = useMutation({
+  const {mutate, data:rdata} = useMutation({
     mutationFn: (rideData: {
       pickupAddress: string
       pickuplat: number
@@ -176,7 +180,9 @@ const ConformRides = () => {
         rideData.vehicleType
       ),
       onSuccess:()=>{
+
      navagation({to: "/Book/MyRides"})
+     setrides(rdata)
       }
   })
   //hello world
@@ -316,7 +322,7 @@ const ConformRides = () => {
           </div>
           <Button
             onClick={() => {
-              mutation.mutate({
+              mutate({
                 pickupAddress: mydta,
                 pickuplat: pickuplat!,
                 pickuplng: pickuplng!,
