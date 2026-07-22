@@ -183,6 +183,12 @@
 					"status": {
 						"$ref": "#/components/schemas/Userstatus"
 					},
+					"address": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
 					"Role": {
 						"$ref": "#/components/schemas/UserRole"
 					},
@@ -207,6 +213,7 @@
 					"Phone",
 					"profile",
 					"status",
+					"address",
 					"Role",
 					"rides",
 					"Driver"

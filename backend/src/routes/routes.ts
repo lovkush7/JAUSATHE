@@ -97,6 +97,7 @@ const models: TsoaRoute.Models = {
             "Phone": {"dataType":"string","required":true},
             "profile": {"dataType":"string","required":true},
             "status": {"ref":"Userstatus","required":true},
+            "address": {"dataType":"array","array":{"dataType":"string"},"required":true},
             "Role": {"ref":"UserRole","required":true},
             "rides": {"dataType":"array","array":{"dataType":"refObject","ref":"Ride"},"required":true},
             "Driver": {"ref":"Driver","required":true},

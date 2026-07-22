@@ -4,6 +4,7 @@ import { Button } from '../../components/ui/button'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { api } from '../../api/Api'
 import uselocation from '../../zustand/location'
+import { useNavigate } from '@tanstack/react-router'
 
 const vechicles = [
   {
@@ -44,7 +45,7 @@ type LocationType = {
   lat: number
   lng: number
 }
-const conformride = async(
+const conformride = async (
   PickupAddress: string,
   pickuplng: number,
   pickuplat: number,
@@ -52,8 +53,8 @@ const conformride = async(
   dropofflat: Number,
   dropofflng: number,
   vehicleType: string,
-)=>{
-  const res = await api.post("ride/createride",{
+) => {
+  const res = await api.post("ride/createride", {
     PickupAddress,
     pickuplat,
     pickuplng,
@@ -62,6 +63,7 @@ const conformride = async(
     dropofflng,
     vehicleType
   })
+  
   return res.data;
 
 }
@@ -124,6 +126,7 @@ const ConformRides = () => {
   const [fare, setFare] = useState<string | null>(null)
 
   const { locations: mylocation, destination: mydestination } = uselocation()
+  const navagation = useNavigate()
 
   console.log("the vehicles is ", vehicleType)
   console.log("the Locations", Locations)
@@ -153,27 +156,30 @@ const ConformRides = () => {
       vehicleType !== null,
 
   })
- const mutation = useMutation({
-  mutationFn: (rideData: {
-    pickupAddress: string
-    pickuplat: number
-    pickuplng: number
-    dropoffAddress: string
-    dropofflat: number
-    dropofflng: number
-    vehicleType: string
-  }) =>
-    conformride(
-      rideData.pickupAddress,
-      rideData.pickuplng,
-      rideData.pickuplat,
-      rideData.dropoffAddress,
-      rideData.dropofflat,
-      rideData.dropofflng,
-      rideData.vehicleType
-    ),
-})
-//hello world
+  const mutation = useMutation({
+    mutationFn: (rideData: {
+      pickupAddress: string
+      pickuplat: number
+      pickuplng: number
+      dropoffAddress: string
+      dropofflat: number
+      dropofflng: number
+      vehicleType: string
+    }) =>
+      conformride(
+        rideData.pickupAddress,
+        rideData.pickuplng,
+        rideData.pickuplat,
+        rideData.dropoffAddress,
+        rideData.dropofflat,
+        rideData.dropofflng,
+        rideData.vehicleType
+      ),
+      onSuccess:()=>{
+     navagation({to: "/Book/MyRides"})
+      }
+  })
+  //hello world
 
   const handlesubmit = () => {
     setPickuplat(Locations?.lat ?? null)
@@ -293,9 +299,9 @@ const ConformRides = () => {
             <p>Payment Method</p>
 
             {Array.isArray(payment) &&
-              payment.map((dta,index:any) => (
+              payment.map((dta, index: any) => (
                 <div
-                onClick={()=>SetIsActive(index)}
+                  onClick={() => SetIsActive(index)}
                   key={dta.name}
                   className={`flex flex-row items-center gap-3 rounded-xl p-3 mt-2
                     ${isActive === index
@@ -308,19 +314,20 @@ const ConformRides = () => {
                 </div>
               ))}
           </div>
-          <Button 
-              onClick={() => {
-   mutation.mutate({
-  pickupAddress: mydta,
-  pickuplat: pickuplat!,
-  pickuplng: pickuplng!,
-  dropoffAddress: des,
-  dropofflat: dropofflat!,
-  dropofflng: dropofflng!,
-  vehicleType: vehicleType!,
-})
-  }}
-          className='w-full p-5 rounded-2xl bg-blue-800 mt-4 '>
+          <Button
+            onClick={() => {
+              mutation.mutate({
+                pickupAddress: mydta,
+                pickuplat: pickuplat!,
+                pickuplng: pickuplng!,
+                dropoffAddress: des,
+                dropofflat: dropofflat!,
+                dropofflng: dropofflng!,
+                vehicleType: vehicleType!,
+              })
+              
+            }}
+            className='w-full p-5 rounded-2xl bg-blue-800 mt-4 '>
             Book Ride
           </Button>
         </div>
