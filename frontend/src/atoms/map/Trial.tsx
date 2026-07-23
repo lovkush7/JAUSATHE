@@ -13,10 +13,12 @@ type LocationType = {
     lng: number
 }
 interface props{
+    setsatellite: React.Dispatch<React.SetStateAction<any>>
+    stellite: boolean
     setLocations: React.Dispatch<React.SetStateAction<any>>
     Locations: LocationType
 }
-const Trialmap = ({setLocations, Locations}: props) => {
+const Trialmap = ({setLocations, Locations,setsatellite,stellite}: props) => {
     // const [Locations, setLocations] = useState<LocationType | null>(null)
  
   const {currentLocation,} = uselocation()
@@ -71,25 +73,33 @@ const Trialmap = ({setLocations, Locations}: props) => {
         <div className='w-full h-[500px]'>
             <MapContainer
              center={[27.6180, 85.5380]}
-                zoom={13}
+                zoom={14}
                 scrollWheelZoom={true}
                 className='w-full h-full'
 
             >
-                <TileLayer
-                    attribution='&copy; OpenStreetMap contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-
-                       {/* <TileLayer
+              
+                {stellite ? (
+              
+                  <>
+                        <TileLayer
                     attribution='&copy; OpenStreetMap contributors'
                     url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
                 />
                             <TileLayer
                     attribution='&copy; OpenStreetMap contributors'
                     url="https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
-                /> */}
-
+                /> 
+                </>
+                ):(
+                        <>
+                <TileLayer
+                    attribution='&copy; OpenStreetMap contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                </>
+                       )
+               }
                 {/* <Mapclickhandler
                     setLocation={setLocation}
                     setDestination={setDestination}

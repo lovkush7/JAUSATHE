@@ -6,8 +6,12 @@ import { useMutation } from '@tanstack/react-query'
 import { api } from '../../api/Api'
 import useScoket from '../../zustand/socket.config'
 import Trialmap from '../../atoms/map/Trial'
+import { Switch } from '../../components/ui/switch'
+import { Label } from '../../components/ui/label'
+// import { Satellite } from 'lucide-react'
+// import { Satellite } from 'lucide-react'
 
-type LocationsType={
+type LocationsType = {
     lat: number,
     lng: number
 }
@@ -21,47 +25,58 @@ type LocationsType={
 // }
 
 const DriverDashboard = () => {
-    const [Locations,setLocations] = useState<LocationsType | null>(null)
-    const {Socket} = useScoket()
+    const [Locations, setLocations] = useState<LocationsType | null>(null)
+    const { Socket } = useScoket()
+    const [stellite, setSatellite] = useState(true)
 
     // const mutation = useMutation({
     //     mutationKey:[Locations],
     //     mutationFn: ()=>updatedriverlocation(Locations!)
     // })
-    
-useEffect(() => {
 
-    if (!Socket) return;
+    useEffect(() => {
 
-    const handleConnect = () => {
-        console.log("Connected");
+        if (!Socket) return;
 
-        Socket.emit("driveronline");
-    };
+        const handleConnect = () => {
+            console.log("Connected");
 
-    Socket.on("connect", handleConnect);
+            Socket.emit("driveronline");
+        };
 
-    if (Socket.connected) {
-        handleConnect();
-    }
+        Socket.on("connect", handleConnect);
 
-    return () => {
-        Socket.emit("driveroffline");
-        Socket.off("connect", handleConnect);
-    };
+        if (Socket.connected) {
+            handleConnect();
+        }
 
-}, [Socket]);
-    
+        return () => {
+            Socket.emit("driveroffline");
+            Socket.off("connect", handleConnect);
+        };
+
+    }, [Socket]);
+
     return (
         <div className=' bg-[#08080F] h-screen w-full'>
             <DriverNavbar />
             <div className='flex '>
                 <div className='flex-1 ml-4 mt-4'>
-                    <Trialmap setLocations={setLocations}
-                    Locations={Locations!} />
+                    <Trialmap
+                        setsatellite={setSatellite}
+                        stellite={stellite}
+                        setLocations={setLocations}
+                        Locations={Locations!} />
+                    <div className="flex items-center text-white text-sm space-x-2">
+                         
+                        <Switch id="airplane-mode" checked={stellite}
+                         onCheckedChange={setSatellite} 
+                           className="data-[state=checked]:bg-blue-600 data-[state=unchecked]:bg-gray-600" />
+                       <Label htmlFor="airplane-mode">Satellite mode</Label>
+                    </div>
                 </div>
                 <div className='w-[350px] border-l p-3 '>
-                      <Driverhome/>
+                    <Driverhome />
                 </div>
             </div>
 

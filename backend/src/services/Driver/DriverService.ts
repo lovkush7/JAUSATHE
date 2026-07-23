@@ -131,7 +131,7 @@ class DriverServices {
             })
             if (!exdriver) {
                 throw new Error("the driver doesnot exist")
-            }
+            };
             exdriver.status = status  ;
             await exdriver.save();
             return { message: "status updated successfully" }

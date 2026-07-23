@@ -1,49 +1,78 @@
-import { BluetoothSearchingIcon } from 'lucide-react'
-import React, { useState } from 'react'
-import { Spinner } from '../../../components/ui/spinner'
-import useride from '../../../zustand/userride'
-import { api } from '../../../api/Api'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery } from "@tanstack/react-query";
+import {
+  Dialog,
+  DialogContent,
+} from "@/components/ui/dialog";
+import { Spinner } from "@/components/ui/spinner";
+import { api } from "../../../api/Api";
+import useScoket from "../../../zustand/socket.config";
+import useride from "../../../zustand/userride";
 
-const ride = async(rideId: string)=>{
-    const req = await api.get("ride/getstatus",{
-        params:{
-            rideId
-        }
-    })
-}
+const ride = async (rideId: string) => {
+  const req = await api.get("ride/getstatus", {
+    params: {
+      rideId,
+    },
+  });
+
+  return req.data;
+};
+
 
 const Searching = () => {
-    const {rides} = useride()
+  const { newRide } = useScoket();
+  const {ride:rides} = useride()
+  // console.log("ride id ni xinna ", newRide)
+  // console.log("ride id ni xinna ",rides )
 
-    
-    const [blur, setblur] = useState(true)
-    const query = useQuery({
-        queryKey:["rides"],
-        queryFn:()=>ride()
-    })
-    return (
 
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+  const { data } = useQuery({
+    queryKey: ["ride-status", rides?.id],
+    queryFn: () => ride(rides?.id!),
+    enabled: !!rides?.id,
+    refetchInterval: 3000, 
+  });
+const status = data;
+console.log("teh stus",status)
 
-               
+  switch(status){
+      case "REQUESTED":
+      case "SEARCHING":
+      case "DRIVERNOTFOUND":
+         return (
+    <Dialog open={!!data}>
+      <DialogContent
+        className="bg-[#08080F] border-gray-700 text-white max-w-md"
+        onInteractOutside={(e) => e.preventDefault()}
+      >
+        <div className="flex flex-col items-center gap-4 py-6">
+          <Spinner className="size-14" />
 
-            {blur &&
-                <>
-                    <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
-                    <div className="flex items-center justify-center h-full  z-10 w-[500px] rounded-xl bg-[#08080F] p-6 shadow-2xl border border-gray-700">
-                        <div className='flex flex-col  justify-center items-center '>
-                            
-                            <Spinner className="size-15 text-white" />
-                            <span className='font-bold text-white'>Finding your ride.....</span>
-                            <p className='text-gray-600 flex flex-col items-center'>Please wait while we process your request. <span>Do not refresh the page.</span> </p>
-                        </div>
-                    </div>
-                </>
-            }
+          <h2 className="text-xl font-bold">
+            Finding your ride...
+          </h2>
 
+          <p className="text-center text-gray-400">
+            Please wait while we process your request.
+            <br />
+            Do not refresh the page.
+          </p>
+
+          <p className="text-green-400 font-semibold">
+            {data}
+          </p>
         </div>
-    )
-}
+      </DialogContent>
+    </Dialog>
+  );
+    case "ACCEPTED":
+    return ( <div><p>Accepted</p></div> ) ;
 
-export default Searching
+  default:
+    return null;
+  }
+ 
+
+};
+
+export default Searching;  

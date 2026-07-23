@@ -108,6 +108,7 @@ const sendLocations = async (
       vehicleType
     }
   })
+  
   return res.data;
 
 }
@@ -127,7 +128,7 @@ const ConformRides = () => {
   const [fare, setFare] = useState<string | null>(null)
 
   const { locations: mylocation, destination: mydestination } = uselocation()
-  const {setrides} = useride()
+  const {setRide} = useride()
   const navagation = useNavigate()
 
   console.log("the vehicles is ", vehicleType)
@@ -179,10 +180,10 @@ const ConformRides = () => {
         rideData.dropofflng,
         rideData.vehicleType
       ),
-      onSuccess:()=>{
-
+      onSuccess:(data)=>{
+          console.log(data)
      navagation({to: "/Book/MyRides"})
-     setrides(rdata)
+     setRide(data)
       }
   })
   //hello world
