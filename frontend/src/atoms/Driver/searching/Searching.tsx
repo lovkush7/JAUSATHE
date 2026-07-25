@@ -7,6 +7,10 @@ import { Spinner } from "@/components/ui/spinner";
 import { api } from "../../../api/Api";
 import useScoket from "../../../zustand/socket.config";
 import useride from "../../../zustand/userride";
+import Driverlocation from "../../map/Acceptedmap";
+import { Button } from "../../../components/ui/button";
+import { useNavigate } from "@tanstack/react-router";
+import { CheckCircle2, Smile } from "lucide-react";
 
 const ride = async (rideId: string) => {
   const req = await api.get("ride/getstatus", {
@@ -21,11 +25,11 @@ const ride = async (rideId: string) => {
 
 const Searching = () => {
   const { newRide } = useScoket();
-  const {ride:rides} = useride()
+  const {ride:rides, clearRide} = useride()
   // console.log("ride id ni xinna ", newRide)
   // console.log("ride id ni xinna ",rides )
 
-
+const navagation = useNavigate()
   const { data } = useQuery({
     queryKey: ["ride-status", rides?.id],
     queryFn: () => ride(rides?.id!),
@@ -66,10 +70,58 @@ console.log("teh stus",status)
     </Dialog>
   );
     case "ACCEPTED":
-    return ( <div><p>Accepted</p></div> ) ;
+    return ( 
+    <div className="flex ">
+      
+      <p className="text-white font-bold">
+        <p>{data }</p>
+      </p>
+    </div>
+     ) ;
+     case "COMPLETED":
+      return (
+       <div className="flex min-h-screen items-center justify-center bg-[#05060D] px-4">
+  <div className="w-full max-w-md rounded-3xl border border-purple-700/20 bg-[#11131F] p-8 text-center shadow-2xl">
+    {/* Success Icon */}
+    <div className="mx-auto flex h-24 w-24 items-center justify-center ">
+      {/* <Smile className="h-16 w-16 text-blue-900" /> */}
+       <p><span className='text-3xl text-white  font-bold'>जाऔँ</span  ><span className='text-3xl text-blue-500 font-bold'>SATHE</span></p>
+    </div>
+
+    {/* Title */}
+    <h1 className="mt-6 text-3xl font-bold text-white">
+      Ride Completed!
+    </h1>
+
+    {/* Description */}
+    <p className="mt-3 text-gray-400">
+      Your ride has been completed successfully.
+      Thank you for riding with जाऔँsathe .
+    </p>
+
+    {/* Divider
+    <div className="my-6 border-t border-gray-700" /> */}
+
+    {/* Button */}
+    <Button
+      className="h-12 w-full rounded-xl mt-6 bg-green-600 text-lg font-semibold hover:bg-green-500"
+      onClick={() => {
+        navagation({ to: "/" });
+        clearRide();
+      }}
+    >
+      Done
+    </Button>
+  </div>
+</div>
+      );
 
   default:
-    return null;
+    return (
+      <div>
+        <p className="text-white">{data}check the status</p>
+      </div>
+    );
   }
  
 

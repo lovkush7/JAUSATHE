@@ -98,4 +98,16 @@ export class RideController extends Controller{
         
     }
 
+    @Get("getuserride")
+    async GetuserRide(
+        @Query() userId: string
+    ){
+        try{
+        return RideServices.GetuserRide(userId)
+        }catch(err){
+            console.log(err)
+        }
+
+    }
+
 }

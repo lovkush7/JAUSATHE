@@ -1,0 +1,149 @@
+name: "CICD PIPLINE OF JAUSATHE"
+
+on: 
+    push: 
+        branches: ["main"]
+    pull_request: 
+        branches: ["main"]
+        
+    workflow_dispatch:
+        inputs:
+            environments:
+                description: "select the environments to deploy"
+                required: true
+                default: "staging"
+                type: choice
+                options:
+                    - staging
+                    - production
+                    
+concurrency: 
+    group: ${{github.workflow}}-${{github.ref}}
+    cancel-in-progress: true
+    
+env:
+    NODE_VERSION: "20.x"
+    POSTGRES_VERSION: "16"
+    DOCKER_REGISTER: ghcr.io
+    IMAGE_NAME: ${{github.repository}}
+
+
+jobs:
+    code_quality:
+        name: "code-quality"
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/Checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: setup pnpm
+              uses: pnpm/action-setup@v3
+              with:
+                  version: 10
+                  
+            - name: setup node${{env.NODE_VERSION}}
+              uses: actions/setup-node@v4  
+              with:
+                  node-version: ${{env.NODE_VERSION}}
+                  cache: "pnpm"
+                  cache-dependency-path: |
+                    frontend/pnpm-lock.yaml
+                    backend/pnpm-lock.yaml
+                    
+            - name: Install frontend dependency
+              working-directory: ./frontend
+              run: pnpm Install --frozen-lockfile
+              
+            - name: Install backend dependency
+              working-directory: ./backend
+              run: pnpm Install --frozen-lockfile
+              
+            - name: frontend lint
+              working-directory: ./frontend
+              run: |
+                pnpm run lint  --max-warnings=0
+                pnpm run format:check   
+
+            - name: backend lint 
+              working-directory: ./backend
+              run: |
+                pnpm run lint --max-warnings=0
+                pnpm run format:check 
+                
+            - name: typescript type check -frontend
+              working-directory: ./frontend
+              run: pnpm run type-check
+
+            - name: typescript tpe check -backend 
+              working-directory: ./backend
+              run: pnpm run type-check 
+
+    dependency_audit:
+        name: "dependency audit"
+        runs-on: ubuntu-latest
+        
+        steps:
+          - name: checkout code
+            uses: actions/checkout@v4
+            with:
+              fetch-depth: 0
+
+          - name: setup node
+            uses: actions/setup-node@v4
+            with:
+              node-version: ${{env.NODE_VERSION}}
+              cache: "pnpm"
+              
+          - name: audit frontend dependency
+            working-directory: ./frontend
+            run: pnpm audit --audit-level=High
+
+          - name: dependency_audit backend
+            working-directory: ./backend
+            run: pnpm audit --audit-level=High
+
+          - name: run snyk security scan
+            uses: snyk/actions/node@master
+            continue-on-error: true
+            with:
+              args: --severity-threshold=high --all-projects --sarif-file-output=snyk.sarif #SARIF (Static Analysis Results Interchange Format) security scan results को standard format हो।
+
+          - name: upload snyk results on github security
+            uses: github/codeql-action/upload-sarif@v3
+            if: always()
+            with:
+              sarif_file: snyk.sarif
+            continue-on-error: true
+            
+    security_scan:
+        name: "security_scan trufflehog"
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: checkout code
+            uses: actions/checkout@v4
+            with:
+              fetch-depth: 0
+
+          - name: trufflehog security scan
+            uses: trufflesecurity/trufflehog@main
+            with:
+                head: ${{github.event.repository.default_branch}}
+                base: HEAD 
+                extra_args: --fails
+                 
+
+                  
+            
+
+
+
+                  
+           
+            
+            
+
+        

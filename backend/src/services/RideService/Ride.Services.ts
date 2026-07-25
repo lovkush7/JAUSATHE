@@ -316,5 +316,28 @@ console.log("Driver Count:", driver.length);
       }
 
     }
+    async GetuserRide(userId: string){
+         try{
+           const existanceride =  await Ride.find(
+            {
+              where:{
+                
+                rider:{
+                  id: userId
+                  
+                },
+                ridestauts: RideStatus.COMPLETED
+                
+              }
+            }
+           )
+           if(!existanceride){
+            throw new Error("the ride never exist")
+           }
+           return existanceride;
+         }catch(err){
+          console.log("teh error is ",err)
+         }
+    }
 }
 export default new RideService();

@@ -28,7 +28,7 @@ const Navbar = () => {
               My Rides</li>
             <li className={ menu === "/Book/Payment" ? " text-[#1E18AA] border-b-2 border-[#1E18AA]" : ""}
              onClick={()=>navigate({to: "/Book/Payment"})}>
-              Payment
+              History
               </li>
             <li className={ menu === "/Profile" ? " text-[#1E18AA] border-b-2 border-[#1E18AA]" : ""}
              onClick={()=>navigate({to: "/Profile"})}>
