@@ -11,6 +11,7 @@ import Driverlocation from "../../map/Acceptedmap";
 import { Button } from "../../../components/ui/button";
 import { useNavigate } from "@tanstack/react-router";
 import { CheckCircle2, Smile } from "lucide-react";
+import { useEffect } from "react";
 
 const ride = async (rideId: string) => {
   const req = await api.get("ride/getstatus", {
@@ -37,6 +38,16 @@ const navagation = useNavigate()
     refetchInterval: 3000, 
   });
 const status = data;
+  useEffect(() => {
+    if (!status) {
+      const timer = setTimeout(() => {
+        clearRide();
+           navagation({to:"/"})
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [status, clearRide]);
 console.log("teh stus",status)
 
   switch(status){
@@ -118,10 +129,21 @@ console.log("teh stus",status)
 
   default:
     return (
-      <div>
-        <p className="text-white">{data}check the status</p>
-      </div>
-    );
+      <div className="flex min-h-screen items-center justify-center bg-[#05060D] px-4">
+  <div className="w-full max-w-md rounded-3xl border border-purple-700/20 bg-[#11131F] p-8 text-center shadow-2xl">
+    {/* Success Icon */}
+    <div className="mx-auto flex h-24 w-24 items-center justify-center ">
+      {/* <Smile className="h-16 w-16 text-blue-900" /> */}
+       <p><span className='text-3xl text-white  font-bold'>जाऔँ</span  ><span className='text-3xl text-blue-500 font-bold'>SATHE</span></p>
+    </div>
+
+    {/* Title */}
+    <h1 className="mt-6 text-3xl font-bold text-red-700">
+      Please BOOK THE RIDE!!!
+    </h1> 
+  </div>
+</div>
+      );
   }
  
 

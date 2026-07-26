@@ -328,6 +328,12 @@ console.log("Driver Count:", driver.length);
                 },
                 ridestauts: RideStatus.COMPLETED
                 
+              },
+              relations:{
+                driver:{
+                  user: true
+                }
+
               }
             }
            )
