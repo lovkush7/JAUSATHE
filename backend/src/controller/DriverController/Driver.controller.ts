@@ -56,6 +56,8 @@ export class DriverController extends Controller{
             throw err;
         }
 
+
+
     }
 
     // @Patch("/updateStauts")
@@ -116,4 +118,6 @@ export class DriverController extends Controller{
 
         return await DriverService.ApproveDriver(id)
     }
+
+    
 }

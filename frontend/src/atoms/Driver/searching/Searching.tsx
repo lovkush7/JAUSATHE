@@ -12,6 +12,9 @@ import { Button } from "../../../components/ui/button";
 import { useNavigate } from "@tanstack/react-router";
 import { CheckCircle2, Smile } from "lucide-react";
 import { useEffect } from "react";
+import Drivermap from "../../map/Drivermap";
+import CurrentRide from "../CurrentRide/CurrentRide";
+import UserAcceptance from "../../map/UserAcceptancemap";
 
 const ride = async (rideId: string) => {
   const req = await api.get("ride/getstatus", {
@@ -83,10 +86,16 @@ console.log("teh stus",status)
     case "ACCEPTED":
     return ( 
     <div className="flex ">
-      
-      <p className="text-white font-bold">
-        <p>{data }</p>
-      </p>
+      <div className="flex-1">
+          <UserAcceptance/>
+      </div>
+      <div className="w-[370px] p-4">
+        <CurrentRide/>
+      </div>
+      <div>
+        
+      </div>
+ 
     </div>
      ) ;
      case "COMPLETED":
@@ -99,7 +108,7 @@ console.log("teh stus",status)
        <p><span className='text-3xl text-white  font-bold'>जाऔँ</span  ><span className='text-3xl text-blue-500 font-bold'>SATHE</span></p>
     </div>
 
-    {/* Title */}
+
     <h1 className="mt-6 text-3xl font-bold text-white">
       Ride Completed!
     </h1>
@@ -115,7 +124,7 @@ console.log("teh stus",status)
 
     {/* Button */}
     <Button
-      className="h-12 w-full rounded-xl mt-6 bg-green-600 text-lg font-semibold hover:bg-green-500"
+      className="h-12 w-full rounded-xl mt-6 bg-blue-600 text-lg font-semibold hover:bg-blue-500"
       onClick={() => {
         navagation({ to: "/" });
         clearRide();

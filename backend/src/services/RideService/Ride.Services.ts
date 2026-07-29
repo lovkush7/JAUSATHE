@@ -345,5 +345,26 @@ console.log("Driver Count:", driver.length);
           console.log("teh error is ",err)
          }
     }
+    async getDriver(
+      rideId: string
+    ){
+      try{
+          const existance = await Ride.findOne({
+            where:{
+              id: rideId
+            },
+            relations:{
+              driver: {
+                user: true
+              }
+
+            }
+          })
+          return existance;
+      }catch(err){
+        console.log(err)
+      }
+
+    }
 }
 export default new RideService();

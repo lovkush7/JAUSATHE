@@ -9,6 +9,8 @@ type Routemode = "driver" | "trip"
     locations: locationType | null
     destination: locationType | null
     driverloc: locationType| null
+    driverpros: locationType | null
+    pickuppros: locationType | null
     riderloc: locationType | null
     routemode: Routemode,
     passdestination: locationType | null
@@ -19,7 +21,8 @@ type Routemode = "driver" | "trip"
     driverposition:(data: locationType| null) =>void
     riderpostion: (data: locationType | null) => void
     setroutemode: (route: Routemode) => void
-
+    getdriverpos:(data: locationType|null )=>void
+     getpickuppros: (data:locationType |  null) =>void
  }
 
 const uselocation = create<locationstore>((set)=>({
@@ -29,6 +32,8 @@ const uselocation = create<locationstore>((set)=>({
     driverloc: null,
     riderloc: null,
     routemode: "driver",
+    driverpros:null,
+    pickuppros: null,
 
 
     currentLocation: (data)=>{
@@ -69,7 +74,13 @@ const uselocation = create<locationstore>((set)=>({
      },
      passengerdestination: (data)=>{
         set({passdestination: data})
-     }
+     },
+     getdriverpos:async (data)=>{
+       set({driverpros:data})
+     },
+     getpickuppros(data) {
+         set({pickuppros: data})
+     },
 
 }))
 

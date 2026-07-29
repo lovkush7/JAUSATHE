@@ -109,5 +109,17 @@ export class RideController extends Controller{
         }
 
     }
+     @Get("/GetDriver")
+  async GetDriver(
+    @Query() RideId: string
+  ){
+    try{
+        return await RideServices.getDriver(RideId)
+    }catch(err){
+        console.log("the error is ", err)
+    }
+
+  }
+
 
 }
