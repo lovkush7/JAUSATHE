@@ -30,7 +30,7 @@ export enum RideStatus{
     REQUESTED = "REQUESTED",
     SEARCHING ="SEARCHING",
     ACCEPTED = "ACCEPTED",
-    ARRIVING = "ARRIVING",
+    ARRIVED = "ARRIVED",
     STARTED = "STARTED",
     COMPLETED = "COMPLETED",
     CANCELED = "CANCELED",
@@ -42,4 +42,11 @@ export enum Cancledby {
     DRIVER = "DRIVER",
     PASSENGERS = "PASSENGERS",
     SYSTEM = "SYSTEM"
+}
+
+export enum  Payment{
+    CARD= "CARD",
+    CASH="CASH",
+    ESEWA="ESEWA",
+    KHALTI="KHALTI"
 }

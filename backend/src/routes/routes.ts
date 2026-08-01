@@ -76,7 +76,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "RideStatus": {
         "dataType": "refEnum",
-        "enums": ["REQUESTED","SEARCHING","ACCEPTED","ARRIVING","STARTED","COMPLETED","CANCELED","DRIVERNOTFOUND"],
+        "enums": ["REQUESTED","SEARCHING","ACCEPTED","ARRIVED","STARTED","COMPLETED","CANCELED","DRIVERNOTFOUND"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Cancledby": {
@@ -143,6 +143,7 @@ const models: TsoaRoute.Models = {
             "rider": {"ref":"User","required":true},
             "vechicle": {"ref":"Vechicles","required":true},
             "driver": {"ref":"Driver","required":true},
+            "payment": {"ref":"Payments","required":true},
         },
         "additionalProperties": false,
     },
@@ -185,6 +186,25 @@ const models: TsoaRoute.Models = {
             "ridesasDriver": {"dataType":"array","array":{"dataType":"refObject","ref":"Ride"},"required":true},
             "vechicles": {"ref":"Vechicles","required":true},
             "user": {"ref":"User","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Payment": {
+        "dataType": "refEnum",
+        "enums": ["CARD","CASH","ESEWA","KHALTI"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Payments": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "DeletedAt": {"dataType":"datetime","required":true},
+            "UpdatedAt": {"dataType":"datetime","required":true},
+            "CreatedAt": {"dataType":"datetime","required":true},
+            "PaymentType": {"ref":"Payment","required":true},
+            "payment": {"dataType":"string","required":true},
+            "Payment": {"ref":"Ride","required":true},
         },
         "additionalProperties": false,
     },

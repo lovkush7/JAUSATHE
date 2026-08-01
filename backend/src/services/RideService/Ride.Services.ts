@@ -162,7 +162,7 @@ console.log("Driver Count:", driver.length);
       const Activestatus = [
         RideStatus.REQUESTED,
         RideStatus.ACCEPTED,
-        RideStatus.ARRIVING,
+        RideStatus.ARRIVED,
         RideStatus.STARTED,
 
       ]

@@ -132,7 +132,7 @@
 					"REQUESTED",
 					"SEARCHING",
 					"ACCEPTED",
-					"ARRIVING",
+					"ARRIVED",
 					"STARTED",
 					"COMPLETED",
 					"CANCELED",
@@ -334,6 +334,9 @@
 					},
 					"driver": {
 						"$ref": "#/components/schemas/Driver"
+					},
+					"payment": {
+						"$ref": "#/components/schemas/Payments"
 					}
 				},
 				"required": [
@@ -362,7 +365,8 @@
 					"tripEndAt",
 					"rider",
 					"vechicle",
-					"driver"
+					"driver",
+					"payment"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -508,6 +512,54 @@
 					"ridesasDriver",
 					"vechicles",
 					"user"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Payment": {
+				"enum": [
+					"CARD",
+					"CASH",
+					"ESEWA",
+					"KHALTI"
+				],
+				"type": "string"
+			},
+			"Payments": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"DeletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"CreatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"PaymentType": {
+						"$ref": "#/components/schemas/Payment"
+					},
+					"payment": {
+						"type": "string"
+					},
+					"Payment": {
+						"$ref": "#/components/schemas/Ride"
+					}
+				},
+				"required": [
+					"id",
+					"DeletedAt",
+					"UpdatedAt",
+					"CreatedAt",
+					"PaymentType",
+					"payment",
+					"Payment"
 				],
 				"type": "object",
 				"additionalProperties": false

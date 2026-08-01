@@ -7,7 +7,7 @@ const Payments = () => {
     <div>
         <Navbar/>
         <Userhistory/>
-      hello payments
+     
       
     </div>
   )

@@ -1,9 +1,10 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, type LineString, type Point } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToOne, type LineString, type Point } from "typeorm";
 import { CommonEntity } from "./commonentity.ts";
 import { Cancledby, RideStatus, VehicleType } from "../enum/enum.details.ts";
 import { Vechicles } from "./Vechiles.entity.ts";
 import { User } from "./User.entities.ts";
 import { Driver } from "./Driver.entities.ts";
+import Payments from "./Payment.entities.ts";
 
 @Entity("ride")
 export class Ride extends CommonEntity{
@@ -98,7 +99,9 @@ export class Ride extends CommonEntity{
    @JoinColumn({name: "driverId"})
    driver: Driver;
 
-
+ @OneToOne(()=>Payments, (p)=>p.payment)
+ @JoinColumn()
+ payment: Payments;
 
 
 }

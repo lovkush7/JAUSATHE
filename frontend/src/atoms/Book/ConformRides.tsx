@@ -302,6 +302,7 @@ const ConformRides = () => {
 
 
           </div>
+          
           <div className='bg-[#161628] p-4 rounded-lg border-2 mt-4 border-[#3B3B4F]'>
             <p>Payment Method</p>
 

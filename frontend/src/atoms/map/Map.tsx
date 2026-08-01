@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
 import { motion, useDragControls } from "framer-motion"
 import uselocation from '../../zustand/location'
+import { carIcon, pickupIcon, userIcon } from '../../utils/icons/Icons'
 
 type LocationType = {
     lat: number,
@@ -76,7 +77,7 @@ const Map = ({setLocations,Locations,setDestination,Destination, setTime, setDis
                     setopenform={setopenform}
                 />
                 {Locations &&
-                    <Marker position={[Locations.lat, Locations.lng]}>
+                    <Marker position={[Locations.lat, Locations.lng]} icon={userIcon}>
                         <Popup>
                             your cuttent locations <br />
 
@@ -84,7 +85,7 @@ const Map = ({setLocations,Locations,setDestination,Destination, setTime, setDis
                     </Marker>}
                     {
                         mapdestination &&
-                        <Marker position={[mapdestination.lat, mapdestination.lng]}>
+                        <Marker position={[mapdestination.lat, mapdestination.lng]} icon={pickupIcon}>
                             <Popup>
                                   your destination
                             </Popup>
