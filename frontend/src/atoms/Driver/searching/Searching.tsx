@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   Dialog,
   DialogContent,
@@ -17,18 +17,18 @@ import CurrentRide from "../CurrentRide/CurrentRide";
 import UserAcceptance from "../../map/UserAcceptancemap";
 const payment = [
   {
-    name: "card",
+    name: "CARD",
     icons: "💳"
   },
   {
-    name: "cash",
+    name: "CASH",
     icons: "💵"
   }, {
-    name: "esewa",
+    name: "ESEWA",
     icons: "📱"
   },
   {
-    name: "khalti",
+    name: "KHALTI",
     icons: "🟣"
   }
 ]
@@ -50,6 +50,8 @@ const Searching = () => {
   console.log("ride id ni xinna ", newRide)
   console.log("ride id ni xinna ", rides)
   const [completed, setCompleted] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("");
+
   const navagation = useNavigate()
   const { data } = useQuery({
     queryKey: ["ride-status", rides?.id],
@@ -57,7 +59,26 @@ const Searching = () => {
     enabled: !!rides?.id,
     refetchInterval: 3000,
   });
-
+   const mutation = useMutation({
+    mutationFn: async () => {
+      const response = await api.post("Payment/CreatePayment", {
+        rideId: rides?.id,
+        PaymentType: paymentMethod,
+        payment: rides?.estimatedFare
+      });
+      return response.data;
+    },
+    onSuccess: (data) => {
+      console.log("the data is ", data)
+      setPaymentMethod("");
+      
+      setCompleted(true);
+    },
+    onError: (error) => {
+      console.error("Error completing ride:", error);
+    },
+  }); 
+   
   const status = data;
   useEffect(() => {
     if (!status) {
@@ -156,14 +177,27 @@ const Searching = () => {
             </div>
           ) : (
             <div className="flex p-4  min-h-screen bg-[#05060D] text-white">
-              <div className="flex-1">
+              <div className="flex-1 items-center justify-center ml-20 mr-20">
+                 <div className="flex flex-col gap-2 mt-4 w-full  bg-[#161628] rounded-xl pb-6 pt-4 border border-gray-700 pl-1 pr-1">
+                 <div className="flex justify-start text-sm text-gray-400  ">
+                         <span>Total Amount</span>
+                 </div>
+                  <div className="flex flex-col justify-center items-center text-2xl font-bold text-white">
+                    <span>NRP {rides?.estimatedFare}</span>
+                     <span className="text-sm text-gray-500"> <span>{rides?.pickupAddress}</span> <span>---</span> <span>{rides?.DropoffAddress}</span></span>
+                     <span className="text-sm text-gray-600">{rides?.estimatedDistance}km</span>
+                  </div>
+                </div>
+                
                 <div className='bg-[#161628] p-4 rounded-lg border-2 mt-4 border-[#3B3B4F]'>
                   <p>Payment Method</p>
 
                   {Array.isArray(payment) &&
                     payment.map((dta, index: any) => (
                       <div
-                        onClick={() => SetIsActive(index)}
+                        onClick={() =>{
+                           setPaymentMethod(dta.name)
+                          SetIsActive(index)}}
                         key={dta.name}
                         className={`flex flex-row items-center gap-3 rounded-xl p-3 mt-2
                     ${isActive === index
@@ -172,27 +206,23 @@ const Searching = () => {
                           }`}
                       >
                         <p>{dta.icons}</p>
-                        <p>{dta.name}</p>
+                        <p
+                      
+                        >{dta.name}</p>
                       </div>
                     ))}
                 </div>
-              </div>
-              <div className="w-[370px] p-2">
-                <div className="flex flex-col gap-2 mt-4 w-full  bg-[#161628] rounded-xl pb-6 pt-4 border border-gray-700 pl-1 pr-1">
-                 <div className="flex justify-start text-sm text-gray-400  ">
-                         <span>Total Amount</span>
-                 </div>
-                  <div className="flex flex-col justify-center items-center text-2xl font-bold text-white">
-                    <span>NRP {rides?.estimatedFare}</span>
-                     <span className="text-sm text-gray-500"> <span>{rides?.pickupAddress}</span> <span>---</span> <span>{rides?.DropoffAddress}</span></span>
-                  </div>
-                </div>
                 <div>
-                  <button className="w-full p-4 bg-blue-600 mt-5 rounded-lg text-white" onClick={() => setCompleted((prev)=>!prev)}>
-                    pay{rides?.estimatedFare} <span>{rides?.estimatedDistance}km</span>
+                  <button 
+                  
+                  className="w-full p-4 bg-blue-600 mt-5 rounded-lg text-white" onClick={() =>{ 
+                    mutation.mutate()
+                    setCompleted((prev)=>!prev)}}>
+                    pay{rides?.estimatedFare} 
                   </button>
                 </div>
               </div>
+              
             </div>
           )}
         </>

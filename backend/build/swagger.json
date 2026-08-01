@@ -548,7 +548,7 @@
 					"payment": {
 						"type": "string"
 					},
-					"Payment": {
+					"Ride": {
 						"$ref": "#/components/schemas/Ride"
 					}
 				},
@@ -559,7 +559,7 @@
 					"CreatedAt",
 					"PaymentType",
 					"payment",
-					"Payment"
+					"Ride"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1494,6 +1494,63 @@
 						}
 					}
 				]
+			}
+		},
+		"/Payment/CreatePayment": {
+			"post": {
+				"operationId": "CreatePayment",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"payment": {
+											"$ref": "#/components/schemas/Payments"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"payment",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"rideId": {
+										"type": "string"
+									},
+									"payment": {
+										"type": "string"
+									},
+									"PaymentType": {
+										"$ref": "#/components/schemas/Payment"
+									}
+								},
+								"required": [
+									"rideId",
+									"payment",
+									"PaymentType"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
 			}
 		}
 	},

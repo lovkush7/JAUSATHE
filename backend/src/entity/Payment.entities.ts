@@ -13,6 +13,6 @@ class Payments extends CommonEntity{
     payment: string;
 
     @OneToOne(()=>Ride,(r)=>r.payment)
-     Payment: Ride;
+     Ride: Ride;
 }
 export default Payments;

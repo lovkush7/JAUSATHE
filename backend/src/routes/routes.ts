@@ -13,6 +13,8 @@ import { RideController } from './../controller/RideController/Ride.Controller';
 import { Geocoading } from './../controller/Geocoading/Geocoading.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { DriverController } from './../controller/DriverController/Driver.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { PaymentController } from './../controller/paymentController/Payment.controller';
 import { expressAuthentication } from './../Middlewares/ExpressAuthentication';
 // @ts-ignore - no great way to install types from subpackage
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
@@ -204,7 +206,7 @@ const models: TsoaRoute.Models = {
             "CreatedAt": {"dataType":"datetime","required":true},
             "PaymentType": {"ref":"Payment","required":true},
             "payment": {"dataType":"string","required":true},
-            "Payment": {"ref":"Ride","required":true},
+            "Ride": {"ref":"Ride","required":true},
         },
         "additionalProperties": false,
     },
@@ -955,6 +957,36 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'ApprovedDriver',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsPaymentController_CreatePayment: Record<string, TsoaRoute.ParameterSchema> = {
+                body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"rideId":{"dataType":"string","required":true},"payment":{"dataType":"string","required":true},"PaymentType":{"ref":"Payment","required":true}}},
+        };
+        app.post('/Payment/CreatePayment',
+            ...(fetchMiddlewares<RequestHandler>(PaymentController)),
+            ...(fetchMiddlewares<RequestHandler>(PaymentController.prototype.CreatePayment)),
+
+            async function PaymentController_CreatePayment(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsPaymentController_CreatePayment, request, response });
+
+                const controller = new PaymentController();
+
+              await templateService.apiHandler({
+                methodName: 'CreatePayment',
                 controller,
                 response,
                 next,
