@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: jausathe-namespace
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+
+  template:
+    metadata:
+      matchLabels:
+        app: frontend
+
+    spec:
+      containers:
+        - name: frontend_container
+          image: jausathe/frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containersport: 5173
+
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits: 
+              memory: "512Mi"
+              cpu: "500m"
+
+                         
