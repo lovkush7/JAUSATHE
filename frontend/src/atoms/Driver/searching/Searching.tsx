@@ -59,7 +59,8 @@ const Searching = () => {
     enabled: !!rides?.id,
     refetchInterval: 3000,
   });
-   const mutation = useMutation({
+   const {data: paymentData , mutate} = useMutation({
+    mutationKey: ["complete-ride", rides?.id],
     mutationFn: async () => {
       const response = await api.post("Payment/CreatePayment", {
         rideId: rides?.id,
@@ -70,6 +71,8 @@ const Searching = () => {
     },
     onSuccess: (data) => {
       console.log("the data is ", data)
+      console.log("the payment method is ", paymentData)
+      setCompleted((prev)=>!prev)
       setPaymentMethod("");
       
       setCompleted(true);
@@ -216,8 +219,8 @@ const Searching = () => {
                   <button 
                   
                   className="w-full p-4 bg-blue-600 mt-5 rounded-lg text-white" onClick={() =>{ 
-                    mutation.mutate()
-                    setCompleted((prev)=>!prev)}}>
+                   mutate()
+                  }}>
                     pay{rides?.estimatedFare} 
                   </button>
                 </div>

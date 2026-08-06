@@ -1531,20 +1531,20 @@
 						"application/json": {
 							"schema": {
 								"properties": {
-									"rideId": {
-										"type": "string"
-									},
 									"payment": {
 										"type": "string"
 									},
 									"PaymentType": {
 										"$ref": "#/components/schemas/Payment"
+									},
+									"rideId": {
+										"type": "string"
 									}
 								},
 								"required": [
-									"rideId",
 									"payment",
-									"PaymentType"
+									"PaymentType",
+									"rideId"
 								],
 								"type": "object"
 							}
