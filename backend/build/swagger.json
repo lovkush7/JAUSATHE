@@ -546,7 +546,8 @@
 						"$ref": "#/components/schemas/Payment"
 					},
 					"payment": {
-						"type": "string"
+						"type": "number",
+						"format": "double"
 					},
 					"Ride": {
 						"$ref": "#/components/schemas/Ride"
@@ -1532,7 +1533,8 @@
 							"schema": {
 								"properties": {
 									"payment": {
-										"type": "string"
+										"type": "number",
+										"format": "double"
 									},
 									"PaymentType": {
 										"$ref": "#/components/schemas/Payment"
@@ -1551,6 +1553,55 @@
 						}
 					}
 				}
+			}
+		},
+		"/Payment/monthly-earning": {
+			"get": {
+				"operationId": "Gettotalpayment",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"properties": {
+											"earnings": {
+												"type": "number",
+												"format": "double"
+											},
+											"month": {
+												"type": "string"
+											}
+										},
+										"required": [
+											"earnings",
+											"month"
+										],
+										"type": "object"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "year",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
 			}
 		}
 	},

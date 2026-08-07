@@ -205,7 +205,7 @@ const models: TsoaRoute.Models = {
             "UpdatedAt": {"dataType":"datetime","required":true},
             "CreatedAt": {"dataType":"datetime","required":true},
             "PaymentType": {"ref":"Payment","required":true},
-            "payment": {"dataType":"string","required":true},
+            "payment": {"dataType":"double","required":true},
             "Ride": {"ref":"Ride","required":true},
         },
         "additionalProperties": false,
@@ -969,7 +969,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsPaymentController_CreatePayment: Record<string, TsoaRoute.ParameterSchema> = {
-                body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"payment":{"dataType":"string","required":true},"PaymentType":{"ref":"Payment","required":true},"rideId":{"dataType":"string","required":true}}},
+                body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"payment":{"dataType":"double","required":true},"PaymentType":{"ref":"Payment","required":true},"rideId":{"dataType":"string","required":true}}},
         };
         app.post('/Payment/CreatePayment',
             ...(fetchMiddlewares<RequestHandler>(PaymentController)),
@@ -987,6 +987,38 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'CreatePayment',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsPaymentController_gettotalpayment: Record<string, TsoaRoute.ParameterSchema> = {
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
+                year: {"in":"query","name":"year","dataType":"double"},
+        };
+        app.get('/Payment/monthly-earning',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(PaymentController)),
+            ...(fetchMiddlewares<RequestHandler>(PaymentController.prototype.gettotalpayment)),
+
+            async function PaymentController_gettotalpayment(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsPaymentController_gettotalpayment, request, response });
+
+                const controller = new PaymentController();
+
+              await templateService.apiHandler({
+                methodName: 'gettotalpayment',
                 controller,
                 response,
                 next,

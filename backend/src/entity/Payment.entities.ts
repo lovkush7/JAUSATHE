@@ -9,8 +9,8 @@ class Payments extends CommonEntity{
     @Column({type:"enum",enum:Payment,default:Payment.CASH})
     PaymentType:Payment
 
-    @Column({type:"text",nullable:true})
-    payment: string;
+    @Column({type:"decimal",nullable:true})
+    payment: number;
 
     @OneToOne(()=>Ride,(r)=>r.payment)
      Ride: Ride;

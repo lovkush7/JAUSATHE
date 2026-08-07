@@ -8,6 +8,7 @@ import useScoket from '../../zustand/socket.config'
 import Trialmap from '../../atoms/map/Trial'
 import { Switch } from '../../components/ui/switch'
 import { Label } from '../../components/ui/label'
+import DriverEarningChart from '../../atoms/Driver/CHART/DriverEarningChart'
 // import { Satellite } from 'lucide-react'
 // import { Satellite } from 'lucide-react'
 
@@ -68,16 +69,19 @@ const DriverDashboard = () => {
                         setLocations={setLocations}
                         Locations={Locations!} />
                     <div className="flex items-center text-white text-sm space-x-2">
-                         
+
                         <Switch id="airplane-mode" checked={stellite}
-                         onCheckedChange={setSatellite} 
-                           className="data-[state=checked]:bg-blue-600 data-[state=unchecked]:bg-gray-600" />
-                       <Label htmlFor="airplane-mode">Satellite mode</Label>
+                            onCheckedChange={setSatellite}
+                            className="data-[state=checked]:bg-blue-600 data-[state=unchecked]:bg-gray-600" />
+                        <Label htmlFor="airplane-mode">Satellite mode</Label>
                     </div>
                 </div>
+               
                 <div className='w-[350px] border-l p-3 '>
                     <Driverhome />
+                    <DriverEarningChart/>
                 </div>
+                
             </div>
 
         </div>

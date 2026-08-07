@@ -41,7 +41,14 @@ const ride = async (rideId: string) => {
   console.log("the the fetched res is  ", req.data)
   return req.data;
 };
-
+const createPayment = async ( rides:any, paymentMethod: string )=>{
+const response = await api.post("Payment/CreatePayment", {
+        rideId: rides?.id,
+        PaymentType: paymentMethod,
+        payment: rides?.estimatedFare
+      });
+      return response.data;
+}
 
 const Searching = () => {
   const [isActive, SetIsActive] = useState(null)
@@ -61,14 +68,7 @@ const Searching = () => {
   });
    const {data: paymentData , mutate} = useMutation({
     mutationKey: ["complete-ride", rides?.id],
-    mutationFn: async () => {
-      const response = await api.post("Payment/CreatePayment", {
-        rideId: rides?.id,
-        PaymentType: paymentMethod,
-        payment: rides?.estimatedFare
-      });
-      return response.data;
-    },
+    mutationFn: () => createPayment(rides, paymentMethod),
     onSuccess: (data) => {
       console.log("the data is ", data)
       console.log("the payment method is ", paymentData)
