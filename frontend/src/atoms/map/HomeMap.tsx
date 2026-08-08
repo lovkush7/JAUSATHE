@@ -98,7 +98,7 @@ const HomeMap = ({setLocations, Locations}: props) => {
                 /> */}
                 {Locations &&
                     <Marker position={[Locations.lat, Locations.lng]}
-                    icon={userIcon}>
+                    >
                         <Popup>
                             your cuttent locations <br />
 

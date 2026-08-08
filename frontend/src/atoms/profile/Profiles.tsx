@@ -1,6 +1,8 @@
 import React from 'react'
+import useScoket from '../../zustand/socket.config'
 
 const Profiles = () => {
+  const {authUser} = useScoket()
   return (
     <div className='w-full h-full p-2'>
     <div className='bg-gradient-to-r from-violet-600 to-indigo-600  rounded-lg border-2 border-[#3B3B4F] p-4' >

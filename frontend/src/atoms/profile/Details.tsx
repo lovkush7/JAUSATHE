@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button } from '../../components/ui/button'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 import {
     AlertDialog,
@@ -16,9 +16,17 @@ import {
 import { Input } from '../../components/ui/input'
 import { Field } from '../../components/ui/field'
 import { Label } from '../../components/ui/label'
+import useScoket from '../../zustand/socket.config'
+import { api } from '../../api/Api'
 // import { Button } from "@/components/ui/button"
 
+const getprofile = async (userId: string)=>{
+    const res = await api.get(`users/getprofile/${userId}`)
+    return res.data
+}
+
 const Details = () => {
+    const {authUser,checkauth} = useScoket()
     const data = [
         {
             title: "Home",
@@ -31,9 +39,14 @@ const Details = () => {
             icon: "🏢"
         }
     ]
-    const mutation = useMutation({
-        mutationKey: []
-    })
+       useEffect(()=>{checkauth},[])
+      const {data:profile} = useQuery({
+        queryKey: [authUser?.id],
+        queryFn:()=> getprofile(authUser!.id),
+        enabled: !!authUser?.id
+      })
+      console.log("the profile is ",profile)
+       
     return (
         <div className='w-full h-full p-2'>
             <div className='bg-[#0E1328]  rounded-lg border-2 border-[#3B3B4F] p-4' >
@@ -97,8 +110,8 @@ const Details = () => {
                 <div className='w-full'> 
                     <AlertDialog>
                         <AlertDialogTrigger className='w-full' >
-                            <button className='bg-transparent border border-gray-700 rounded-lg w-full p-2 text-blue-700 mt-4
-                        '>+ add address</button>
+                            <Button className='bg-transparent border border-gray-700 rounded-lg w-full p-2 text-blue-700 mt-4
+                        '>+ add address</Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent className='bg-gray-800 text-white'>
                             <AlertDialogHeader>
