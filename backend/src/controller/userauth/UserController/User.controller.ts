@@ -2,6 +2,7 @@ import { Controller, Delete, Get, Middlewares, Path, Query, Route } from "tsoa";
 import { Adminmiddleware } from "../../../Middlewares/AdminMiddleware.ts";
 import type { UserRole } from "../../../enum/enum.details.ts";
 import UserServices from "../../../services/UserService/User.services.ts";
+import path from "node:path";
 
 @Route("users")
 export class UserController extends Controller {
@@ -27,5 +28,16 @@ export class UserController extends Controller {
         @Path() id: string
     ){
         return await UserServices.DeleteUser(id)
+    }
+
+    @Get("getprofile/{userId}")
+    async Getprofile(
+        @Path() userId: string
+    ){
+         try{
+        return await UserServices.Getprofile(userId)
+         }catch(err){
+            console.log("th eerror is ",err)
+         }
     }
 }

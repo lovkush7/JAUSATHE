@@ -34,7 +34,7 @@ class PaymentServices {
     }
 
     async gettotalPayment(
-        driverId: string,
+        userId: string,
         year: number
     ) {
         try {
@@ -42,7 +42,8 @@ class PaymentServices {
                 .select("EXTRACT(MONTH FROM ride.CreatedAt)", "month")
                 .addSelect("SUM(ride.estimatedFare)", "earnings")
                 .leftJoin("ride.driver", "driver")
-                .where("driver.id = :driverId", { driverId })
+                .leftJoin("driver.user", "user")
+                .where("user.id = :userId", { userId })
                 .andWhere("ride.ridestauts = :status", {
                     status: RideStatus.COMPLETED,
                 })

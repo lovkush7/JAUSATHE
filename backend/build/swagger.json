@@ -871,6 +871,34 @@
 				]
 			}
 		},
+		"/users/getprofile/{userId}": {
+			"get": {
+				"operationId": "Getprofile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/ride/estimatefare": {
 			"get": {
 				"operationId": "Estimatefare",
@@ -1586,12 +1614,16 @@
 						}
 					}
 				},
-				"security": [
-					{
-						"jwt": []
-					}
-				],
+				"security": [],
 				"parameters": [
+					{
+						"in": "query",
+						"name": "driverId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
 					{
 						"in": "query",
 						"name": "year",

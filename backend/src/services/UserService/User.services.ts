@@ -54,5 +54,31 @@ class UserService {
         throw  err;
     }
     }
+    async Getprofile(
+        userId: string
+    ){
+       try{
+        const existance = await User.findOne({
+            where:{
+                id: userId
+            },
+            relations:{
+                Driver: {
+                    vechicles: true
+                },
+                rides:true,
+                
+
+            }
+            
+        })
+        if(!existance){
+            throw new Error("user never exist")
+        }
+        return existance;
+       }catch(err){
+        console.log(err)
+       }
+    }
 }
 export default new UserService();

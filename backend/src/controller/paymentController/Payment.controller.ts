@@ -1,4 +1,4 @@
-import { Body, Controller,  Get,  Post,  Query,  Request,  Route, Security } from "tsoa";
+import { Body, Controller,  Get,  Path,  Post,  Query,  Request,  Route, Security } from "tsoa";
 import PaymentServices from "../../services/payment/Payment.Services.ts";
 import type { Payment } from "../../enum/enum.details.ts";
 
@@ -16,12 +16,11 @@ export class PaymentController  extends Controller{
     }
 
     @Get("monthly-earning")
-    @Security("jwt")
     async gettotalpayment(
-        @Request() request: any,
+        @Query() driverId: string,
         @Query() year?: number
     ){
-        const driverId =  request.user.id;
+       
         return await PaymentServices.gettotalPayment(driverId,
             year ?? new Date().getFullYear()
         )
