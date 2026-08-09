@@ -24,7 +24,7 @@ const Profile = () => {
     }
   })
   return (
-    <div className='bg-[#08080F] h-screen w-full'>
+    <div className='bg-[#08080F] h-screen w-full overflow-y-auto'>
         <Navbar/>
         <div className='flex'>
         <div className='w-[350px] border-l p-3'>
