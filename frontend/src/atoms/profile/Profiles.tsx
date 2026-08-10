@@ -1,8 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import useScoket from '../../zustand/socket.config'
-
+import { api } from '../../api/Api'
+import { useQuery } from '@tanstack/react-query'
+const getprofile = async (userId: string) => {
+    const res = await api.get(`users/getprofile/${userId}`)
+    return res.data
+}
 const Profiles = () => {
-  const {authUser} = useScoket()
+    const { authUser, checkauth } = useScoket()
+      useEffect(() => {
+          checkauth()
+      }, [])
+         const { data: profile } = useQuery({
+        queryKey: [authUser?.id],
+        queryFn: () => getprofile(authUser!.id),
+        enabled: !!authUser?.id
+    })
+    console.log("the profile is ", profile)
   return (
     <div className='w-full h-full p-2'>
     <div className='bg-gradient-to-r from-violet-600 to-indigo-600  rounded-lg border-2 border-[#3B3B4F] p-4' >
@@ -11,10 +25,10 @@ const Profiles = () => {
                   {/* <p className='items-center justify-center text-3xl'>👨‍💼</p> */}
                </div>
                    <div>
-                    <span className='font-bold text-white text-[20px]'>Lov karki</span>
+                    <span className='font-bold text-white text-[20px]'>{profile?.FullName}</span>
                    </div>
                    <div>
-                    <span className='text-white text-sm'>987654321</span>
+                    <span className='text-white text-sm'>{profile?.Phone}</span>
                    </div>
                    <div className='flex gap-2.5 text-white text-[10px]'>
                        <p>⭐4.92</p>

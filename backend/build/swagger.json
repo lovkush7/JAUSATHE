@@ -565,6 +565,37 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"UpdateProfileDto": {
+				"properties": {
+					"FullName": {
+						"type": "string"
+					},
+					"Email": {
+						"type": "string"
+					},
+					"Phone": {
+						"type": "string"
+					},
+					"address": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"profile": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"FullName",
+					"Email",
+					"Phone",
+					"address",
+					"profile"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"CreateRideDto": {
 				"properties": {
 					"PickupAddress": {
@@ -897,6 +928,44 @@
 						}
 					}
 				]
+			}
+		},
+		"/users/update/{id}": {
+			"put": {
+				"operationId": "UpdateProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateProfileDto"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/ride/estimatefare": {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '../../components/ui/button'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
@@ -14,20 +14,52 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Input } from '../../components/ui/input'
-import { Field } from '../../components/ui/field'
+import { Field, FieldLabel } from '../../components/ui/field'
 import { Label } from '../../components/ui/label'
 import useScoket from '../../zustand/socket.config'
 import { api } from '../../api/Api'
 import Profile from '../../UI/Profile/Profile'
-// import { Button } from "@/components/ui/button"
+import { Pencil } from 'lucide-react'
 
-const getprofile = async (userId: string) => {
+// import { Button } from "@/components/ui/button"
+type updateprofile = {
+    Fullname?: string,
+        Email?: string,
+        Phone?: string,
+        address?: string
+}
+
+const getprofile = async (userId: string,) => {
     const res = await api.get(`users/getprofile/${userId}`)
+    return res.data
+}
+const updateProfile = async (authUser: string,update: updateprofile) =>{
+    const res = await api.patch(`users/update/${authUser}`,
+        update
+    )
     return res.data
 }
 
 const Details = () => {
     const { authUser, checkauth } = useScoket()
+    const [update, setUpdate ] = useState({
+        Fullname: "",
+        Email: "",
+        Phone: "",
+        address: ""
+    })
+    const mutation = useMutation({
+        mutationKey: [update],
+        mutationFn: (update:updateprofile)=>updateProfile(authUser?.id!, update),
+        onSuccess:(data)=>{
+       console.log(data)
+        },
+        onError:()=>{
+            alert("the errror occur during send")
+        }
+        
+        
+    })
     const data = [
         {
             title: "Home",
@@ -58,30 +90,108 @@ const Details = () => {
                     <div className="grid grid-cols-2 gap-4 text-white">
                         <div>
                             <label className="text-gray-400">Full Name</label>
-                            <div className="bg-[#222233] border border-[#3B3B4F] rounded-lg p-2">
+                            <div className="bg-[#222233] border border-[#3B3B4F] rounded-lg p-2 flex justify-between items-center">
                                 <span>{profile?.FullName}</span>
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Pencil className='text-gray-500' size={15}/>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                            <FieldLabel className='text-gray-500'>Fullname</FieldLabel>
+                                               <Input
+                                                value={update.Fullname} 
+                                                onChange={(e)=>setUpdate({...update, Fullname:e.target.value})}
+                                                 placeholder='Change your fullname' />
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction onClick={()=>mutation.mutate(
+                                                {Fullname: update.Fullname}
+                                            )}>Change</AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+
                             </div>
                         </div>
 
                         <div>
                             <label className="text-gray-400">Email</label>
-                            <div className="bg-[#222233] border border-[#3B3B4F] rounded-lg p-2">
+                            <div className="bg-[#222233] border border-[#3B3B4F] rounded-lg p-2 flex justify-between items-center">
                                 <span>{profile?.Email}</span>
+                                 <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Pencil className='text-gray-500' size={15}/>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                            <FieldLabel className='text-gray-500'>Email</FieldLabel>
+                                               <Input value={update.Email} onChange={(e)=>setUpdate({...update,Email: e.target.value})} placeholder='Change your Email' />
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction
+                                             onClick={()=>mutation.mutate({
+                                                Email: update.Email
+                                             })}>Change</AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+
                             </div>
                         </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4 text-white">
                         <div>
                             <label className="text-gray-400">Phone</label>
-                            <div className="bg-[#222233] border border-[#3B3B4F] rounded-lg p-2">
+                            <div className="bg-[#222233] border border-[#3B3B4F] rounded-lg p-2 flex justify-between items-center">
                                 <span>{profile?.Phone}</span>
+                                 <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Pencil className='text-gray-500' size={15}/>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                            <FieldLabel className='text-gray-500'>Phone</FieldLabel>
+                                               <Input type='number' value={update.Phone} onChange={(e)=>setUpdate({...update, Phone:e.target.value})} placeholder='Change your phone' />
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction onClick={()=>mutation.mutate({Phone:update.Phone})}>Change</AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+
                             </div>
                         </div>
 
                         <div>
                             <label className="text-gray-400">Address</label>
-                            <div className="bg-[#222233] border border-[#3B3B4F] rounded-lg p-2">
+                            <div className="bg-[#222233] border border-[#3B3B4F] rounded-lg p-2 flex justify-between items-center">
                                 <span>kathmandu,Nepal</span>
+                                 <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Pencil className='text-gray-500' size={15}/>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                            <FieldLabel className='text-gray-500'>Address</FieldLabel>
+                                               <Input value={update.address} onChange={(e)=>setUpdate({...update, address:e.target.value})} placeholder='Change your Address' />
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction onClick={()=>mutation.mutate({
+                                                address:update.address
+                                            })}>Change</AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+
                             </div>
                         </div>
                     </div>
@@ -174,7 +284,7 @@ const Details = () => {
                             </div>
                             <hr className='border border-gray-500 mt-2' />
                         </div>
-                         <div className='flex flex-col'>
+                        <div className='flex flex-col'>
                             <div className='flex justify-between'>
                                 <p>seatCapacity</p>
                                 <span>{profile?.Driver?.vechicles?.seatCapacity}</span>
