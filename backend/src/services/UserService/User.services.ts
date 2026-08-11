@@ -1,4 +1,5 @@
-import type { UpdateProfileDto } from "../../dto/UpdatedProfile.dto.tsx";
+
+import type UpdateProfileDto from "../../dto/UpdatedProfile.dto.ts";
 import { User } from "../../entity/User.entities.ts";
 import { Userstatus, type UserRole } from "../../enum/enum.details.ts";
 
@@ -102,7 +103,7 @@ class UserService {
             if (body.Email !== undefined) {
                 existance.Email = body.Email
             }
-            if (body.Email !== undefined) {
+            if (body.Phone !== undefined) {
                 existance.Phone = body.Phone
             }
               if(body.profile !== undefined){

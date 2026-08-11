@@ -73,7 +73,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "VehicleType": {
         "dataType": "refEnum",
-        "enums": ["BIKE","CAR","ELECTRIC","AUTO"],
+        "enums": ["BIKE","CAR","TAXI","ELECTRIC","AUTO"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "RideStatus": {
@@ -214,11 +214,11 @@ const models: TsoaRoute.Models = {
     "UpdateProfileDto": {
         "dataType": "refObject",
         "properties": {
-            "FullName": {"dataType":"string","required":true},
-            "Email": {"dataType":"string","required":true},
-            "Phone": {"dataType":"string","required":true},
-            "address": {"dataType":"array","array":{"dataType":"string"},"required":true},
-            "profile": {"dataType":"string","required":true},
+            "FullName": {"dataType":"string"},
+            "Email": {"dataType":"string"},
+            "Phone": {"dataType":"string"},
+            "address": {"dataType":"array","array":{"dataType":"string"}},
+            "profile": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -488,7 +488,7 @@ export function RegisterRoutes(app: Router) {
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
                 body: {"in":"body","name":"body","required":true,"ref":"UpdateProfileDto"},
         };
-        app.put('/users/update/:id',
+        app.patch('/users/update/:id',
             ...(fetchMiddlewares<RequestHandler>(UserController)),
             ...(fetchMiddlewares<RequestHandler>(UserController.prototype.UpdateProfile)),
 

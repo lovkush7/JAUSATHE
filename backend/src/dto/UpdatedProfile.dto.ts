@@ -1,26 +1,25 @@
 import { IsArray, IsEmail, IsOptional, IsString } from "class-validator";
 
- class UpdateProfileDto{
-    @IsString()
-    @IsOptional()
-    FullName: string
+class UpdateProfileDto {
+  @IsString()
+  @IsOptional()
+  FullName?: string;
 
-    @IsString()
-    @IsEmail()
-    @IsOptional()
-    Email: string
+  @IsEmail()
+  @IsOptional()
+  Email?: string;
 
-    @IsString()
-    @IsOptional()
-    Phone: string
+  @IsString()
+  @IsOptional()
+  Phone?: string;
 
-    @IsString()
-    @IsOptional()
-    @IsArray()
-    address: string[];
+  @IsArray()
+  @IsOptional()
+  address?: string[];
 
-   @IsString()
-   @IsOptional()
-   profile: string
+  @IsString()
+  @IsOptional()
+  profile?: string;
 }
-export default UpdateProfileDto
+
+export default UpdateProfileDto;

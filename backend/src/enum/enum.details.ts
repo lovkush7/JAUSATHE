@@ -14,6 +14,7 @@ export enum Userstatus{
 export enum VehicleType {
  BIKE = "BIKE",
  CAR = "CAR",
+ TAXI = "TAXI",
  ELECTRIC = "ELECTRIC",
  AUTO = "AUTO",
 

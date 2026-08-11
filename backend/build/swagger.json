@@ -122,6 +122,7 @@
 				"enum": [
 					"BIKE",
 					"CAR",
+					"TAXI",
 					"ELECTRIC",
 					"AUTO"
 				],
@@ -586,13 +587,6 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"FullName",
-					"Email",
-					"Phone",
-					"address",
-					"profile"
-				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -931,7 +925,7 @@
 			}
 		},
 		"/users/update/{id}": {
-			"put": {
+			"patch": {
 				"operationId": "UpdateProfile",
 				"responses": {
 					"200": {

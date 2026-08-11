@@ -16,7 +16,7 @@ export class User extends CommonEntity {
     @Column({type: "text"})
     password: string;
 
-    @Column({type: "text"})
+    @Column({type: "text",nullable: true})
     Phone!: string;
 
     @Column({type: "text" , nullable: true})

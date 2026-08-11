@@ -1,3 +1,4 @@
+import { error } from "node:console";
 import type { Driverdto } from "../../dto/Driver.dto.ts";
 import { Driver } from "../../entity/Driver.entities.ts";
 import { Ride } from "../../entity/Ride.entities.ts";
@@ -130,7 +131,7 @@ class DriverServices {
                 }
             })
             if (!exdriver) {
-                throw new Error("the driver doesnot exist")
+                return "driver dosenot exist"
             };
             exdriver.status = status  ;
             await exdriver.save();
