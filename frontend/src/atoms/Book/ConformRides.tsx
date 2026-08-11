@@ -9,7 +9,7 @@ import useride from '../../zustand/userride'
 
 const vechicles = [
   {
-    type: "car",
+    type: "CAR",
     icons: "🚗",
     spec: "confortable 1-4 persons"
   },
@@ -19,7 +19,7 @@ const vechicles = [
     spec: "fastest for 1 persons",
   },
   {
-    type: "taxi",
+    type: "TAXI",
     icons: "🚕",
     spec: "suitable for 4 persons"
   },

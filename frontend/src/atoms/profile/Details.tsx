@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from '../../components/ui/button'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import {
     AlertDialog,
@@ -23,7 +23,7 @@ import { Pencil } from 'lucide-react'
 
 // import { Button } from "@/components/ui/button"
 type updateprofile = {
-    Fullname?: string,
+    FullName?: string,
         Email?: string,
         Phone?: string,
         address?: string
@@ -43,15 +43,19 @@ const updateProfile = async (authUser: string,update: updateprofile) =>{
 const Details = () => {
     const { authUser, checkauth } = useScoket()
     const [update, setUpdate ] = useState({
-        Fullname: "",
+        FullName: "",
         Email: "",
         Phone: "",
         address: ""
     })
+    const queryclient = useQueryClient()
     const mutation = useMutation({
-        mutationKey: [update],
+        
         mutationFn: (update:updateprofile)=>updateProfile(authUser?.id!, update),
         onSuccess:(data)=>{
+           queryclient.invalidateQueries({
+            queryKey:[authUser?.id]
+           })
        console.log(data)
         },
         onError:()=>{
@@ -101,14 +105,14 @@ const Details = () => {
                                             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                                             <FieldLabel className='text-gray-500'>Fullname</FieldLabel>
                                                <Input
-                                                value={update.Fullname} 
-                                                onChange={(e)=>setUpdate({...update, Fullname:e.target.value})}
+                                                value={update.FullName} 
+                                                onChange={(e)=>setUpdate({...update, FullName:e.target.value})}
                                                  placeholder='Change your fullname' />
                                         </AlertDialogHeader>
                                         <AlertDialogFooter>
                                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                                             <AlertDialogAction onClick={()=>mutation.mutate(
-                                                {Fullname: update.Fullname}
+                                                {FullName: update.FullName}
                                             )}>Change</AlertDialogAction>
                                         </AlertDialogFooter>
                                     </AlertDialogContent>
