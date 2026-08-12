@@ -8,9 +8,7 @@ const getprofile = async (userId: string) => {
 }
 const Profiles = () => {
     const { authUser, checkauth } = useScoket()
-      useEffect(() => {
-          checkauth()
-      }, [])
+  
          const { data: profile } = useQuery({
         queryKey: [authUser?.id],
         queryFn: () => getprofile(authUser!.id),

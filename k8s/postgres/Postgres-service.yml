@@ -1,0 +1,16 @@
+appVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: jausathe
+
+spec:
+  type: clusterIp
+  selector:
+    app: postgres  
+
+  ports:
+    - name: postgres-service
+      port: 5432
+      targetPort: 5432
+      protocol: TCP  

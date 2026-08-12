@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+   name: jausathe-ingress
+   namespace: jausathe 
+
+spec:
+  rules:
+    - host: 
+      http:
+        paths:
+        
+          - path: /
+            pathType: prefix 
+            backend:
+              service:
+                name: backend
+
+              port:
+                number: 8000
+
+          - path: /api
+            pathType: prefix
+            frontend:  
+              service:
+                 name:  frontend
+
+              port: 
+                number: 5473
+                
+                         
+             

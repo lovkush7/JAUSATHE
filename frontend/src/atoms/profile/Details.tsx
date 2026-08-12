@@ -76,9 +76,7 @@ const Details = () => {
             icon: "🏢"
         }
     ]
-    useEffect(() => {
-        checkauth()
-    }, [])
+  
     const { data: profile } = useQuery({
         queryKey: [authUser?.id],
         queryFn: () => getprofile(authUser!.id),

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navbar from '../../molecules/navbar/Navbar'
 import { Button } from '../../components/ui/button'
 import { api } from '../../api/Api'
@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import Profiles from '../../atoms/profile/Profiles'
 import Details from '../../atoms/profile/Details'
+import useScoket from '../../zustand/socket.config'
  const logout = async()=>{
   const res = await api.post("/auth/logout")
   console.log(res.data)
@@ -13,6 +14,11 @@ import Details from '../../atoms/profile/Details'
  }
 
 const Profile = () => {
+
+  const {checkauth} = useScoket()
+      useEffect(() => {
+          checkauth()
+      }, [])
 
   const navigation = useNavigate();
   const mutation = useMutation({
