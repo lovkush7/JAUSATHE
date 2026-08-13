@@ -8,6 +8,7 @@
   },
   "routes": {
     "routesDir": "src/routes",
+    "esm": true,
     "authenticationModule": "./src/Middlewares/ExpressAuthentication.ts"
   }
 }

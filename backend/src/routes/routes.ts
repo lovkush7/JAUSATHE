@@ -4,20 +4,22 @@
 import type { TsoaRoute } from '@tsoa/runtime';
 import {  fetchMiddlewares, ExpressTemplateService } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { Authentication } from './../controller/userauth/Auth.controller';
+import { Authentication } from './../controller/userauth/Auth.controller.js';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { UserController } from './../controller/userauth/UserController/User.controller';
+import { UserController } from './../controller/userauth/UserController/User.controller.js';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { RideController } from './../controller/RideController/Ride.Controller';
+import { RideController } from './../controller/RideController/Ride.Controller.js';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { Geocoading } from './../controller/Geocoading/Geocoading.controller';
+import { PaymentController } from './../controller/paymentController/Payment.controller.js';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { DriverController } from './../controller/DriverController/Driver.controller';
+import { Geocoading } from './../controller/Geocoading/Geocoading.controller.js';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { PaymentController } from './../controller/paymentController/Payment.controller';
-import { expressAuthentication } from './../Middlewares/ExpressAuthentication';
+import { DriverController } from './../controller/DriverController/Driver.controller.js';
+import { expressAuthentication } from './../Middlewares/ExpressAuthentication.js';
 // @ts-ignore - no great way to install types from subpackage
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
+import multer from 'multer';
+
 
 const expressAuthenticationRecasted = expressAuthentication as (req: ExRequest, securityName: string, scopes?: string[], res?: ExResponse) => Promise<any>;
 
@@ -218,7 +220,6 @@ const models: TsoaRoute.Models = {
             "Email": {"dataType":"string"},
             "Phone": {"dataType":"string"},
             "address": {"dataType":"array","array":{"dataType":"string"}},
-            "profile": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -263,13 +264,14 @@ const templateService = new ExpressTemplateService(models, {"noImplicitAdditiona
 
 
 
-export function RegisterRoutes(app: Router) {
+export function RegisterRoutes(app: Router,opts?:{multer?:ReturnType<typeof multer>}) {
 
     // ###########################################################################################################
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
 
+    const upload = opts?.multer ||  multer({"limits":{"fileSize":8388608}});
 
     
         const argsAuthentication_login: Record<string, TsoaRoute.ParameterSchema> = {
@@ -504,6 +506,43 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'UpdateProfile',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsUserController_Updateprofilepic: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                image: {"in":"formData","name":"image","dataType":"file"},
+        };
+        app.patch('/users/updateprofile/:id',
+            upload.fields([
+                {
+                    name: "image",
+                    maxCount: 1
+                }
+            ]),
+            ...(fetchMiddlewares<RequestHandler>(UserController)),
+            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.Updateprofilepic)),
+
+            async function UserController_Updateprofilepic(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsUserController_Updateprofilepic, request, response });
+
+                const controller = new UserController();
+
+              await templateService.apiHandler({
+                methodName: 'Updateprofilepic',
                 controller,
                 response,
                 next,
@@ -826,6 +865,67 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsPaymentController_CreatePayment: Record<string, TsoaRoute.ParameterSchema> = {
+                body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"payment":{"dataType":"double","required":true},"PaymentType":{"ref":"Payment","required":true},"rideId":{"dataType":"string","required":true}}},
+        };
+        app.post('/Payment/CreatePayment',
+            ...(fetchMiddlewares<RequestHandler>(PaymentController)),
+            ...(fetchMiddlewares<RequestHandler>(PaymentController.prototype.CreatePayment)),
+
+            async function PaymentController_CreatePayment(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsPaymentController_CreatePayment, request, response });
+
+                const controller = new PaymentController();
+
+              await templateService.apiHandler({
+                methodName: 'CreatePayment',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsPaymentController_gettotalpayment: Record<string, TsoaRoute.ParameterSchema> = {
+                driverId: {"in":"query","name":"driverId","required":true,"dataType":"string"},
+                year: {"in":"query","name":"year","dataType":"double"},
+        };
+        app.get('/Payment/monthly-earning',
+            ...(fetchMiddlewares<RequestHandler>(PaymentController)),
+            ...(fetchMiddlewares<RequestHandler>(PaymentController.prototype.gettotalpayment)),
+
+            async function PaymentController_gettotalpayment(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsPaymentController_gettotalpayment, request, response });
+
+                const controller = new PaymentController();
+
+              await templateService.apiHandler({
+                methodName: 'gettotalpayment',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsGeocoading_GeocoadeAddress: Record<string, TsoaRoute.ParameterSchema> = {
                 address: {"in":"query","name":"address","required":true,"dataType":"string"},
         };
@@ -1030,67 +1130,6 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'ApprovedDriver',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: undefined,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsPaymentController_CreatePayment: Record<string, TsoaRoute.ParameterSchema> = {
-                body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"payment":{"dataType":"double","required":true},"PaymentType":{"ref":"Payment","required":true},"rideId":{"dataType":"string","required":true}}},
-        };
-        app.post('/Payment/CreatePayment',
-            ...(fetchMiddlewares<RequestHandler>(PaymentController)),
-            ...(fetchMiddlewares<RequestHandler>(PaymentController.prototype.CreatePayment)),
-
-            async function PaymentController_CreatePayment(request: ExRequest, response: ExResponse, next: any) {
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsPaymentController_CreatePayment, request, response });
-
-                const controller = new PaymentController();
-
-              await templateService.apiHandler({
-                methodName: 'CreatePayment',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: undefined,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsPaymentController_gettotalpayment: Record<string, TsoaRoute.ParameterSchema> = {
-                driverId: {"in":"query","name":"driverId","required":true,"dataType":"string"},
-                year: {"in":"query","name":"year","dataType":"double"},
-        };
-        app.get('/Payment/monthly-earning',
-            ...(fetchMiddlewares<RequestHandler>(PaymentController)),
-            ...(fetchMiddlewares<RequestHandler>(PaymentController.prototype.gettotalpayment)),
-
-            async function PaymentController_gettotalpayment(request: ExRequest, response: ExResponse, next: any) {
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsPaymentController_gettotalpayment, request, response });
-
-                const controller = new PaymentController();
-
-              await templateService.apiHandler({
-                methodName: 'gettotalpayment',
                 controller,
                 response,
                 next,

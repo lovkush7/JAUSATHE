@@ -582,9 +582,6 @@
 							"type": "string"
 						},
 						"type": "array"
-					},
-					"profile": {
-						"type": "string"
 					}
 				},
 				"type": "object",
@@ -962,6 +959,50 @@
 				}
 			}
 		},
+		"/users/updateprofile/{id}": {
+			"patch": {
+				"operationId": "Updateprofilepic",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": false,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"image": {
+										"type": "string",
+										"format": "binary"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/ride/estimatefare": {
 			"get": {
 				"operationId": "Estimatefare",
@@ -1313,6 +1354,117 @@
 				]
 			}
 		},
+		"/Payment/CreatePayment": {
+			"post": {
+				"operationId": "CreatePayment",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"payment": {
+											"$ref": "#/components/schemas/Payments"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"payment",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"payment": {
+										"type": "number",
+										"format": "double"
+									},
+									"PaymentType": {
+										"$ref": "#/components/schemas/Payment"
+									},
+									"rideId": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"payment",
+									"PaymentType",
+									"rideId"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/Payment/monthly-earning": {
+			"get": {
+				"operationId": "Gettotalpayment",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"properties": {
+											"earnings": {
+												"type": "number",
+												"format": "double"
+											},
+											"month": {
+												"type": "string"
+											}
+										},
+										"required": [
+											"earnings",
+											"month"
+										],
+										"type": "object"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "driverId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "year",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
 		"/geocoading/geocode": {
 			"get": {
 				"operationId": "GeocoadeAddress",
@@ -1583,117 +1735,6 @@
 						"required": true,
 						"schema": {
 							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/Payment/CreatePayment": {
-			"post": {
-				"operationId": "CreatePayment",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"payment": {
-											"$ref": "#/components/schemas/Payments"
-										},
-										"message": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"payment",
-										"message"
-									],
-									"type": "object"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"properties": {
-									"payment": {
-										"type": "number",
-										"format": "double"
-									},
-									"PaymentType": {
-										"$ref": "#/components/schemas/Payment"
-									},
-									"rideId": {
-										"type": "string"
-									}
-								},
-								"required": [
-									"payment",
-									"PaymentType",
-									"rideId"
-								],
-								"type": "object"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/Payment/monthly-earning": {
-			"get": {
-				"operationId": "Gettotalpayment",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"properties": {
-											"earnings": {
-												"type": "number",
-												"format": "double"
-											},
-											"month": {
-												"type": "string"
-											}
-										},
-										"required": [
-											"earnings",
-											"month"
-										],
-										"type": "object"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "driverId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "query",
-						"name": "year",
-						"required": false,
-						"schema": {
-							"format": "double",
-							"type": "number"
 						}
 					}
 				]

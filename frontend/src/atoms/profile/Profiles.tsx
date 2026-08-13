@@ -17,8 +17,13 @@ const updateProfile = async (authUser: string, image: File) => {
     formData.append("image", image);
 
     const res = await api.patch(
-        `users/update/${authUser}`,
-        formData
+        `users/updateprofile/${authUser}`,
+        formData,
+        {
+            headers:{
+                "Content-Type": undefined
+            }
+        }
     );
 
     return res.data;
@@ -70,8 +75,8 @@ const Profiles = () => {
                         <img
                             src={
                                 preview ||
-                                profile?.image ||
-                                "https://via.placeholder.com/150"
+                                profile?.photo ||
+                                "download.png"
                             }
                             alt="Profile"
                             className="w-full h-full object-cover"

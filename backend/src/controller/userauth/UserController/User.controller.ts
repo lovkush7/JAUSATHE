@@ -4,6 +4,9 @@ import type { UserRole } from "../../../enum/enum.details.ts";
 import UserServices from "../../../services/UserService/User.services.ts";
 import path from "node:path";
 import type UpdateProfileDto from "../../../dto/UpdatedProfile.dto.ts";
+import { upload } from "../../../config/multer.config.ts";
+import type { Request as ExRequest } from "express";
+
 
 
 
@@ -48,7 +51,7 @@ export class UserController extends Controller {
     async UpdateProfile(
         @Path() id: string,
         @Body() body: UpdateProfileDto,
-        // @UploadedFile() image?: Express.Multer.File
+        
     ){
        try{
 
@@ -58,9 +61,16 @@ export class UserController extends Controller {
        }
     }
     @Patch("updateprofile/{id}")
+    @Middlewares(upload.single("image"))
     async Updateprofilepic(
+        @Path() id: string,
+          @UploadedFile() image?: Express.Multer.File,
           
     ){
+        
+
+           console.log("IMAGE FROM CONTROLLER:", image);
+        return await UserServices.uploadProfilepic(id,image)
 
     }
 }
