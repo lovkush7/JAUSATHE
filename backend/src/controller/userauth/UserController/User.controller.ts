@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Middlewares, Patch, Path, Put, Query, Route } from "tsoa";
+import { Body, Controller, Delete, Get, Middlewares, Patch, Path, Put, Query, Route, UploadedFile } from "tsoa";
 import { Adminmiddleware } from "../../../Middlewares/AdminMiddleware.ts";
 import type { UserRole } from "../../../enum/enum.details.ts";
 import UserServices from "../../../services/UserService/User.services.ts";
@@ -47,7 +47,8 @@ export class UserController extends Controller {
     @Patch("update/{id}")
     async UpdateProfile(
         @Path() id: string,
-        @Body() body: UpdateProfileDto
+        @Body() body: UpdateProfileDto,
+        // @UploadedFile() image?: Express.Multer.File
     ){
        try{
 
@@ -55,5 +56,11 @@ export class UserController extends Controller {
        }catch(err){
         console.log("the error is ",err)
        }
+    }
+    @Patch("updateprofile/{id}")
+    async Updateprofilepic(
+          
+    ){
+
     }
 }

@@ -17,9 +17,7 @@ class UpdateProfileDto {
   @IsOptional()
   address?: string[];
 
-  @IsString()
-  @IsOptional()
-  profile?: string;
+
 }
 
 export default UpdateProfileDto;

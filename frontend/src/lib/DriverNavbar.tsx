@@ -30,8 +30,8 @@ const DriverNavbar = () => {
              onClick={()=>navigate({to: "/Book/Payment"})}>
               mapView
               </li>
-            <li className={ menu === "/Profile" ? " text-[#1E18AA] border-b-2 border-[#1E18AA]" : ""}
-             onClick={()=>navigate({to: "/Profile"})}>
+            <li className={ menu === "/Driver/profile" ? " text-[#1E18AA] border-b-2 border-[#1E18AA]" : ""}
+             onClick={()=>navigate({to: "/Driver/profile"})}>
               Profile</li>
         </ul>
       </div>

@@ -85,6 +85,8 @@ class UserService {
     async UpdateUserProfile(
         id: string,
         body: UpdateProfileDto,
+        
+        
     ) {
         try {
             const existance = await User.findOne(
@@ -106,9 +108,7 @@ class UserService {
             if (body.Phone !== undefined) {
                 existance.Phone = body.Phone
             }
-              if(body.profile !== undefined){
-                existance.profile = body.profile
-              }
+           
               if(body.address !== undefined){
                 existance.address = body.address
               }
@@ -118,6 +118,26 @@ class UserService {
         } catch (err) {
             console.log(err)
         }
+
+    }
+    async uploadProfilepic(
+         id: string,
+        image?: Express.Multer.File){
+      const existance = await User.findOne(
+                {
+                    where: {
+                        id
+                    }
+                }
+            )
+            if (!existance) {
+                throw new Error("the user does not exist")
+            }
+            if (image) {
+            existance.profile = `/uploads/${image.filename}`;
+    }
+           const updateduser =   await existance.save()
+          return updateduser;
 
     }
 }

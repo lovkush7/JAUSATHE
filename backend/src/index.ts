@@ -7,8 +7,9 @@ import cookieParser from "cookie-parser"
 import { RegisterRoutes } from "./routes/routes.ts"
 import { app, server } from "./config/socket.config.ts"
 import { connectRedis } from "./config/Redis.config.ts"
+import path from "path"
 
-
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
