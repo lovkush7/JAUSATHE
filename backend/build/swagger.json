@@ -201,6 +201,9 @@
 					},
 					"Driver": {
 						"$ref": "#/components/schemas/Driver"
+					},
+					"driverTarget": {
+						"$ref": "#/components/schemas/DriverTarget"
 					}
 				},
 				"required": [
@@ -217,7 +220,8 @@
 					"address",
 					"Role",
 					"rides",
-					"Driver"
+					"Driver",
+					"driverTarget"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -566,6 +570,60 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"DriverTarget": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"DeletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"CreatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"driver": {
+						"$ref": "#/components/schemas/User"
+					},
+					"driverId": {
+						"type": "string"
+					},
+					"targetRides": {
+						"type": "number",
+						"format": "double"
+					},
+					"CompleteRides": {
+						"type": "number",
+						"format": "double"
+					},
+					"targetDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"isComplete": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"id",
+					"DeletedAt",
+					"UpdatedAt",
+					"CreatedAt",
+					"driver",
+					"driverId",
+					"targetRides",
+					"CompleteRides",
+					"targetDate",
+					"isComplete"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"UpdateProfileDto": {
 				"properties": {
 					"FullName": {
@@ -636,6 +694,23 @@
 					"dropofflat",
 					"dropofflng",
 					"vehicleType"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateRideTargetDto": {
+				"properties": {
+					"DriverId": {
+						"type": "string"
+					},
+					"targetRides": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"DriverId",
+					"targetRides"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1517,6 +1592,85 @@
 					{
 						"in": "query",
 						"name": "lng",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/DriverTarget/CreateTarget": {
+			"post": {
+				"operationId": "CreateTarget",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"target": {
+											"$ref": "#/components/schemas/DriverTarget"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"target",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateRideTargetDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/DriverTarget/{driverId}/today": {
+			"get": {
+				"operationId": "GetTodayTarget",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/DriverTarget"
+										},
+										{
+											"type": "string",
+											"enum": [
+												"no target found for Today"
+											]
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "driverId",
 						"required": true,
 						"schema": {
 							"type": "string"

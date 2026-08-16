@@ -19,12 +19,14 @@ interface rideData{
 interface SocketStore{
     Socket: Socket | null;
     authUser: Authuser | null;
+    ProfileDetails: string | null;
     onlineUsers: string[];
     newRide: rideData | null;
 
     checkauth: () => Promise<Authuser | null>;
     connectsocket: () => void;
     DisconnectSocket: () => void;
+    GetProfiles: (Data: any)=>void;
     listenToRides: () => void;
     nonlistentorides: () => void;
     clearride: () => void;
@@ -35,6 +37,7 @@ interface SocketStore{
 const useScoket = create<SocketStore>((set, get)=>({
     Socket: null,
     authUser: null,
+    ProfileDetails: null,
     onlineUsers: [],
     newRide: null,
 
@@ -48,6 +51,13 @@ const useScoket = create<SocketStore>((set, get)=>({
         }catch(err){
             console.log(err)
         }
+      },
+      GetProfiles: async (Data)=>{
+      try{
+       set({ProfileDetails: Data})
+      }catch(err){
+        console.log(err)
+      }
       },
 
    connectsocket: () => {

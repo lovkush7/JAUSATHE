@@ -6,6 +6,7 @@ import { Ride } from "../../entity/Ride.entities.ts";
 import { User } from "../../entity/User.entities.ts";
 import { Driverstatus, RideStatus, type UserRole, type VehicleType } from "../../enum/enum.details.ts";
 import DriverService from "../Driver/DriverService.ts";
+import DriverTargetService from "../Targetservice/Driver.services.ts"
 
 class RideService {
   async estimateFare(
@@ -268,6 +269,8 @@ console.log("Driver Count:", driver.length);
     existance.driver.status = Driverstatus.ONLINE;
     await existance.driver.save()
     await existance.save()
+
+    await DriverTargetService.incrementCompletedRide(existance.driver.id)
 
     return "ride completed successfully"
   }

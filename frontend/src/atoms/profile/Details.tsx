@@ -41,7 +41,7 @@ const updateProfile = async (authUser: string,update: updateprofile) =>{
 }
 
 const Details = () => {
-    const { authUser, checkauth } = useScoket()
+    const { authUser, checkauth , GetProfiles} = useScoket()
     const [update, setUpdate ] = useState({
         FullName: "",
         Email: "",
@@ -80,8 +80,10 @@ const Details = () => {
     const { data: profile } = useQuery({
         queryKey: [authUser?.id],
         queryFn: () => getprofile(authUser!.id),
-        enabled: !!authUser?.id
+        enabled: !!authUser?.id 
+        
     })
+    getprofile(profile)
     console.log("the profile is ", profile)
 
     return (

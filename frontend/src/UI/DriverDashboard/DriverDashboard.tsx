@@ -9,6 +9,7 @@ import Trialmap from '../../atoms/map/Trial'
 import { Switch } from '../../components/ui/switch'
 import { Label } from '../../components/ui/label'
 import DriverEarningChart from '../../atoms/Driver/CHART/DriverEarningChart'
+import DriverTarget from '../../atoms/Target/DriverTarget'
 // import { Satellite } from 'lucide-react'
 // import { Satellite } from 'lucide-react'
 
@@ -59,7 +60,7 @@ const DriverDashboard = () => {
     }, [Socket]);
 
     return (
-        <div className=' bg-[#08080F] h-screen w-full'>
+        <div className=' bg-[#08080F] h-screen w-full overflow-y-auto'>
             <DriverNavbar />
             <div className='flex '>
                 <div className='flex-1 ml-4 mt-4'>
@@ -80,6 +81,7 @@ const DriverDashboard = () => {
                 <div className='w-[350px] border-l p-3 '>
                     <Driverhome />
                     <DriverEarningChart/>
+                    <DriverTarget/>
                 </div>
                 
             </div>

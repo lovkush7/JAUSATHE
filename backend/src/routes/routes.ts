@@ -14,6 +14,8 @@ import { PaymentController } from './../controller/paymentController/Payment.con
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { Geocoading } from './../controller/Geocoading/Geocoading.controller.js';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { DriverTargetController } from './../controller/DriverTarget/DriverTarget.controller.js';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { DriverController } from './../controller/DriverController/Driver.controller.js';
 import { expressAuthentication } from './../Middlewares/ExpressAuthentication.js';
 // @ts-ignore - no great way to install types from subpackage
@@ -105,6 +107,7 @@ const models: TsoaRoute.Models = {
             "Role": {"ref":"UserRole","required":true},
             "rides": {"dataType":"array","array":{"dataType":"refObject","ref":"Ride"},"required":true},
             "Driver": {"ref":"Driver","required":true},
+            "driverTarget": {"ref":"DriverTarget","required":true},
         },
         "additionalProperties": false,
     },
@@ -213,6 +216,23 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DriverTarget": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "DeletedAt": {"dataType":"datetime","required":true},
+            "UpdatedAt": {"dataType":"datetime","required":true},
+            "CreatedAt": {"dataType":"datetime","required":true},
+            "driver": {"ref":"User","required":true},
+            "driverId": {"dataType":"string","required":true},
+            "targetRides": {"dataType":"double","required":true},
+            "CompleteRides": {"dataType":"double","required":true},
+            "targetDate": {"dataType":"datetime","required":true},
+            "isComplete": {"dataType":"boolean","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "UpdateProfileDto": {
         "dataType": "refObject",
         "properties": {
@@ -238,6 +258,15 @@ const models: TsoaRoute.Models = {
             "SpecialInstruction": {"dataType":"string"},
             "isScheduled": {"dataType":"boolean"},
             "ScheduledAt": {"dataType":"datetime"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateRideTargetDto": {
+        "dataType": "refObject",
+        "properties": {
+            "DriverId": {"dataType":"string","required":true},
+            "targetRides": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
     },
@@ -976,6 +1005,66 @@ export function RegisterRoutes(app: Router,opts?:{multer?:ReturnType<typeof mult
 
               await templateService.apiHandler({
                 methodName: 'reversegeoAddress',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsDriverTargetController_CreateTarget: Record<string, TsoaRoute.ParameterSchema> = {
+                body: {"in":"body","name":"body","required":true,"ref":"CreateRideTargetDto"},
+        };
+        app.post('/DriverTarget/CreateTarget',
+            ...(fetchMiddlewares<RequestHandler>(DriverTargetController)),
+            ...(fetchMiddlewares<RequestHandler>(DriverTargetController.prototype.CreateTarget)),
+
+            async function DriverTargetController_CreateTarget(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsDriverTargetController_CreateTarget, request, response });
+
+                const controller = new DriverTargetController();
+
+              await templateService.apiHandler({
+                methodName: 'CreateTarget',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsDriverTargetController_GetTodayTarget: Record<string, TsoaRoute.ParameterSchema> = {
+                driverId: {"in":"path","name":"driverId","required":true,"dataType":"string"},
+        };
+        app.get('/DriverTarget/:driverId/today',
+            ...(fetchMiddlewares<RequestHandler>(DriverTargetController)),
+            ...(fetchMiddlewares<RequestHandler>(DriverTargetController.prototype.GetTodayTarget)),
+
+            async function DriverTargetController_GetTodayTarget(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsDriverTargetController_GetTodayTarget, request, response });
+
+                const controller = new DriverTargetController();
+
+              await templateService.apiHandler({
+                methodName: 'GetTodayTarget',
                 controller,
                 response,
                 next,

@@ -4,6 +4,7 @@ import { Driverstatus } from "../enum/enum.details.ts";
 import { Vechicles } from "./Vechiles.entity.ts";
 import { User } from "./User.entities.ts";
 import { Ride } from "./Ride.entities.ts";
+import { DriverTarget } from "./DriverTarget.entities.ts";
 
 @Entity("driver")
 export class Driver extends CommonEntity {
@@ -55,4 +56,7 @@ export class Driver extends CommonEntity {
     @OneToOne(() => User, (user) => user.Driver)
     @JoinColumn({ name: "userId" })
     user: User;
+    
+     @OneToMany(()=>DriverTarget,(DriverTarget)=>DriverTarget.driver)
+    driverTarget: DriverTarget
 }

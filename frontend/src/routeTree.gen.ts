@@ -21,6 +21,7 @@ import { Route as AuthLoginIndexRouteImport } from './routes/auth/login/index'
 import { Route as AuthSignupIndexRouteImport } from './routes/auth/Signup/index'
 import { Route as DriverTripsIndexRouteImport } from './routes/Driver/trips/index'
 import { Route as DriverAuthIndexRouteImport } from './routes/Driver/auth/index'
+import { Route as DriverEarningsIndexRouteImport } from './routes/Driver/Earnings/index'
 import { Route as BookPaymentIndexRouteImport } from './routes/Book/Payment/index'
 import { Route as BookMyRidesIndexRouteImport } from './routes/Book/MyRides/index'
 import { Route as BookBookRidesIndexRouteImport } from './routes/Book/BookRides/index'
@@ -85,6 +86,11 @@ const DriverAuthIndexRoute = DriverAuthIndexRouteImport.update({
   path: '/Driver/auth/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DriverEarningsIndexRoute = DriverEarningsIndexRouteImport.update({
+  id: '/Driver/Earnings/',
+  path: '/Driver/Earnings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BookPaymentIndexRoute = BookPaymentIndexRouteImport.update({
   id: '/Book/Payment/',
   path: '/Book/Payment/',
@@ -110,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/Book/BookRides/': typeof BookBookRidesIndexRoute
   '/Book/MyRides/': typeof BookMyRidesIndexRoute
   '/Book/Payment/': typeof BookPaymentIndexRoute
+  '/Driver/Earnings/': typeof DriverEarningsIndexRoute
   '/Driver/auth/': typeof DriverAuthIndexRoute
   '/Driver/trips/': typeof DriverTripsIndexRoute
   '/auth/Signup/': typeof AuthSignupIndexRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByTo {
   '/Book/BookRides': typeof BookBookRidesIndexRoute
   '/Book/MyRides': typeof BookMyRidesIndexRoute
   '/Book/Payment': typeof BookPaymentIndexRoute
+  '/Driver/Earnings': typeof DriverEarningsIndexRoute
   '/Driver/auth': typeof DriverAuthIndexRoute
   '/Driver/trips': typeof DriverTripsIndexRoute
   '/auth/Signup': typeof AuthSignupIndexRoute
@@ -145,6 +153,7 @@ export interface FileRoutesById {
   '/Book/BookRides/': typeof BookBookRidesIndexRoute
   '/Book/MyRides/': typeof BookMyRidesIndexRoute
   '/Book/Payment/': typeof BookPaymentIndexRoute
+  '/Driver/Earnings/': typeof DriverEarningsIndexRoute
   '/Driver/auth/': typeof DriverAuthIndexRoute
   '/Driver/trips/': typeof DriverTripsIndexRoute
   '/auth/Signup/': typeof AuthSignupIndexRoute
@@ -164,6 +173,7 @@ export interface FileRouteTypes {
     | '/Book/BookRides/'
     | '/Book/MyRides/'
     | '/Book/Payment/'
+    | '/Driver/Earnings/'
     | '/Driver/auth/'
     | '/Driver/trips/'
     | '/auth/Signup/'
@@ -181,6 +191,7 @@ export interface FileRouteTypes {
     | '/Book/BookRides'
     | '/Book/MyRides'
     | '/Book/Payment'
+    | '/Driver/Earnings'
     | '/Driver/auth'
     | '/Driver/trips'
     | '/auth/Signup'
@@ -198,6 +209,7 @@ export interface FileRouteTypes {
     | '/Book/BookRides/'
     | '/Book/MyRides/'
     | '/Book/Payment/'
+    | '/Driver/Earnings/'
     | '/Driver/auth/'
     | '/Driver/trips/'
     | '/auth/Signup/'
@@ -216,6 +228,7 @@ export interface RootRouteChildren {
   BookBookRidesIndexRoute: typeof BookBookRidesIndexRoute
   BookMyRidesIndexRoute: typeof BookMyRidesIndexRoute
   BookPaymentIndexRoute: typeof BookPaymentIndexRoute
+  DriverEarningsIndexRoute: typeof DriverEarningsIndexRoute
   DriverAuthIndexRoute: typeof DriverAuthIndexRoute
   DriverTripsIndexRoute: typeof DriverTripsIndexRoute
   AuthSignupIndexRoute: typeof AuthSignupIndexRoute
@@ -311,6 +324,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DriverAuthIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/Driver/Earnings/': {
+      id: '/Driver/Earnings/'
+      path: '/Driver/Earnings'
+      fullPath: '/Driver/Earnings/'
+      preLoaderRoute: typeof DriverEarningsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/Book/Payment/': {
       id: '/Book/Payment/'
       path: '/Book/Payment'
@@ -344,6 +364,7 @@ const rootRouteChildren: RootRouteChildren = {
   BookBookRidesIndexRoute: BookBookRidesIndexRoute,
   BookMyRidesIndexRoute: BookMyRidesIndexRoute,
   BookPaymentIndexRoute: BookPaymentIndexRoute,
+  DriverEarningsIndexRoute: DriverEarningsIndexRoute,
   DriverAuthIndexRoute: DriverAuthIndexRoute,
   DriverTripsIndexRoute: DriverTripsIndexRoute,
   AuthSignupIndexRoute: AuthSignupIndexRoute,

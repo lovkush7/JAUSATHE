@@ -23,6 +23,7 @@ export class PaymentController  extends Controller{
        
         return await PaymentServices.gettotalPayment(driverId,
             year ?? new Date().getFullYear()
+            
         )
 
     }

@@ -4,6 +4,7 @@ import { UserRole, Userstatus } from "../enum/enum.details.ts";
 import bcrypt from "bcrypt"
 import { Ride } from "./Ride.entities.ts";
 import { Driver } from "./Driver.entities.ts";
+import { DriverTarget } from "./DriverTarget.entities.ts";
 @Entity("user")
 export class User extends CommonEntity {
 
@@ -36,6 +37,7 @@ export class User extends CommonEntity {
 
     @OneToOne(()=>Driver, (profile)=>profile.user)
     Driver: Driver;
+
 
 
 
