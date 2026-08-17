@@ -201,9 +201,6 @@
 					},
 					"Driver": {
 						"$ref": "#/components/schemas/Driver"
-					},
-					"driverTarget": {
-						"$ref": "#/components/schemas/DriverTarget"
 					}
 				},
 				"required": [
@@ -220,8 +217,7 @@
 					"address",
 					"Role",
 					"rides",
-					"Driver",
-					"driverTarget"
+					"Driver"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -497,6 +493,9 @@
 					},
 					"user": {
 						"$ref": "#/components/schemas/User"
+					},
+					"driverTarget": {
+						"$ref": "#/components/schemas/DriverTarget"
 					}
 				},
 				"required": [
@@ -516,7 +515,62 @@
 					"CurrentLocation",
 					"ridesasDriver",
 					"vechicles",
-					"user"
+					"user",
+					"driverTarget"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DriverTarget": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"DeletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"CreatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"driver": {
+						"$ref": "#/components/schemas/Driver"
+					},
+					"driverId": {
+						"type": "string"
+					},
+					"targetRides": {
+						"type": "number",
+						"format": "double"
+					},
+					"CompleteRides": {
+						"type": "number",
+						"format": "double"
+					},
+					"targetDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"isComplete": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"id",
+					"DeletedAt",
+					"UpdatedAt",
+					"CreatedAt",
+					"driver",
+					"driverId",
+					"targetRides",
+					"CompleteRides",
+					"targetDate",
+					"isComplete"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -566,60 +620,6 @@
 					"PaymentType",
 					"payment",
 					"Ride"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"DriverTarget": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"DeletedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"UpdatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"CreatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"driver": {
-						"$ref": "#/components/schemas/User"
-					},
-					"driverId": {
-						"type": "string"
-					},
-					"targetRides": {
-						"type": "number",
-						"format": "double"
-					},
-					"CompleteRides": {
-						"type": "number",
-						"format": "double"
-					},
-					"targetDate": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"isComplete": {
-						"type": "boolean"
-					}
-				},
-				"required": [
-					"id",
-					"DeletedAt",
-					"UpdatedAt",
-					"CreatedAt",
-					"driver",
-					"driverId",
-					"targetRides",
-					"CompleteRides",
-					"targetDate",
-					"isComplete"
 				],
 				"type": "object",
 				"additionalProperties": false

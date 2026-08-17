@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as DriverDashboardRouteImport } from './routes/DriverDashboard'
+import { Route as AdminDashboardRouteImport } from './routes/AdminDashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SplashIndexRouteImport } from './routes/Splash/index'
 import { Route as ProfileIndexRouteImport } from './routes/Profile/index'
@@ -29,6 +30,11 @@ import { Route as BookBookRidesIndexRouteImport } from './routes/Book/BookRides/
 const DriverDashboardRoute = DriverDashboardRouteImport.update({
   id: '/DriverDashboard',
   path: '/DriverDashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/AdminDashboard',
+  path: '/AdminDashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -109,6 +115,7 @@ const BookBookRidesIndexRoute = BookBookRidesIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/AdminDashboard': typeof AdminDashboardRoute
   '/DriverDashboard': typeof DriverDashboardRoute
   '/Driver/profile': typeof DriverProfileRoute
   '/Profile/': typeof ProfileIndexRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/AdminDashboard': typeof AdminDashboardRoute
   '/DriverDashboard': typeof DriverDashboardRoute
   '/Driver/profile': typeof DriverProfileRoute
   '/Profile': typeof ProfileIndexRoute
@@ -146,6 +154,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/AdminDashboard': typeof AdminDashboardRoute
   '/DriverDashboard': typeof DriverDashboardRoute
   '/Driver/profile': typeof DriverProfileRoute
   '/Profile/': typeof ProfileIndexRoute
@@ -166,6 +175,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/AdminDashboard'
     | '/DriverDashboard'
     | '/Driver/profile'
     | '/Profile/'
@@ -184,6 +194,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/AdminDashboard'
     | '/DriverDashboard'
     | '/Driver/profile'
     | '/Profile'
@@ -202,6 +213,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/AdminDashboard'
     | '/DriverDashboard'
     | '/Driver/profile'
     | '/Profile/'
@@ -221,6 +233,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminDashboardRoute: typeof AdminDashboardRoute
   DriverDashboardRoute: typeof DriverDashboardRoute
   DriverProfileRoute: typeof DriverProfileRoute
   ProfileIndexRoute: typeof ProfileIndexRoute
@@ -245,6 +258,13 @@ declare module '@tanstack/react-router' {
       path: '/DriverDashboard'
       fullPath: '/DriverDashboard'
       preLoaderRoute: typeof DriverDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/AdminDashboard': {
+      id: '/AdminDashboard'
+      path: '/AdminDashboard'
+      fullPath: '/AdminDashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -357,6 +377,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminDashboardRoute: AdminDashboardRoute,
   DriverDashboardRoute: DriverDashboardRoute,
   DriverProfileRoute: DriverProfileRoute,
   ProfileIndexRoute: ProfileIndexRoute,

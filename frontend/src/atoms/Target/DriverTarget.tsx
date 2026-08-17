@@ -15,18 +15,20 @@ const progress = 40
 // const progress =
 //   (data.completedRides / data.targetRides) * 100;
 
-const TargetRides =async(DriverId: string)=>{
-    const req = await api.get(`TargetRides${DriverId}/create`)
+const TargetRides =async(driverId: string)=>{
+    const req = await api.get(`DriverTarget/${driverId}/today`)
     return req.data;
 }
 
 const DriverTarget = () => {
 
     const {ProfileDetails} = useScoket()
-    const query = useQuery({
-        queryKey: [],
-        queryFn: ()=> targetRides(ProfileDetails?.Driver?.id)
+    const {data:target} = useQuery({
+        queryKey: [ProfileDetails],
+        queryFn: ()=> TargetRides(ProfileDetails?.Driver?.id!),
+         enabled: !!ProfileDetails?.Driver?.id,
     })
+    console.log("driver target",target)
   return (
     <div className='bg-[#0E1328]  rounded-lg border-2 border-[#3B3B4F] p-2 mt-2 mb-2'>
         <div className='flex justify-between items-center p-2'>

@@ -2,7 +2,50 @@ import { create } from "zustand"
 import io, { type Socket } from "socket.io-client"
 import { api } from "../api/Api";
 import uselocation from "./location";
+interface Vehicle {
+  id: string;
+  isDefault: boolean;
+  model: string;
+  plateNumber: string;
+  seatCapacity: string;
+  type: string;
+  CreatedAt: string;
+  UpdatedAt: string;
+  DeletedAt: string | null;
+}
 
+interface Driver {
+  id: string;
+  citizenshipNumber: string;
+  licenseNumber: string;
+  licenseExpery: string;
+  rating: string;
+  status: string;
+  totaltrip: number;
+  isApproped: boolean;
+  CurrentLocation: {
+    type: string;
+    coordinates: number[];
+  };
+  currentBearing: string;
+  lastLocationUpdate: string;
+  vechicles: Vehicle;
+}
+
+interface ProfileDetails {
+  id: string;
+  FullName: string;
+  Email: string;
+  Phone: string;
+  Role: string;
+  address: string | null;
+  profile: string;
+  status: string;
+  Driver: Driver;
+  CreatedAt: string;
+  UpdatedAt: string;
+  DeletedAt: string | null;
+}
 interface Authuser{
 id: string,
 name?: string,
@@ -19,14 +62,14 @@ interface rideData{
 interface SocketStore{
     Socket: Socket | null;
     authUser: Authuser | null;
-    ProfileDetails: string | null;
+   ProfileDetails: ProfileDetails | null;
     onlineUsers: string[];
     newRide: rideData | null;
 
     checkauth: () => Promise<Authuser | null>;
     connectsocket: () => void;
     DisconnectSocket: () => void;
-    GetProfiles: (Data: any)=>void;
+  GetProfiles: (Data: ProfileDetails) => void;
     listenToRides: () => void;
     nonlistentorides: () => void;
     clearride: () => void;

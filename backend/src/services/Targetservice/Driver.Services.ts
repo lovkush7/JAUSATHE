@@ -54,11 +54,12 @@ class DriverTargetService {
     async GetTodaytarget( 
         driverId: string
     ){
+        const Today = new Date()
         try{
             const Target = await DriverTarget.findOne({
                 where:{
                     driverId: driverId,
-                    targetDate: new Date()
+                    targetDate: Today
                 }
             })
             if(!Target){
