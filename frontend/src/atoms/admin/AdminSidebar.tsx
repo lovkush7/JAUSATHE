@@ -12,7 +12,7 @@ import {
 const items = [
   {
     title: "Dashboard",
-    url: "/admin/dashboard",
+    url: "/AdminDashboard",
   },
   {
     title: "Users",
@@ -20,7 +20,7 @@ const items = [
   },
   {
     title: "Drivers",
-    url: "/admin/drivers",
+    url: "/admin/Drivers",
   },
   {
     title: "Vehicles",
@@ -32,11 +32,11 @@ const items = [
   },
   {
     title: "Fare Config",
-    url: "/admin/fare-config",
+    url: "/admin/FareConfig",
   },
   {
     title: "Reviews",
-    url: "/admin/reviews",
+    url: "/admin/Reviews",
   },
 ];
 

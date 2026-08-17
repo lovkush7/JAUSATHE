@@ -14,6 +14,11 @@ import { Route as AdminDashboardRouteImport } from './routes/AdminDashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SplashIndexRouteImport } from './routes/Splash/index'
 import { Route as ProfileIndexRouteImport } from './routes/Profile/index'
+import { Route as AdminUsersRouteImport } from './routes/admin/users'
+import { Route as AdminVehiclesRouteImport } from './routes/admin/Vehicles'
+import { Route as AdminReviewsRouteImport } from './routes/admin/Reviews'
+import { Route as AdminFareConfigRouteImport } from './routes/admin/FareConfig'
+import { Route as AdminDriversRouteImport } from './routes/admin/Drivers'
 import { Route as DriverProfileRouteImport } from './routes/Driver/profile'
 import { Route as BoardingPage3IndexRouteImport } from './routes/boarding/page3/index'
 import { Route as BoardingPage2IndexRouteImport } from './routes/boarding/page2/index'
@@ -50,6 +55,31 @@ const SplashIndexRoute = SplashIndexRouteImport.update({
 const ProfileIndexRoute = ProfileIndexRouteImport.update({
   id: '/Profile/',
   path: '/Profile/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/admin/users',
+  path: '/admin/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminVehiclesRoute = AdminVehiclesRouteImport.update({
+  id: '/admin/Vehicles',
+  path: '/admin/Vehicles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminReviewsRoute = AdminReviewsRouteImport.update({
+  id: '/admin/Reviews',
+  path: '/admin/Reviews',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminFareConfigRoute = AdminFareConfigRouteImport.update({
+  id: '/admin/FareConfig',
+  path: '/admin/FareConfig',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminDriversRoute = AdminDriversRouteImport.update({
+  id: '/admin/Drivers',
+  path: '/admin/Drivers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DriverProfileRoute = DriverProfileRouteImport.update({
@@ -118,6 +148,11 @@ export interface FileRoutesByFullPath {
   '/AdminDashboard': typeof AdminDashboardRoute
   '/DriverDashboard': typeof DriverDashboardRoute
   '/Driver/profile': typeof DriverProfileRoute
+  '/admin/Drivers': typeof AdminDriversRoute
+  '/admin/FareConfig': typeof AdminFareConfigRoute
+  '/admin/Reviews': typeof AdminReviewsRoute
+  '/admin/Vehicles': typeof AdminVehiclesRoute
+  '/admin/users': typeof AdminUsersRoute
   '/Profile/': typeof ProfileIndexRoute
   '/Splash/': typeof SplashIndexRoute
   '/Book/BookRides/': typeof BookBookRidesIndexRoute
@@ -137,6 +172,11 @@ export interface FileRoutesByTo {
   '/AdminDashboard': typeof AdminDashboardRoute
   '/DriverDashboard': typeof DriverDashboardRoute
   '/Driver/profile': typeof DriverProfileRoute
+  '/admin/Drivers': typeof AdminDriversRoute
+  '/admin/FareConfig': typeof AdminFareConfigRoute
+  '/admin/Reviews': typeof AdminReviewsRoute
+  '/admin/Vehicles': typeof AdminVehiclesRoute
+  '/admin/users': typeof AdminUsersRoute
   '/Profile': typeof ProfileIndexRoute
   '/Splash': typeof SplashIndexRoute
   '/Book/BookRides': typeof BookBookRidesIndexRoute
@@ -157,6 +197,11 @@ export interface FileRoutesById {
   '/AdminDashboard': typeof AdminDashboardRoute
   '/DriverDashboard': typeof DriverDashboardRoute
   '/Driver/profile': typeof DriverProfileRoute
+  '/admin/Drivers': typeof AdminDriversRoute
+  '/admin/FareConfig': typeof AdminFareConfigRoute
+  '/admin/Reviews': typeof AdminReviewsRoute
+  '/admin/Vehicles': typeof AdminVehiclesRoute
+  '/admin/users': typeof AdminUsersRoute
   '/Profile/': typeof ProfileIndexRoute
   '/Splash/': typeof SplashIndexRoute
   '/Book/BookRides/': typeof BookBookRidesIndexRoute
@@ -178,6 +223,11 @@ export interface FileRouteTypes {
     | '/AdminDashboard'
     | '/DriverDashboard'
     | '/Driver/profile'
+    | '/admin/Drivers'
+    | '/admin/FareConfig'
+    | '/admin/Reviews'
+    | '/admin/Vehicles'
+    | '/admin/users'
     | '/Profile/'
     | '/Splash/'
     | '/Book/BookRides/'
@@ -197,6 +247,11 @@ export interface FileRouteTypes {
     | '/AdminDashboard'
     | '/DriverDashboard'
     | '/Driver/profile'
+    | '/admin/Drivers'
+    | '/admin/FareConfig'
+    | '/admin/Reviews'
+    | '/admin/Vehicles'
+    | '/admin/users'
     | '/Profile'
     | '/Splash'
     | '/Book/BookRides'
@@ -216,6 +271,11 @@ export interface FileRouteTypes {
     | '/AdminDashboard'
     | '/DriverDashboard'
     | '/Driver/profile'
+    | '/admin/Drivers'
+    | '/admin/FareConfig'
+    | '/admin/Reviews'
+    | '/admin/Vehicles'
+    | '/admin/users'
     | '/Profile/'
     | '/Splash/'
     | '/Book/BookRides/'
@@ -236,6 +296,11 @@ export interface RootRouteChildren {
   AdminDashboardRoute: typeof AdminDashboardRoute
   DriverDashboardRoute: typeof DriverDashboardRoute
   DriverProfileRoute: typeof DriverProfileRoute
+  AdminDriversRoute: typeof AdminDriversRoute
+  AdminFareConfigRoute: typeof AdminFareConfigRoute
+  AdminReviewsRoute: typeof AdminReviewsRoute
+  AdminVehiclesRoute: typeof AdminVehiclesRoute
+  AdminUsersRoute: typeof AdminUsersRoute
   ProfileIndexRoute: typeof ProfileIndexRoute
   SplashIndexRoute: typeof SplashIndexRoute
   BookBookRidesIndexRoute: typeof BookBookRidesIndexRoute
@@ -286,6 +351,41 @@ declare module '@tanstack/react-router' {
       path: '/Profile'
       fullPath: '/Profile/'
       preLoaderRoute: typeof ProfileIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/Vehicles': {
+      id: '/admin/Vehicles'
+      path: '/admin/Vehicles'
+      fullPath: '/admin/Vehicles'
+      preLoaderRoute: typeof AdminVehiclesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/Reviews': {
+      id: '/admin/Reviews'
+      path: '/admin/Reviews'
+      fullPath: '/admin/Reviews'
+      preLoaderRoute: typeof AdminReviewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/FareConfig': {
+      id: '/admin/FareConfig'
+      path: '/admin/FareConfig'
+      fullPath: '/admin/FareConfig'
+      preLoaderRoute: typeof AdminFareConfigRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/Drivers': {
+      id: '/admin/Drivers'
+      path: '/admin/Drivers'
+      fullPath: '/admin/Drivers'
+      preLoaderRoute: typeof AdminDriversRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Driver/profile': {
@@ -380,6 +480,11 @@ const rootRouteChildren: RootRouteChildren = {
   AdminDashboardRoute: AdminDashboardRoute,
   DriverDashboardRoute: DriverDashboardRoute,
   DriverProfileRoute: DriverProfileRoute,
+  AdminDriversRoute: AdminDriversRoute,
+  AdminFareConfigRoute: AdminFareConfigRoute,
+  AdminReviewsRoute: AdminReviewsRoute,
+  AdminVehiclesRoute: AdminVehiclesRoute,
+  AdminUsersRoute: AdminUsersRoute,
   ProfileIndexRoute: ProfileIndexRoute,
   SplashIndexRoute: SplashIndexRoute,
   BookBookRidesIndexRoute: BookBookRidesIndexRoute,
