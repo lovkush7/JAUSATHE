@@ -1893,6 +1893,81 @@
 					}
 				]
 			}
+		},
+		"/admin/getRides": {
+			"get": {
+				"operationId": "GetAllRides",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"chart": {
+											"items": {
+												"properties": {
+													"rides": {
+														"type": "number",
+														"format": "double"
+													},
+													"date": {}
+												},
+												"required": [
+													"rides",
+													"date"
+												],
+												"type": "object"
+											},
+											"type": "array"
+										},
+										"averageRidesPerDay": {
+											"type": "number",
+											"format": "double"
+										},
+										"totalRides": {
+											"type": "number",
+											"format": "double"
+										},
+										"range": {
+											"type": "string",
+											"enum": [
+												"7d",
+												"30d",
+												"90d"
+											]
+										}
+									},
+									"required": [
+										"chart",
+										"averageRidesPerDay",
+										"totalRides",
+										"range"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "range",
+						"required": false,
+						"schema": {
+							"default": "7d",
+							"type": "string",
+							"enum": [
+								"7d",
+								"30d",
+								"90d"
+							]
+						}
+					}
+				]
+			}
 		}
 	},
 	"servers": [

@@ -68,7 +68,7 @@ const chartData = [
 const chartConfig = {
   rides: {
     label: "Rides",
-    color: "var(--primary)",
+    color: "#2563eb",
   },
 } satisfies ChartConfig
 
