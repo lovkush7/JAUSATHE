@@ -33,33 +33,39 @@ import {
   ToggleGroup,
   ToggleGroupItem,
 } from "@/components/ui/toggle-group"
+import { api } from "../../../api/Api"
+import { useQuery } from "@tanstack/react-query"
 
-// --------------------------------------------------
-// Sample Ride Data
-// Later yo data backend API bata aaune banauna sakincha
-// --------------------------------------------------
+const chartReq = async(range:string)=>{
+  const res = await api.get(`/admin/getRides`,{
+    params:{
+      range
+    }
+  })
+  return res.data;
+}
 
-const chartData = [
-  { date: "2026-08-01", rides: 12 },
-  { date: "2026-08-02", rides: 18 },
-  { date: "2026-08-03", rides: 10 },
-  { date: "2026-08-04", rides: 22 },
-  { date: "2026-08-05", rides: 16 },
-  { date: "2026-08-06", rides: 25 },
-  { date: "2026-08-07", rides: 20 },
+// const chartData = [
+//   { date: "2026-08-01", rides: 12 },
+//   { date: "2026-08-02", rides: 18 },
+//   { date: "2026-08-03", rides: 10 },
+//   { date: "2026-08-04", rides: 22 },
+//   { date: "2026-08-05", rides: 16 },
+//   { date: "2026-08-06", rides: 25 },
+//   { date: "2026-08-07", rides: 20 },
 
-  { date: "2026-08-08", rides: 15 },
-  { date: "2026-08-09", rides: 21 },
-  { date: "2026-08-10", rides: 28 },
-  { date: "2026-08-11", rides: 19 },
-  { date: "2026-08-12", rides: 31 },
-  { date: "2026-08-13", rides: 24 },
-  { date: "2026-08-14", rides: 29 },
+//   { date: "2026-08-08", rides: 15 },
+//   { date: "2026-08-09", rides: 21 },
+//   { date: "2026-08-10", rides: 28 },
+//   { date: "2026-08-11", rides: 19 },
+//   { date: "2026-08-12", rides: 31 },
+//   { date: "2026-08-13", rides: 24 },
+//   { date: "2026-08-14", rides: 29 },
 
-  { date: "2026-08-15", rides: 34 },
-  { date: "2026-08-16", rides: 27 },
-  { date: "2026-08-17", rides: 30 },
-]
+//   { date: "2026-08-15", rides: 34 },
+//   { date: "2026-08-16", rides: 27 },
+//   { date: "2026-08-17", rides: 30 },
+// ]
 
 // --------------------------------------------------
 // Chart Config
@@ -88,44 +94,50 @@ export function ChartAreaInteractive() {
     }
   }, [isMobile])
 
-  // --------------------------------------------------
-  // Filter data according to selected range
-  // --------------------------------------------------
+  const {data} =  useQuery({
+    queryKey: [timeRange],
+    queryFn: ()=>chartReq(timeRange),
+    enabled: !!timeRange
+  })
+ console.log("the chart data", data)
+const chartData = data?.chart ?? []
 
-  const filteredData = React.useMemo(() => {
-    const referenceDate = new Date("2026-08-17")
+const totalRides = data?.totalRides ?? 0
 
-    let daysToSubtract = 7
+  // const filteredData = React.useMemo(() => {
+  //   const referenceDate = new Date("2026-08-17")
 
-    if (timeRange === "30d") {
-      daysToSubtract = 30
-    }
+  //   let daysToSubtract = 7
 
-    if (timeRange === "90d") {
-      daysToSubtract = 90
-    }
+  //   if (timeRange === "30d") {
+  //     daysToSubtract = 30
+  //   }
 
-    const startDate = new Date(referenceDate)
+  //   if (timeRange === "90d") {
+  //     daysToSubtract = 90
+  //   }
 
-    startDate.setDate(
-      startDate.getDate() - daysToSubtract
-    )
+  //   const startDate = new Date(referenceDate)
 
-    return chartData.filter((item) => {
-      const date = new Date(item.date)
+  //   startDate.setDate(
+  //     startDate.getDate() - daysToSubtract
+  //   )
 
-      return date >= startDate
-    })
-  }, [timeRange])
+  //   return chartData.filter((item:any) => {
+  //     const date = new Date(item.date)
+
+  //     return date >= startDate
+  //   })
+  // }, [timeRange])
 
   // --------------------------------------------------
   // Total rides
   // --------------------------------------------------
 
-  const totalRides = filteredData.reduce(
-    (total, item) => total + item.rides,
-    0
-  )
+  // const totalRides = filteredData.reduce(
+  //   (total, item) => total + item.rides,
+  //   0
+  // )
 
   return (
     <Card className="@container/card">
@@ -225,7 +237,7 @@ export function ChartAreaInteractive() {
           className="aspect-auto h-[250px] w-full"
         >
 
-          <AreaChart data={filteredData}>
+          <AreaChart data={chartData}>
 
             {/* Gradient */}
 
