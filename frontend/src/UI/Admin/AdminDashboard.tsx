@@ -16,6 +16,7 @@ import {
 import { AdminSidebar } from "../../atoms/admin/AdminSidebar"
 import { WeeklyRidesChart } from "../../atoms/admin/comp/TotalRides"
 import { ChartAreaInteractive } from "../../atoms/admin/comp/Chartarea"
+import { SectionCards } from "../../atoms/admin/comp/section_card"
 
 export default function Page() {
   return (
@@ -46,8 +47,10 @@ export default function Page() {
             <div className="aspect-video rounded-xl bg-muted/50" >
             <WeeklyRidesChart/>
             </div>
-            <div className="aspect-video rounded-xl bg-muted/50" > <WeeklyRidesChart/></div>
-            <div className="aspect-video rounded-xl bg-muted/50" > <WeeklyRidesChart/></div>
+               <div className="rounded-xl bg-muted/50 md:col-span-2">
+      <SectionCards />
+    </div>
+            {/* <div className="aspect-video rounded-xl bg-muted/50" > </div> */}
           </div>
           <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" >
           <ChartAreaInteractive/>

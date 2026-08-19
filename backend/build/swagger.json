@@ -1968,6 +1968,46 @@
 					}
 				]
 			}
+		},
+		"/admin/weekly-rides": {
+			"get": {
+				"operationId": "WeeklyRides",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"remaining": {
+											"type": "number",
+											"format": "double"
+										},
+										"progress": {
+											"type": "number",
+											"format": "double"
+										},
+										"target": {
+											"type": "number",
+											"format": "double"
+										},
+										"Completed": {}
+									},
+									"required": [
+										"remaining",
+										"progress",
+										"target",
+										"Completed"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
 		}
 	},
 	"servers": [

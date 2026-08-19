@@ -14,5 +14,14 @@ try{
     console.log(err)
 }
 }
+@Get("weekly-rides")
+async WeeklyRides(){
+    try{
+        return await AdminServices.WeeklyRides()
+
+    }catch(err){
+        console.log(err)
+    }
+}
 
 }

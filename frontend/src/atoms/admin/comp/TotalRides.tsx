@@ -23,40 +23,84 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 
-// Weekly ride data
-const weeklyRides = {
-  completed: 38,
-  target: 50,
+import { useQuery } from "@tanstack/react-query"
+import { api } from "../../../api/Api"
+
+interface WeeklyRideResponse {
+  Completed: number
+  target: number
+  progress: number
+  remaining: number
 }
 
-// Calculate progress percentage
-const progress = Math.min(
-  Math.round((weeklyRides.completed / weeklyRides.target) * 100),
-  100
-)
-
-const remaining = Math.max(
-  weeklyRides.target - weeklyRides.completed,
-  0
-)
-
-const chartData = [
-  {
-    rides: weeklyRides.completed,
-    fill:  "#2563eb" ,
-  },
-]
+const getTotalRides = async (): Promise<WeeklyRideResponse> => {
+  const response = await api.get("/admin/weekly-rides")
+  return response.data
+}
 
 const chartConfig = {
   rides: {
     label: "Rides",
-    color: "var(--chart-2)",
+    color: "#2563eb",
   },
 } satisfies ChartConfig
 
 export function WeeklyRidesChart() {
+  const { data, isLoading, isError } =
+    useQuery<WeeklyRideResponse>({
+      queryKey: ["weekly-rides"],
+      queryFn: getTotalRides,
+    })
+
+  if (isLoading) {
+    return (
+      <Card className="flex flex-col drop-shadow-lg">
+        <CardHeader className="items-center pb-0">
+          <CardTitle>Weekly Rides</CardTitle>
+          <CardDescription>
+            This week's ride performance
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent className="flex items-center justify-center h-[300px]">
+          Loading...
+        </CardContent>
+      </Card>
+    )
+  }
+
+  if (isError || !data) {
+    return (
+      <Card className="flex flex-col drop-shadow-lg">
+        <CardHeader className="items-center pb-0">
+          <CardTitle>Weekly Rides</CardTitle>
+          <CardDescription>
+            Failed to load weekly rides
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    )
+  }
+
+  const completed = data?.Completed
+  const target = data.target
+  const progress = data.progress
+  const remaining = data.remaining
+
+  // Make small percentages visible
+  const visibleProgress = Math.max(progress, 5)
+
+  const chartData = [
+    {
+      rides: completed,
+      fill: "#2563eb",
+    },
+  ]
+
   return (
-    <Card className="flex flex-col drop-shadow-lg ">
+    <Card className="flex flex-col drop-shadow-lg">
+
+      {/* Header */}
       <CardHeader className="items-center pb-0">
         <CardTitle>Weekly Rides</CardTitle>
 
@@ -65,6 +109,7 @@ export function WeeklyRidesChart() {
         </CardDescription>
       </CardHeader>
 
+      {/* Chart */}
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
@@ -73,10 +118,13 @@ export function WeeklyRidesChart() {
           <RadialBarChart
             data={chartData}
             startAngle={90}
-            endAngle={90 - (progress * 360) / 100}
+            endAngle={
+              90 - (visibleProgress * 360) / 100
+            }
             innerRadius={80}
             outerRadius={90}
           >
+
             <PolarGrid
               gridType="circle"
               radialLines={false}
@@ -96,6 +144,7 @@ export function WeeklyRidesChart() {
               tickLine={false}
               axisLine={false}
             >
+
               <Label
                 content={({ viewBox }) => {
                   if (
@@ -110,12 +159,13 @@ export function WeeklyRidesChart() {
                         textAnchor="middle"
                         dominantBaseline="middle"
                       >
+
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
                           className="fill-foreground text-4xl font-bold"
                         >
-                          {weeklyRides.completed}
+                          {completed}
                         </tspan>
 
                         <tspan
@@ -123,8 +173,9 @@ export function WeeklyRidesChart() {
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          / {weeklyRides.target} Rides
+                          / {target} Rides
                         </tspan>
+
                       </text>
                     )
                   }
@@ -132,14 +183,19 @@ export function WeeklyRidesChart() {
                   return null
                 }}
               />
+
             </PolarRadiusAxis>
+
           </RadialBarChart>
         </ChartContainer>
       </CardContent>
 
+      {/* Footer */}
       <CardFooter className="flex-col gap-2 text-sm">
+
         <div className="flex items-center gap-2 leading-none font-medium">
           {progress}% of weekly target completed
+
           <TrendingUp className="h-4 w-4" />
         </div>
 
@@ -148,7 +204,9 @@ export function WeeklyRidesChart() {
             ? `${remaining} rides remaining to reach your target`
             : "Weekly ride target completed 🎉"}
         </div>
+
       </CardFooter>
+
     </Card>
   )
 }
