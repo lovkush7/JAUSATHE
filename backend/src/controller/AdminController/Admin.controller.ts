@@ -23,5 +23,18 @@ async WeeklyRides(){
         console.log(err)
     }
 }
+@Get("/details")
+async GetDetails (){
+    try{
+      return await AdminServices.GetDetails()
+    }catch(err){
+        console.log(err)
+    }
+}
+
+@Get("getdrivers")
+async GetDriverDetails (){
+ return await AdminServices.GetDriverData()
+}
 
 }

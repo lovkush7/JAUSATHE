@@ -3,6 +3,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { AdminSidebar } from "../../atoms/admin/AdminSidebar";
+import DriverTable from "../../atoms/admin/comp/DriverTable";
 
 
 
@@ -23,7 +24,7 @@ export default function AdminDriver() {
 
         <div className="p-6">
           {/* Dashboard content */}
-          
+          <DriverTable/>
         </div>
       </main>
 

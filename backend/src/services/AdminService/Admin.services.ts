@@ -1,5 +1,8 @@
+import { Driver } from "../../entity/Driver.entities.ts";
+import { FareConfig } from "../../entity/FareConfig.entities.ts";
 import { Ride } from "../../entity/Ride.entities.ts";
-import { RideStatus } from "../../enum/enum.details.ts";
+import { User } from "../../entity/User.entities.ts";
+import { Driverstatus, RideStatus } from "../../enum/enum.details.ts";
 
 class AdminService {
     async AdminService(
@@ -96,6 +99,63 @@ endOfWeek.setDate(
         console.log(err)
       }
     }
-  
+  async GetDetails(){
+    try{
+      //total ride today ane active driver ane avarage ride fare ane new users today
+        const day = new Date()
+
+      const ride = await Ride.createQueryBuilder("ride")
+              .where("DATE(ride.CreatedAt) = CURRENT_DATE")
+                   .andWhere(`"ride"."ridestauts" = :status`, {
+        status: RideStatus.COMPLETED,
+      })
+      .getCount()
+        
+     const active = await  Driver.createQueryBuilder("driver")
+        .where(`"driver"."status" = :status `,{
+          status: Driverstatus.ONLINE
+        })
+      .getCount()
+
+   const averageFare = await Ride.createQueryBuilder("ride")
+  .select("AVG(ride.estimatedFare)", "averageFare")
+  .where("DATE(ride.CreatedAt) = CURRENT_DATE")
+  .andWhere(`ride.ridestauts = :status`, {
+    status: RideStatus.COMPLETED,
+  })
+  .getRawOne();
+
+    const newuser = await User.createQueryBuilder("user")
+  .where("DATE(user.CreatedAt) = CURRENT_DATE")
+  .getCount();
+
+     return {
+      ride,
+      active,
+      averageFare: Number(averageFare.averageFare) || 0,
+      newuser
+     }
+        
+
+    }catch(err){
+      console.log(err)
+    }
+  }
+  async GetDriverData(){
+     try{
+      const drivertable = await Driver.find({
+        relations:{
+          ridesasDriver: true,
+          user: true,
+        },
+      
+      })
+        return {
+          
+        }
+     }catch(err){
+      console.log(err)
+     }
+  }
 }
 export default new AdminService();

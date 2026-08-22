@@ -64,6 +64,9 @@ const Login = () => {
       if (role === "DRIVER") {
         navigate({ to: "/DriverDashboard" })
       }
+      if (role === "ADMIN"){
+        navigate({to: "/AdminDashboard"})
+      }
     },
     onError: (error: any) => {
       toast.error(error.response.data.message, {
