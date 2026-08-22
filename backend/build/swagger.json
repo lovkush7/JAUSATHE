@@ -2051,6 +2051,78 @@
 				"security": [],
 				"parameters": []
 			}
+		},
+		"/admin/getdrivers": {
+			"get": {
+				"operationId": "GetDriverDetails",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"properties": {
+											"vehicles": {
+												"properties": {
+													"model": {
+														"type": "string"
+													},
+													"number": {
+														"type": "string"
+													},
+													"type": {
+														"$ref": "#/components/schemas/VehicleType"
+													},
+													"id": {
+														"type": "string"
+													}
+												},
+												"required": [
+													"model",
+													"number",
+													"type",
+													"id"
+												],
+												"type": "object"
+											},
+											"status": {
+												"$ref": "#/components/schemas/Driverstatus"
+											},
+											"earning": {
+												"type": "number",
+												"format": "double"
+											},
+											"ridetoday": {
+												"type": "number",
+												"format": "double"
+											},
+											"name": {
+												"type": "string"
+											},
+											"id": {
+												"type": "string"
+											}
+										},
+										"required": [
+											"vehicles",
+											"status",
+											"earning",
+											"ridetoday",
+											"name",
+											"id"
+										],
+										"type": "object"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
 		}
 	},
 	"servers": [

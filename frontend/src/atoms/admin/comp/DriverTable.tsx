@@ -58,7 +58,7 @@ const DriverTable = () => {
             <TableHead className="text-black">EARNINGS</TableHead>
             <TableHead className="text-black">STATUS</TableHead>
             <TableHead className="text-black">VEHICLES</TableHead>
-            <TableHead className="text-black">Status</TableHead>
+            <TableHead className="text-black">IsApproved</TableHead>
             <TableHead className="text-right">
               Action
             </TableHead>
@@ -70,34 +70,37 @@ const DriverTable = () => {
             data.map((ride) => (
               <TableRow
                 key={ride.id}
-                className="border-slate-700 transition hover:bg-[#202035]"
+                className="border-slate-700 transition hover:bg-gray-400"
               >
-                <TableCell className="font-medium text-white">
-                  {ride.reqVehicleType}
+                <TableCell className="font-medium ">
+                  {ride?.name}
                 </TableCell>
 
-                <TableCell className="text-slate-300">
-                  {ride.pickupAddress}
+                <TableCell className="">
+                  {ride?.totalEarning}
                 </TableCell>
 
-                <TableCell className="text-slate-300">
-                  {ride.DropoffAddress}
+                <TableCell className="">
+                  {ride?.ridetoday}
                 </TableCell>
 
                 <TableCell className="font-semibold text-green-400">
-                  Rs. {ride.estimatedFare}
+                  Rs. {ride?.earning}
                 </TableCell>
 
-                <TableCell className="text-slate-300">
-                  {ride.estimatedDistance} km
+                <TableCell className="">
+                  {ride?.status} 
                 </TableCell>
 
-                <TableCell className="text-slate-300">
-                  {ride.driver?.user?.FullName}
+                <TableCell className="">
+                  {ride?.vehicles?.type}
                 </TableCell>
 
                 <TableCell>
-                  <span
+                  <span>
+                    {ride?.approve}
+                  </span>
+                  {/* <span
                     className={`rounded-full px-3 py-1 text-xs font-semibold
                       ${
                         ride.ridestauts === "COMPLETED"
@@ -108,7 +111,7 @@ const DriverTable = () => {
                       }`}
                   >
                     {ride.ridestauts}
-                  </span>
+                  </span> */}
                 </TableCell>
 
                 <TableCell className="text-right">

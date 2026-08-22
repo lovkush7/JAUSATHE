@@ -143,16 +143,53 @@ endOfWeek.setDate(
   }
   async GetDriverData(){
      try{
-      const drivertable = await Driver.find({
+      const driver = await Driver.find({
         relations:{
           ridesasDriver: true,
           user: true,
+          vechicles: true
         },
       
       })
+
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+
+       const driverData = driver.map((d)=>{
+           
+        const todayride = d.ridesasDriver.filter((ride)=>{
+         const ridedata = new Date(ride.CreatedAt)
+         return ridedata >= today
+        });
+
+
+        //today earning
+        const  earning = todayride.reduce((total, ride)=>{
+            return total + Number(ride.estimatedFare || 0) 
+            
+        },0)
+            // Total earning - all rides
+      const totalEarning = d.ridesasDriver.reduce((total, ride) => {
+        return total + Number(ride.estimatedFare || 0);
+      }, 0);
         return {
-          
+          id: d.id,
+          name: d.user.FullName,
+          ridetoday: todayride.length,
+          totalEarning: totalEarning,
+          earning: earning,
+          status: d.status,
+          approve: String(d.isApproped),
+          vehicles: d.vechicles ? {
+            id: d.vechicles.id,
+            type: d.vechicles.type,
+            number: d.vechicles.plateNumber,
+            model: d.vechicles.model
+          } : null
         }
+       })
+    return driverData;
+      
      }catch(err){
       console.log(err)
      }
