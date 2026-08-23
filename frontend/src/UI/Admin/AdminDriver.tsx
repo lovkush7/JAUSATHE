@@ -4,6 +4,8 @@ import {
 } from "@/components/ui/sidebar";
 import { AdminSidebar } from "../../atoms/admin/AdminSidebar";
 import DriverTable from "../../atoms/admin/comp/DriverTable";
+import { SectionCards } from "../../atoms/admin/comp/section_card";
+import { DriverSectionCards } from "../../atoms/admin/comp/DriverSection";
 
 
 
@@ -24,7 +26,10 @@ export default function AdminDriver() {
 
         <div className="p-6">
           {/* Dashboard content */}
-          <DriverTable/>
+          <div className="rounded-xl bg-muted/50 md:col-span-2">
+            <DriverSectionCards />
+          </div>
+          <DriverTable />
         </div>
       </main>
 

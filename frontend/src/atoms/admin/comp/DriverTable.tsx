@@ -84,12 +84,13 @@ const DriverTable = () => {
                   {ride?.ridetoday}
                 </TableCell>
 
-                <TableCell className="font-semibold text-green-400">
+                <TableCell className="font-semibold ">
                   Rs. {ride?.earning}
                 </TableCell>
 
                 <TableCell className="">
-                  {ride?.status} 
+                  {/* {ride?.status}  */}
+                  <p  className={`${ride?.status === "ONLINE" ? "text-green-600" : "text-red-600"}`}>{ride?.status} </p>
                 </TableCell>
 
                 <TableCell className="">
@@ -120,7 +121,7 @@ const DriverTable = () => {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="text-slate-300 hover:bg-slate-700"
+                        className="text-black hover:bg-slate-700"
                       >
                         <MoreHorizontalIcon size={18} />
                       </Button>
@@ -131,11 +132,11 @@ const DriverTable = () => {
                       className="border-slate-700 bg-[#1C1C2D] text-white"
                     >
                       <DropdownMenuItem>
-                        View Details
+                      { ride?.approve === "true" ? "disApprove" : "Approve"}
                       </DropdownMenuItem>
 
                       <DropdownMenuItem>
-                      Rebook
+                   
                       </DropdownMenuItem>
 
                       <DropdownMenuSeparator />

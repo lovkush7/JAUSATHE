@@ -52,6 +52,8 @@ export function WeeklyRidesChart() {
       queryFn: getTotalRides,
     })
 
+    console.log("the totalride data ",data)
+
   if (isLoading) {
     return (
       <Card className="flex flex-col drop-shadow-lg">

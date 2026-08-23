@@ -2086,10 +2086,17 @@
 												],
 												"type": "object"
 											},
+											"approve": {
+												"type": "string"
+											},
 											"status": {
 												"$ref": "#/components/schemas/Driverstatus"
 											},
 											"earning": {
+												"type": "number",
+												"format": "double"
+											},
+											"totalEarning": {
 												"type": "number",
 												"format": "double"
 											},
@@ -2106,8 +2113,10 @@
 										},
 										"required": [
 											"vehicles",
+											"approve",
 											"status",
 											"earning",
+											"totalEarning",
 											"ridetoday",
 											"name",
 											"id"
