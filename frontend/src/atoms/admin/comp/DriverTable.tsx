@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { MoreHorizontalIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -19,15 +19,20 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { api } from '../../../api/Api'
+import { id } from 'zod/v4/locales'
 
 const DriverTabledata = async () => {
     const res = await api.get("admin/getdrivers")
     return res.data
 }
+const DriverApproval = async (DriverId: string, isApproval:boolean)=>{
+  const response = await api.put(`admin/driverapproval/${DriverId}`,{isApproval})
+  return response.data;
 
+
+}
 const DriverTable = () => {
-
-         
+  const [value, setValue] = useState()         
     const { data } = useQuery({
         queryKey: ["ridedata"],
         queryFn: () => DriverTabledata(),
@@ -35,6 +40,20 @@ const DriverTable = () => {
         // refetchInterval: 10000
     })
     console.log("the dataare ", data)
+
+    const queryClient = useQueryClient()
+
+    const approvalmutation = useMutation({
+      mutationFn: ({DriverId, isApproved}:{DriverId:string, isApproved:boolean})=>DriverApproval(DriverId,isApproved),
+      onSuccess: ()=>{
+        queryClient.invalidateQueries({
+          queryKey:["driver"]
+        })
+      },
+      onError:(err)=>{
+        console.log(err)
+      }
+    })
   
 
     return (
@@ -131,7 +150,13 @@ const DriverTable = () => {
                       align="end"
                       className="border-slate-700 bg-[#1C1C2D] text-white"
                     >
-                      <DropdownMenuItem>
+                      <DropdownMenuItem onClick={()=>{
+                        approvalmutation.mutate({
+                          DriverId: ride?.id,
+                          isApproved: !ride?.approve
+                        })
+                        console.log( "driverid and rideapprove",ride?.id, ride?.approve)
+                      }}>
                       { ride?.approve === "true" ? "disApprove" : "Approve"}
                       </DropdownMenuItem>
 
