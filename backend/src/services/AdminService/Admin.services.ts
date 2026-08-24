@@ -70,7 +70,7 @@ class AdminService {
 
       const Completed: any = await Ride.createQueryBuilder("ride")
         .where(`"ride"."ridestauts" = :status`, {
-          status:RideStatus.COMPLETED,
+          status: RideStatus.COMPLETED,
         })
         .andWhere(`"ride"."CreatedAt" >= :StartofWeek`, {
           StartofWeek,
@@ -79,9 +79,9 @@ class AdminService {
           endOfWeek,
         })
         .getCount();
-        console.log("start of week ", StartofWeek)
-        console.log("end of week", endOfWeek)
-        
+      console.log("start of week ", StartofWeek)
+      console.log("end of week", endOfWeek)
+
       const target = 50;
 
       const progress = Math.min(
@@ -199,16 +199,16 @@ class AdminService {
       console.log(err)
     }
   }
-   async driverapproval(
-    id: string ,
+  async driverapproval(
+    id: string,
     isApproval: boolean
-   ){
+  ) {
     const existance = await Driver.findOne({
-      where:{
+      where: {
         id: id
       }
     })
-    if(!existance){
+    if (!existance) {
       throw new Error("driver doesn't exist ")
     }
 
@@ -216,6 +216,39 @@ class AdminService {
     const updated = await existance.save()
     return updated
 
-   }
+  }
+ async GetUsers() {
+  const users = await User.find();
+
+  const result = await Ride
+    .createQueryBuilder("ride")
+    .select("ride.riderId", "userId")
+     .addSelect("COUNT(ride.id)", "totalRides")
+    .addSelect(
+      "COALESCE(SUM(ride.estimatedFare), 0)",
+      "totalSpent"
+    )
+    .where("ride.ridestauts = :status", {
+      status: "COMPLETED"
+    })
+    .groupBy("ride.riderId")
+    .getRawMany();
+
+  const spendingMap = new Map(
+    result.map((item) => [
+      item.userId,
+      Number(item.totalSpent)
+    ])
+  );
+
+  const usersWithSpending = users.map((user) => ({
+    ...user,
+    totalSpent: spendingMap.get(user.id) ?? 0
+  }));
+
+  return {
+    user: usersWithSpending
+  };
+}
 }
 export default new AdminService();

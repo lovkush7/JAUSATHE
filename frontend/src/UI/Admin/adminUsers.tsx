@@ -3,6 +3,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { AdminSidebar } from "../../atoms/admin/AdminSidebar";
+import UserTable from "../../atoms/admin/comp/UserTable";
 
 
 
@@ -23,7 +24,7 @@ export default function AdminUsers() {
 
         <div className="p-6">
           {/* Dashboard content */}
-          
+          <UserTable/>
         </div>
       </main>
 

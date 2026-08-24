@@ -53,7 +53,11 @@ async driverapproval(
 }
 @Get("GetUsers")
 async GetUsers (){
-
+  try{
+     return await AdminServices.GetUsers()
+  }catch(err){
+    console.log(err)
+  }
 }
 
 }

@@ -17,7 +17,7 @@ export class Vechicles extends CommonEntity {
         type:"boolean",
     default: false
 })
-isDefault: boolean;
+    isDefault: boolean;
     // @Column({ type: "text" })
     // color: string;
 

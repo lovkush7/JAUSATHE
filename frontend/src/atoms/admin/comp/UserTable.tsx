@@ -32,6 +32,7 @@ const UserTable = () => {
         queryKey: ["userDetails"],
         queryFn: ()=>GetUsersData()
     })
+    console.log("the user is ",data)
 
     return (
        <div className="w-full min-h-screen text-black  p-8">
@@ -53,7 +54,7 @@ const UserTable = () => {
             <TableHead className="text-black">Rides</TableHead>
             <TableHead className="text-black">spend</TableHead>
             <TableHead className="text-black">STATUS</TableHead>
-            {/* <TableHead className="text-black"></TableHead> */}
+            <TableHead className="text-black">Email</TableHead>
             {/* <TableHead className="text-black">IsApproved</TableHead> */}
             <TableHead className="text-right">
               Action
@@ -62,53 +63,42 @@ const UserTable = () => {
         </TableHeader>
 
         <TableBody>
-          {Array.isArray(data) &&
-            data.map((ride) => (
+          {Array.isArray(data?.user) &&
+  data.user.map((user: any) => (
               <TableRow
-                key={ride.id}
+                key={user.id}
                 className="border-slate-700 transition hover:bg-gray-400"
               >
                 <TableCell className="font-medium ">
-                  {ride?.name}
+                  {user?.FullName}
                 </TableCell>
 
                 <TableCell className="">
-                  {ride?.totalEarning}
+                  {user?.Phone}
                 </TableCell>
 
                 <TableCell className="">
-                  {ride?.ridetoday}
+                  {user?.total}
                 </TableCell>
 
                 <TableCell className="font-semibold ">
-                  Rs. {ride?.earning}
+                  Rs. {user?.totalSpent}
                 </TableCell>
 
                 <TableCell className="">
                   {/* {ride?.status}  */}
-                  <p  className={`${ride?.status === "ONLINE" ? "text-green-600" : "text-red-600"}`}>{ride?.status} </p>
+                  <p  className={`${user?.status === "ACTIVE" ? "text-green-600" : "text-red-600"}`}>{user?.status} </p>
                 </TableCell>
 
-                <TableCell className="">
+                {/* <TableCell className="">
                   {ride?.vehicles?.type}
-                </TableCell>
+                </TableCell> */}
 
                 <TableCell>
                   <span>
-                    {ride?.approve}
+                    {user?.Email}
                   </span>
-                  {/* <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold
-                      ${
-                        ride.ridestauts === "COMPLETED"
-                          ? "bg-green-500/20 text-green-400"
-                          : ride.ridestauts === "CANCELLED"
-                          ? "bg-red-500/20 text-red-400"
-                          : "bg-yellow-500/20 text-yellow-400"
-                      }`}
-                  >
-                    {ride.ridestauts}
-                  </span> */}
+            
                 </TableCell>
 
                 <TableCell className="text-right">
@@ -129,7 +119,7 @@ const UserTable = () => {
                     >
                       <DropdownMenuItem 
                       >
-                      { ride?.approve === "true" ? "disApprove" : "Approve"}
+                    
                       </DropdownMenuItem>
 
                       <DropdownMenuItem>
