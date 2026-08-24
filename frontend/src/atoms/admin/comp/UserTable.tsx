@@ -21,47 +21,17 @@ import {
 import { api } from '../../../api/Api'
 import { id } from 'zod/v4/locales'
 
-const DriverTabledata = async () => {
-    const res = await api.get("admin/getdrivers")
+const GetUsersData = async()=>{
+    const res = await api.get("admin/GetUsers")
     return res.data
 }
-const DriverApproval = async (DriverId: string, isApproval:boolean)=>{
-  const response = await api.patch(`admin/driverapproval/${DriverId}`,
-    {isApproval},
-  
-    
-  )
-  return response.data;
 
+const UserTable = () => {
 
-}
-const DriverTable = () => {
-  const [value, setValue] = useState()      
-     const queryClient = useQueryClient()   
-   
-    const { data } = useQuery({
-        queryKey: ["ridedata"],
-        queryFn: () => DriverTabledata(),
-       
-        
-        // refetchInterval: 10000
+    const {data} = useQuery({
+        queryKey: ["userDetails"],
+        queryFn: ()=>GetUsersData()
     })
-    console.log("the dataare ", data)
-
- 
-
-    const approvalmutation = useMutation({
-      mutationFn: ({DriverId, isApproved}:{DriverId:string, isApproved:boolean})=>DriverApproval(DriverId,isApproved),
-      onSuccess: ()=>{
-        queryClient.invalidateQueries({
-          queryKey:["ridedata"]
-        })
-      },
-      onError:(err)=>{
-        console.log(err)
-      }
-    })
-  
 
     return (
        <div className="w-full min-h-screen text-black  p-8">
@@ -79,12 +49,12 @@ const DriverTable = () => {
         <TableHeader className="sticky top-0 ">
           <TableRow className="border-slate-700 hover:bg-transparent">
             <TableHead className="text-black">NAME </TableHead>
-            <TableHead className="text-black">RIDES</TableHead>
-            <TableHead className="text-black">TODAY</TableHead>
-            <TableHead className="text-black">EARNINGS</TableHead>
+            <TableHead className="text-black">phone</TableHead>
+            <TableHead className="text-black">Rides</TableHead>
+            <TableHead className="text-black">spend</TableHead>
             <TableHead className="text-black">STATUS</TableHead>
-            <TableHead className="text-black">VEHICLES</TableHead>
-            <TableHead className="text-black">IsApproved</TableHead>
+            {/* <TableHead className="text-black"></TableHead> */}
+            {/* <TableHead className="text-black">IsApproved</TableHead> */}
             <TableHead className="text-right">
               Action
             </TableHead>
@@ -157,14 +127,8 @@ const DriverTable = () => {
                       align="end"
                       className="border-slate-700 bg-[#1C1C2D] text-white"
                     >
-                      <DropdownMenuItem onClick={()=>{
-                          const currentApproval = ride.approve === "true";
-                        approvalmutation.mutate({
-                          DriverId: ride?.id,
-                          isApproved:  !currentApproval
-                        })
-                        console.log( "driverid and rideapprove",ride?.id, ride?.approve)
-                      }}>
+                      <DropdownMenuItem 
+                      >
                       { ride?.approve === "true" ? "disApprove" : "Approve"}
                       </DropdownMenuItem>
 
@@ -190,5 +154,5 @@ const DriverTable = () => {
     )
 }
 
-export default DriverTable
+export default UserTable
 

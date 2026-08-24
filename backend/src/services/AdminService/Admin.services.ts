@@ -3,7 +3,9 @@ import { FareConfig } from "../../entity/FareConfig.entities.ts";
 import { Ride } from "../../entity/Ride.entities.ts";
 import { User } from "../../entity/User.entities.ts";
 import { Driverstatus, RideStatus } from "../../enum/enum.details.ts";
-
+interface DriverApprovalRequest {
+  isApproval: boolean;
+}
 class AdminService {
   async AdminService(
     range: "7d" | "30d" | "90d"
@@ -197,5 +199,23 @@ class AdminService {
       console.log(err)
     }
   }
+   async driverapproval(
+    id: string ,
+    isApproval: boolean
+   ){
+    const existance = await Driver.findOne({
+      where:{
+        id: id
+      }
+    })
+    if(!existance){
+      throw new Error("driver doesn't exist ")
+    }
+
+    existance.isApproped = isApproval
+    const updated = await existance.save()
+    return updated
+
+   }
 }
 export default new AdminService();
