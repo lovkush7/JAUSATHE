@@ -1,11 +1,14 @@
+import { error } from "node:console";
 import { Driver } from "../../entity/Driver.entities.ts";
 import { FareConfig } from "../../entity/FareConfig.entities.ts";
 import { Ride } from "../../entity/Ride.entities.ts";
 import { User } from "../../entity/User.entities.ts";
-import { Driverstatus, RideStatus } from "../../enum/enum.details.ts";
+import { Driverstatus, RideStatus, type VehicleType } from "../../enum/enum.details.ts";
+import type { FareConfigDto } from "../../dto/FareConfig.dto.ts";
 interface DriverApprovalRequest {
   isApproval: boolean;
 }
+
 class AdminService {
   async AdminService(
     range: "7d" | "30d" | "90d"
@@ -257,6 +260,37 @@ async FareConfig(){
   }catch(err){
     console.log(err)
   }
+}
+async UpdateFareConfig(
+  id: string,
+  body: FareConfigDto
+){
+  try{
+    const fare = await FareConfig.findOne({
+      where:{
+        id
+      }
+    })
+    if(!fare){
+      throw new Error("fare is not configured ")
+    }
+    fare.vechicleType = body.vechicleType,
+    fare.baseFare = body.baseFare,
+    fare.perKmRate = body.perKmRate,
+    fare.perMinRate = body.perMinRate,
+    fare.minimumFare = body.minimumFare,
+    fare.platformFee = body.platformFee,
+    fare.isActive = body.isActive,
+    fare.NightRide = body.NightRide,
+    fare.RainRide = body.RainRide
+   const updated = await fare.save()
+
+   return updated
+
+   }catch(err){
+    console.log(err)
+  }
+
 }
 }
 export default new AdminService();

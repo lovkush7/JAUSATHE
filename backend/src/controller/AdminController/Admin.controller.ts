@@ -1,8 +1,20 @@
 import { Body, Controller, Get, Patch, Path, Put, Query, Route } from "tsoa";
 import AdminServices from "../../services/AdminService/Admin.services.ts";
 import path from "node:path";
+import type { VehicleType } from "../../enum/enum.details.ts";
 interface DriverApprovalRequest {
   isApproval: boolean;
+}
+interface FareConfig {
+  vechicleType: VehicleType,
+  baseFare: Number
+  perKmRate: Number
+  perMinRate: Number
+  minimumFare: Number
+  platformFee: Number
+  isActive: boolean
+  NightRide: Number
+  RainRide: Number
 }
 @Route("admin")
 export class AdminController extends Controller{
@@ -63,5 +75,20 @@ async GetUsers (){
 async FareConfig(){
     return await AdminServices.FareConfig()
 }
+
+@Patch("fare-config/{id}")
+async updateFare(
+    @Path() id: string,
+    @Body() body: FareConfig
+){
+    try{
+        return await AdminServices.UpdateFareConfig(id, body)
+
+    }catch(err){
+        console.log(err)
+    }
+
+}
+
 
 }

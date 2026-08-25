@@ -1,7 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query"
 
 import { api } from "../../../api/Api"
 
@@ -25,70 +29,81 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
-type VehicleType = "BIKE" | "CAR" | "TAXI"
+// --------------------------------------------------
+// Vehicle Type
+// --------------------------------------------------
+
+type VehicleType =
+  | "BIKE"
+  | "AUTO"
+  | "CAR"
+  | "ELECTRIC"
+
+// --------------------------------------------------
+// Fare Config Type
+// --------------------------------------------------
 
 interface FareConfig {
-  vehicleType: VehicleType
-  baseFare: number
-  perKmRate: number
-  perMinRate: number
-  minimumFare: number
-  platformFee: number
-  nightRide: number
-  rainRide: number
+  id: string
+  vechicleType: VehicleType
+  baseFare: string
+  perKmRate: string
+  perMinRate: string
+  minimumFare: string
+  platformFee: string
   isActive: boolean
+  NightRide: string
+  RainRide: string
 }
 
-// -----------------------------------------
-// GET FARE CONFIG
-// -----------------------------------------
 
-const getFareConfig = async () => {
+
+const getFareConfig = async (): Promise<FareConfig[]> => {
   const response = await api.get("/admin/fare-config")
 
-  console.log("FARE API RESPONSE:", response.data)
+  console.log("FARE CONFIG:", response.data)
 
   return response.data
 }
 
-// -----------------------------------------
-// UPDATE FARE CONFIG
-// -----------------------------------------
+
 
 const updateFareConfig = async ({
-  vehicleType,
+  id,
   data,
 }: {
-  vehicleType: VehicleType
-  data: FareConfig
+  id: string
+  data: Partial<FareConfig>
 }) => {
-  const response = await api.put(
-    `/admin/fare-config/${vehicleType}`,
+  const response = await api.patch(
+    `/admin/fare-config/${id}`,
     data
   )
 
   return response.data
 }
 
-// -----------------------------------------
+// --------------------------------------------------
 // COMPONENT
-// -----------------------------------------
+// --------------------------------------------------
 
 export default function FareConfig() {
   const queryClient = useQueryClient()
 
+  // Selected vehicle
   const [vehicleType, setVehicleType] =
     React.useState<VehicleType>("BIKE")
 
+  // Editable data
   const [formData, setFormData] =
     React.useState<FareConfig | null>(null)
 
-  // ---------------------------------------
-  // GET DATA
-  // ---------------------------------------
+  // ------------------------------------------------
+  // GET
+  // ------------------------------------------------
 
   const {
-    data,
+    data: fareConfigs = [],
     isLoading,
     isError,
     error,
@@ -97,31 +112,36 @@ export default function FareConfig() {
     queryFn: getFareConfig,
   })
 
-  console.log("DATA:", data)
-
+  // ------------------------------------------------
+  // Find selected vehicle
+  // ------------------------------------------------
 
   React.useEffect(() => {
-    if (!data) return
-
-    const configs = Array.isArray(data)
-      ? data
-      : data.data ?? data.fareConfig ?? []
-
-    const selected = configs.find(
-      (item: FareConfig) =>
-        item.vehicleType === vehicleType
+    const selected = fareConfigs.find(
+      (fare) =>
+        fare.vechicleType === vehicleType
     )
 
-    console.log("SELECTED:", selected)
+    console.log(
+      "Selected vehicle:",
+      vehicleType
+    )
+
+    console.log(
+      "Selected fare:",
+      selected
+    )
 
     if (selected) {
-      setFormData(selected)
+      setFormData({
+        ...selected,
+      })
     }
-  }, [data, vehicleType])
+  }, [fareConfigs, vehicleType])
 
-  // ---------------------------------------
-  // UPDATE
-  // ---------------------------------------
+  // ------------------------------------------------
+  // UPDATE MUTATION
+  // ------------------------------------------------
 
   const updateMutation = useMutation({
     mutationFn: updateFareConfig,
@@ -133,44 +153,55 @@ export default function FareConfig() {
     },
 
     onError: (error) => {
-      console.error("UPDATE ERROR:", error)
+      console.error(
+        "Fare update error:",
+        error
+      )
     },
   })
 
-  // ---------------------------------------
-  // INPUT CHANGE
-  // ---------------------------------------
+  // ------------------------------------------------
+  // Change Input
+  // ------------------------------------------------
 
   const updateField = (
     field: keyof FareConfig,
-    value: string | number | boolean
+    value: string | boolean
   ) => {
-    setFormData((previous) => {
-      if (!previous) return null
+    setFormData((prev) => {
+      if (!prev) return null
 
       return {
-        ...previous,
+        ...prev,
         [field]: value,
       }
     })
   }
 
-  // ---------------------------------------
+  // ------------------------------------------------
   // SAVE
-  // ---------------------------------------
+  // ------------------------------------------------
 
   const handleSave = () => {
     if (!formData) return
 
     updateMutation.mutate({
-      vehicleType,
-      data: formData,
+      id: formData.id,
+
+      data: {
+        baseFare: formData.baseFare,
+        perKmRate: formData.perKmRate,
+        perMinRate: formData.perMinRate,
+        minimumFare: formData.minimumFare,
+        platformFee: formData.platformFee,
+        NightRide: formData.NightRide,
+        RainRide: formData.RainRide,
+        isActive: formData.isActive,
+      },
     })
   }
 
-  // ---------------------------------------
-  // LOADING
-  // ---------------------------------------
+  
 
   if (isLoading) {
     return (
@@ -180,30 +211,14 @@ export default function FareConfig() {
     )
   }
 
-  // ---------------------------------------
-  // ERROR
-  // ---------------------------------------
-
-  if (isError) {
-    return (
-      <div className="p-6 text-red-500">
-        Failed to load fare configuration.
-
-        <pre className="mt-4 text-xs">
-          {String(error)}
-        </pre>
-      </div>
-    )
-  }
-
-  // ---------------------------------------
-  // MAIN UI
-  // ---------------------------------------
+ 
 
   return (
     <div className="p-6">
 
       <Card>
+
+     
 
         <CardHeader>
 
@@ -212,17 +227,15 @@ export default function FareConfig() {
           </CardTitle>
 
           <CardDescription>
-            Manage fare configuration for each
-            vehicle type.
+            Manage fare configuration for
+            different vehicle types.
           </CardDescription>
 
         </CardHeader>
 
         <CardContent className="space-y-6">
 
-          {/* VEHICLE BUTTONS */}
-
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
 
             <Button
               variant={
@@ -234,7 +247,20 @@ export default function FareConfig() {
                 setVehicleType("BIKE")
               }
             >
-              Bike
+              🏍 Bike
+            </Button>
+
+            <Button
+              variant={
+                vehicleType === "AUTO"
+                  ? "default"
+                  : "outline"
+              }
+              onClick={() =>
+                setVehicleType("AUTO")
+              }
+            >
+              🛺 Auto
             </Button>
 
             <Button
@@ -247,35 +273,39 @@ export default function FareConfig() {
                 setVehicleType("CAR")
               }
             >
-              Car
+              🚗 Car
             </Button>
 
             <Button
               variant={
-                vehicleType === "TAXI"
+                vehicleType === "ELECTRIC"
                   ? "default"
                   : "outline"
               }
               onClick={() =>
-                setVehicleType("TAXI")
+                setVehicleType("ELECTRIC")
               }
             >
-              Taxi
+              ⚡ Electric
             </Button>
 
           </div>
 
-          {/* VEHICLE TITLE */}
 
           <div>
 
             <h2 className="text-lg font-semibold">
-              {vehicleType} Fare
+              {vehicleType} Fare Configuration
             </h2>
+
+            <p className="text-sm text-muted-foreground">
+              Configure pricing for{" "}
+              {vehicleType.toLowerCase()}.
+            </p>
 
           </div>
 
-          {/* TABLE */}
+         
 
           {formData ? (
 
@@ -301,25 +331,25 @@ export default function FareConfig() {
 
                 <TableBody>
 
-                  {/* VEHICLE */}
+                  {/* Vehicle */}
 
                   <TableRow>
 
-                    <TableCell>
+                    <TableCell className="font-medium">
                       Vehicle Type
                     </TableCell>
 
                     <TableCell>
-                      {formData.vehicleType}
+                      {formData.vechicleType}
                     </TableCell>
 
                   </TableRow>
 
-                  {/* BASE FARE */}
+                  {/* Base Fare */}
 
                   <TableRow>
 
-                    <TableCell>
+                    <TableCell className="font-medium">
                       Base Fare
                     </TableCell>
 
@@ -331,21 +361,21 @@ export default function FareConfig() {
                         onChange={(e) =>
                           updateField(
                             "baseFare",
-                            Number(e.target.value)
+                            e.target.value
                           )
                         }
-                        className="w-[200px]"
+                        className="w-[220px]"
                       />
 
                     </TableCell>
 
                   </TableRow>
 
-                  {/* PER KM */}
+                  {/* Per KM */}
 
                   <TableRow>
 
-                    <TableCell>
+                    <TableCell className="font-medium">
                       Per KM Rate
                     </TableCell>
 
@@ -357,21 +387,21 @@ export default function FareConfig() {
                         onChange={(e) =>
                           updateField(
                             "perKmRate",
-                            Number(e.target.value)
+                            e.target.value
                           )
                         }
-                        className="w-[200px]"
+                        className="w-[220px]"
                       />
 
                     </TableCell>
 
                   </TableRow>
 
-                  {/* PER MINUTE */}
+             
 
                   <TableRow>
 
-                    <TableCell>
+                    <TableCell className="font-medium">
                       Per Minute Rate
                     </TableCell>
 
@@ -384,21 +414,21 @@ export default function FareConfig() {
                         onChange={(e) =>
                           updateField(
                             "perMinRate",
-                            Number(e.target.value)
+                            e.target.value
                           )
                         }
-                        className="w-[200px]"
+                        className="w-[220px]"
                       />
 
                     </TableCell>
 
                   </TableRow>
 
-                  {/* MINIMUM */}
+                  {/* Minimum Fare */}
 
                   <TableRow>
 
-                    <TableCell>
+                    <TableCell className="font-medium">
                       Minimum Fare
                     </TableCell>
 
@@ -410,21 +440,21 @@ export default function FareConfig() {
                         onChange={(e) =>
                           updateField(
                             "minimumFare",
-                            Number(e.target.value)
+                            e.target.value
                           )
                         }
-                        className="w-[200px]"
+                        className="w-[220px]"
                       />
 
                     </TableCell>
 
                   </TableRow>
 
-                  {/* PLATFORM */}
+                  {/* Platform Fee */}
 
                   <TableRow>
 
-                    <TableCell>
+                    <TableCell className="font-medium">
                       Platform Fee
                     </TableCell>
 
@@ -436,22 +466,22 @@ export default function FareConfig() {
                         onChange={(e) =>
                           updateField(
                             "platformFee",
-                            Number(e.target.value)
+                            e.target.value
                           )
                         }
-                        className="w-[200px]"
+                        className="w-[220px]"
                       />
 
                     </TableCell>
 
                   </TableRow>
 
-                  {/* NIGHT */}
+                  {/* Night Ride */}
 
                   <TableRow>
 
-                    <TableCell>
-                      Night Ride
+                    <TableCell className="font-medium">
+                      Night Ride Multiplier
                     </TableCell>
 
                     <TableCell>
@@ -459,26 +489,26 @@ export default function FareConfig() {
                       <Input
                         type="number"
                         step="0.1"
-                        value={formData.nightRide}
+                        value={formData.NightRide}
                         onChange={(e) =>
                           updateField(
-                            "nightRide",
-                            Number(e.target.value)
+                            "NightRide",
+                            e.target.value
                           )
                         }
-                        className="w-[200px]"
+                        className="w-[220px]"
                       />
 
                     </TableCell>
 
                   </TableRow>
 
-                  {/* RAIN */}
+                  {/* Rain Ride */}
 
                   <TableRow>
 
-                    <TableCell>
-                      Rain Ride
+                    <TableCell className="font-medium">
+                      Rain Ride Multiplier
                     </TableCell>
 
                     <TableCell>
@@ -486,31 +516,32 @@ export default function FareConfig() {
                       <Input
                         type="number"
                         step="0.1"
-                        value={formData.rainRide}
+                        value={formData.RainRide}
                         onChange={(e) =>
                           updateField(
-                            "rainRide",
-                            Number(e.target.value)
+                            "RainRide",
+                            e.target.value
                           )
                         }
-                        className="w-[200px]"
+                        className="w-[220px]"
                       />
 
                     </TableCell>
 
                   </TableRow>
 
-                  {/* ACTIVE */}
+                  {/* Active */}
 
                   <TableRow>
 
-                    <TableCell>
-                      Active
+                    <TableCell className="font-medium">
+                      Status
                     </TableCell>
 
                     <TableCell>
 
                       <Button
+                        type="button"
                         variant={
                           formData.isActive
                             ? "default"
@@ -540,14 +571,15 @@ export default function FareConfig() {
 
           ) : (
 
-            <div className="rounded-md border p-10 text-center">
-              No configuration found for{" "}
-              {vehicleType}
+            <div className="rounded-md border p-10 text-center text-muted-foreground">
+              No fare configuration found for{" "}
+              {vehicleType}.
             </div>
 
           )}
 
-          {/* SAVE */}
+          {/* -------------------------------------- */}
+         
 
           {formData && (
 
@@ -555,11 +587,15 @@ export default function FareConfig() {
 
               <Button
                 onClick={handleSave}
-                disabled={updateMutation.isPending}
+                disabled={
+                  updateMutation.isPending
+                }
               >
+
                 {updateMutation.isPending
                   ? "Saving..."
                   : "Save Changes"}
+
               </Button>
 
             </div>
