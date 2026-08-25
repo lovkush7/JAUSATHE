@@ -3,6 +3,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { AdminSidebar } from "../../atoms/admin/AdminSidebar";
+import FareConfig from "../../atoms/admin/comp/FareConfig";
 
 
 
@@ -23,7 +24,7 @@ export default function Fareconfig() {
 
         <div className="p-6">
           {/* Dashboard content */}
-          
+           <FareConfig/>
         </div>
       </main>
 

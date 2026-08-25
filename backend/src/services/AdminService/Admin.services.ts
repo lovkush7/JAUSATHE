@@ -250,5 +250,13 @@ class AdminService {
     user: usersWithSpending
   };
 }
+async FareConfig(){
+  try{
+  const fare = await FareConfig.find()
+  return fare
+  }catch(err){
+    console.log(err)
+  }
+}
 }
 export default new AdminService();

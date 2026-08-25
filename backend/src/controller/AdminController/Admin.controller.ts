@@ -59,5 +59,9 @@ async GetUsers (){
     console.log(err)
   }
 }
+@Get("fare-config")
+async FareConfig(){
+    return await AdminServices.FareConfig()
+}
 
 }

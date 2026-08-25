@@ -763,6 +763,11 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"AdminService": {
+				"properties": {},
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -2193,22 +2198,110 @@
 							"application/json": {
 								"schema": {
 									"properties": {
-										"total": {
-											"items": {},
-											"type": "array"
-										},
 										"user": {
 											"items": {
-												"$ref": "#/components/schemas/User"
+												"properties": {
+													"CreatedAt": {
+														"type": "string",
+														"format": "date-time"
+													},
+													"UpdatedAt": {
+														"type": "string",
+														"format": "date-time"
+													},
+													"DeletedAt": {
+														"type": "string",
+														"format": "date-time"
+													},
+													"id": {
+														"type": "string"
+													},
+													"Driver": {
+														"$ref": "#/components/schemas/Driver"
+													},
+													"rides": {
+														"items": {
+															"$ref": "#/components/schemas/Ride"
+														},
+														"type": "array"
+													},
+													"Role": {
+														"$ref": "#/components/schemas/UserRole"
+													},
+													"address": {
+														"items": {
+															"type": "string"
+														},
+														"type": "array"
+													},
+													"status": {
+														"$ref": "#/components/schemas/Userstatus"
+													},
+													"profile": {
+														"type": "string"
+													},
+													"Phone": {
+														"type": "string"
+													},
+													"password": {
+														"type": "string"
+													},
+													"Email": {
+														"type": "string"
+													},
+													"FullName": {
+														"type": "string"
+													},
+													"totalSpent": {
+														"type": "number",
+														"format": "double"
+													}
+												},
+												"required": [
+													"CreatedAt",
+													"UpdatedAt",
+													"DeletedAt",
+													"id",
+													"Driver",
+													"rides",
+													"Role",
+													"address",
+													"status",
+													"profile",
+													"Phone",
+													"password",
+													"Email",
+													"FullName",
+													"totalSpent"
+												],
+												"type": "object"
 											},
 											"type": "array"
 										}
 									},
 									"required": [
-										"total",
 										"user"
 									],
 									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/admin/fare-config": {
+			"get": {
+				"operationId": "FareConfig",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AdminService"
 								}
 							}
 						}
