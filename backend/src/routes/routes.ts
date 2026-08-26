@@ -295,9 +295,38 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "AdminService": {
+    "FareConfig": {
         "dataType": "refObject",
         "properties": {
+            "id": {"dataType":"string","required":true},
+            "DeletedAt": {"dataType":"datetime","required":true},
+            "UpdatedAt": {"dataType":"datetime","required":true},
+            "CreatedAt": {"dataType":"datetime","required":true},
+            "vechicleType": {"ref":"VehicleType","required":true},
+            "baseFare": {"dataType":"double","required":true},
+            "perKmRate": {"dataType":"double","required":true},
+            "perMinRate": {"dataType":"double","required":true},
+            "minimumFare": {"dataType":"double","required":true},
+            "platformFee": {"dataType":"double","required":true},
+            "isActive": {"dataType":"boolean","required":true},
+            "NightRide": {"dataType":"double","required":true},
+            "RainRide": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "FareConfigDto": {
+        "dataType": "refObject",
+        "properties": {
+            "baseFare": {"dataType":"double","required":true},
+            "perKmRate": {"dataType":"double","required":true},
+            "perMinRate": {"dataType":"double","required":true},
+            "minimumFare": {"dataType":"double","required":true},
+            "platformFee": {"dataType":"double","required":true},
+            "NightRide": {"dataType":"double","required":true},
+            "isActive": {"dataType":"boolean","required":true},
+            "RainRide": {"dataType":"double","required":true},
+            "vechicleType": {"ref":"VehicleType","required":true},
         },
         "additionalProperties": false,
     },
@@ -1442,6 +1471,66 @@ export function RegisterRoutes(app: Router,opts?:{multer?:ReturnType<typeof mult
 
               await templateService.apiHandler({
                 methodName: 'FareConfig',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsAdminController_updateFare: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                body: {"in":"body","name":"body","required":true,"ref":"FareConfigDto"},
+        };
+        app.patch('/admin/fare-config/:id',
+            ...(fetchMiddlewares<RequestHandler>(AdminController)),
+            ...(fetchMiddlewares<RequestHandler>(AdminController.prototype.updateFare)),
+
+            async function AdminController_updateFare(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminController_updateFare, request, response });
+
+                const controller = new AdminController();
+
+              await templateService.apiHandler({
+                methodName: 'updateFare',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsAdminController_GetRideData: Record<string, TsoaRoute.ParameterSchema> = {
+        };
+        app.get('/admin/ridedata',
+            ...(fetchMiddlewares<RequestHandler>(AdminController)),
+            ...(fetchMiddlewares<RequestHandler>(AdminController.prototype.GetRideData)),
+
+            async function AdminController_GetRideData(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsAdminController_GetRideData, request, response });
+
+                const controller = new AdminController();
+
+              await templateService.apiHandler({
+                methodName: 'GetRideData',
                 controller,
                 response,
                 next,

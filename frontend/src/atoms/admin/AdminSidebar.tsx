@@ -29,7 +29,7 @@ const items = [
   },
   {
     title: "Rides",
-    url: "/admin/rides",
+    url: "/admin/Ride",
   },
   {
     title: "Fare Config",

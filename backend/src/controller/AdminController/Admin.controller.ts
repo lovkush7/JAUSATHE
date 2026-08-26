@@ -2,6 +2,7 @@ import { Body, Controller, Get, Patch, Path, Put, Query, Route } from "tsoa";
 import AdminServices from "../../services/AdminService/Admin.services.ts";
 import path from "node:path";
 import type { VehicleType } from "../../enum/enum.details.ts";
+import type { FareConfigDto } from "../../dto/FareConfig.dto.ts";
 interface DriverApprovalRequest {
   isApproval: boolean;
 }
@@ -79,7 +80,7 @@ async FareConfig(){
 @Patch("fare-config/{id}")
 async updateFare(
     @Path() id: string,
-    @Body() body: FareConfig
+    @Body() body: FareConfigDto
 ){
     try{
         return await AdminServices.UpdateFareConfig(id, body)
@@ -88,6 +89,10 @@ async updateFare(
         console.log(err)
     }
 
+}
+@Get("ridedata")
+async GetRideData(){
+return await AdminServices.GetRideData()
 }
 
 

@@ -189,6 +189,7 @@ export default function FareConfig() {
       id: formData.id,
 
       data: {
+        vechicleType: formData.vechicleType,
         baseFare: formData.baseFare,
         perKmRate: formData.perKmRate,
         perMinRate: formData.perMinRate,

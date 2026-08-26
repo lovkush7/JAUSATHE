@@ -764,8 +764,124 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"AdminService": {
-				"properties": {},
+			"FareConfig": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"DeletedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"CreatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"vechicleType": {
+						"$ref": "#/components/schemas/VehicleType"
+					},
+					"baseFare": {
+						"type": "number",
+						"format": "double"
+					},
+					"perKmRate": {
+						"type": "number",
+						"format": "double"
+					},
+					"perMinRate": {
+						"type": "number",
+						"format": "double"
+					},
+					"minimumFare": {
+						"type": "number",
+						"format": "double"
+					},
+					"platformFee": {
+						"type": "number",
+						"format": "double"
+					},
+					"isActive": {
+						"type": "boolean"
+					},
+					"NightRide": {
+						"type": "number",
+						"format": "double"
+					},
+					"RainRide": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"DeletedAt",
+					"UpdatedAt",
+					"CreatedAt",
+					"vechicleType",
+					"baseFare",
+					"perKmRate",
+					"perMinRate",
+					"minimumFare",
+					"platformFee",
+					"isActive",
+					"NightRide",
+					"RainRide"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"FareConfigDto": {
+				"properties": {
+					"baseFare": {
+						"type": "number",
+						"format": "double"
+					},
+					"perKmRate": {
+						"type": "number",
+						"format": "double"
+					},
+					"perMinRate": {
+						"type": "number",
+						"format": "double"
+					},
+					"minimumFare": {
+						"type": "number",
+						"format": "double"
+					},
+					"platformFee": {
+						"type": "number",
+						"format": "double"
+					},
+					"NightRide": {
+						"type": "number",
+						"format": "double"
+					},
+					"isActive": {
+						"type": "boolean"
+					},
+					"RainRide": {
+						"type": "number",
+						"format": "double"
+					},
+					"vechicleType": {
+						"$ref": "#/components/schemas/VehicleType"
+					}
+				},
+				"required": [
+					"baseFare",
+					"perKmRate",
+					"perMinRate",
+					"minimumFare",
+					"platformFee",
+					"NightRide",
+					"isActive",
+					"RainRide",
+					"vechicleType"
+				],
 				"type": "object",
 				"additionalProperties": false
 			}
@@ -2301,7 +2417,68 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/AdminService"
+									"items": {
+										"$ref": "#/components/schemas/FareConfig"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/admin/fare-config/{id}": {
+			"patch": {
+				"operationId": "UpdateFare",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FareConfig"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/FareConfigDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/admin/ridedata": {
+			"get": {
+				"operationId": "GetRideData",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {},
+									"type": "array"
 								}
 							}
 						}

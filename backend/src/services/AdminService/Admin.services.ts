@@ -220,77 +220,109 @@ class AdminService {
     return updated
 
   }
- async GetUsers() {
-  const users = await User.find();
+  async GetUsers() {
+    const users = await User.find();
 
-  const result = await Ride
-    .createQueryBuilder("ride")
-    .select("ride.riderId", "userId")
-     .addSelect("COUNT(ride.id)", "totalRides")
-    .addSelect(
-      "COALESCE(SUM(ride.estimatedFare), 0)",
-      "totalSpent"
-    )
-    .where("ride.ridestauts = :status", {
-      status: "COMPLETED"
-    })
-    .groupBy("ride.riderId")
-    .getRawMany();
+    const result = await Ride
+      .createQueryBuilder("ride")
+      .select("ride.riderId", "userId")
+      .addSelect("COUNT(ride.id)", "totalRides")
+      .addSelect(
+        "COALESCE(SUM(ride.estimatedFare), 0)",
+        "totalSpent"
+      )
+      .where("ride.ridestauts = :status", {
+        status: "COMPLETED"
+      })
+      .groupBy("ride.riderId")
+      .getRawMany();
 
-  const spendingMap = new Map(
-    result.map((item) => [
-      item.userId,
-      Number(item.totalSpent)
-    ])
-  );
+    const spendingMap = new Map(
+      result.map((item) => [
+        item.userId,
+        Number(item.totalSpent)
+      ])
+    );
 
-  const usersWithSpending = users.map((user) => ({
-    ...user,
-    totalSpent: spendingMap.get(user.id) ?? 0
-  }));
+    const usersWithSpending = users.map((user) => ({
+      ...user,
+      totalSpent: spendingMap.get(user.id) ?? 0
+    }));
 
-  return {
-    user: usersWithSpending
-  };
-}
-async FareConfig(){
-  try{
-  const fare = await FareConfig.find()
-  return fare
-  }catch(err){
-    console.log(err)
+    return {
+      user: usersWithSpending
+    };
   }
-}
-async UpdateFareConfig(
-  id: string,
-  body: FareConfigDto
-){
-  try{
-    const fare = await FareConfig.findOne({
-      where:{
-        id
-      }
-    })
-    if(!fare){
-      throw new Error("fare is not configured ")
+  async FareConfig() {
+    try {
+      const fare = await FareConfig.find()
+      return fare
+    } catch (err) {
+      console.log(err)
     }
-    fare.vechicleType = body.vechicleType,
-    fare.baseFare = body.baseFare,
-    fare.perKmRate = body.perKmRate,
-    fare.perMinRate = body.perMinRate,
-    fare.minimumFare = body.minimumFare,
-    fare.platformFee = body.platformFee,
-    fare.isActive = body.isActive,
-    fare.NightRide = body.NightRide,
-    fare.RainRide = body.RainRide
-   const updated = await fare.save()
-
-   return updated
-
-   }catch(err){
-    console.log(err)
   }
+  async UpdateFareConfig(
+    id: string,
+    body: FareConfigDto
+  ) {
+    try {
+      const fare = await FareConfig.findOne({
+        where: {
+          id
+        }
+      })
+      if (!fare) {
+        throw new Error("fare is not configured ")
+      }
+      fare.vechicleType = body.vechicleType,
+        fare.baseFare = body.baseFare,
+        fare.perKmRate = body.perKmRate,
+        fare.perMinRate = body.perMinRate,
+        fare.minimumFare = body.minimumFare,
+        fare.platformFee = body.platformFee,
+        fare.isActive = body.isActive,
+        fare.NightRide = body.NightRide,
+        fare.RainRide = body.RainRide
+      const updated = await fare.save()
 
-}
+      return updated
+
+    } catch (err) {
+      console.log(err)
+    }
+
+  }
+  async GetRideData() {
+    try {
+      const ridedata = await Ride.createQueryBuilder("ride")
+        .leftJoinAndSelect("ride.rider", "rider")
+        .leftJoinAndSelect("ride.driver", "driver")
+        .leftJoinAndSelect("driver.user", "driverUser")
+        .leftJoinAndSelect("ride.payment", "payment")
+        .select([
+          "ride.id",
+          "ride.pickupAddress",
+          "ride.DropoffAddress",
+          "ride.estimatedFare",
+          "ride.ridestauts",
+          "ride.CreatedAt",
+
+          "rider.id",
+          "rider.FullName",
+
+          "driverUser.id",
+          "driverUser.FullName",
+
+          "payment.PaymentType"
+
+        ])
+        .orderBy("ride.CreatedAt", 'DESC')
+        .getRawMany()
+
+      return ridedata;
+    } catch (err) {
+      console.log(err)
+    }
+  }
 }
 export default new AdminService();
