@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/table"
 import { api } from '../../../api/Api'
 import { id } from 'zod/v4/locales'
+import { getTimeAgo } from '../../../utils/Date'
 
 const GetRideData = async()=>{
     const res = await api.get("admin/ridedata")
@@ -87,13 +88,14 @@ const RideTable = () => {
                   
                 </TableCell>
 
-                <TableCell className="">
+                <TableCell className={`${ride?.ride_ridestauts === "COMPLETED" ? "text-green-600 font-bold" : "text-red-600"}`}>
                   {ride?.ride_ridestauts}
                 </TableCell>
 
                 <TableCell>
                   <span>
-                    {ride?.ride_CreatedAt}
+                    {/* {ride?.ride_CreatedAt} */}
+                    {getTimeAgo(ride?.ride_CreatedAt)}
                   </span>
                 
                 </TableCell>
