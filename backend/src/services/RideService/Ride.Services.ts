@@ -1,4 +1,5 @@
-import { notifyDriversnewRides, notifyNoDriverFound,  } from "../../config/socket.config.ts";
+import { Socket } from "socket.io";
+import { notifyAdmin, notifyDriversnewRides, notifyNoDriverFound, } from "../../config/socket.config.ts";
 import type CreateRideDto from "../../dto/Ridecreate.dto.ts";
 import { Driver } from "../../entity/Driver.entities.ts";
 import { FareConfig } from "../../entity/FareConfig.entities.ts";
@@ -102,16 +103,29 @@ class RideService {
     ride.rider = existance;
     await ride.save();
 
+    notifyAdmin("admin:ride-created", {
+      type: "RIDE_CREATED",
+      rideId: ride.id,
+      riderId: existance.id,
+      pickupAddress: ride.pickupAddress,
+      dropoffAddress: ride.DropoffAddress,
+      vehicleType: ride.reqVehicleType,
+      estimatedFare: ride.estimatedFare,
+      status: ride.ridestauts,
+      createdAt: new Date(),
+    });
+
+
     const driver = await DriverService.getNearbyDrivers(
       body.pickuplat,
       body.pickuplng,
       body.vehicleType,
-      
+
 
     );
 
-console.log("Nearby Drivers:", driver);
-console.log("Driver Count:", driver.length);
+    console.log("Nearby Drivers:", driver);
+    console.log("Driver Count:", driver.length);
     if (driver.length > 0) {
       ride.ridestauts = RideStatus.SEARCHING;
       await ride.save();
@@ -128,25 +142,25 @@ console.log("Driver Count:", driver.length);
         }
 
       )
-        setTimeout(async () => {
-                const current = await Ride.findOne({
-                    where:{
-                        id: ride.id
-                    }
-                })
-                if(
-                  current &&
-                (current && current?.ridestauts === RideStatus.SEARCHING 
-                  || current?.ridestauts === RideStatus.REQUESTED)
-                ){
-                    current.ridestauts = RideStatus.DRIVERNOTFOUND;
-                    await current.save();
-                    notifyNoDriverFound(ride.id, existance.id)
-                  
-                }
-                
-            }, 60000);
-    }else{
+      setTimeout(async () => {
+        const current = await Ride.findOne({
+          where: {
+            id: ride.id
+          }
+        })
+        if (
+          current &&
+          (current && current?.ridestauts === RideStatus.SEARCHING
+            || current?.ridestauts === RideStatus.REQUESTED)
+        ) {
+          current.ridestauts = RideStatus.DRIVERNOTFOUND;
+          await current.save();
+          notifyNoDriverFound(ride.id, existance.id)
+
+        }
+
+      }, 60000);
+    } else {
       ride.ridestauts = RideStatus.DRIVERNOTFOUND;
       await ride.save()
       notifyNoDriverFound(ride.id, existance.id)
@@ -205,7 +219,7 @@ console.log("Driver Count:", driver.length);
           id: rideId,
 
         },
-        relations:{
+        relations: {
           driver: true
         }
 
@@ -221,7 +235,7 @@ console.log("Driver Count:", driver.length);
           id: driverid
         }
       })
-      if(!driverexis){
+      if (!driverexis) {
         throw new Error("no driver found ")
       }
       await Ride.update(rideId, {
@@ -230,20 +244,28 @@ console.log("Driver Count:", driver.length);
         ridestauts: RideStatus.ACCEPTED,
         driverAcceptedAt: new Date(),
       })
-       driverexis.status = Driverstatus.BUSY
-       await driverexis.save()
-        const updatedRide = await Ride.findOne({
-      where: {
-        id: rideId,
-      },
-      relations: {
-        driver: true,
-        rider: true,
-        vechicle: true,
-      },
-    });
+      driverexis.status = Driverstatus.BUSY
+      await driverexis.save()
+      notifyAdmin("admin:ride-accepted", {
+        type: "RIDE_ACCEPTED",
+        rideId: rideId,
+        driverId: driverid,
+        vehicleId: vechicleId,
+        status: RideStatus.ACCEPTED,
+        acceptedAt: new Date(),
+      });
+      const updatedRide = await Ride.findOne({
+        where: {
+          id: rideId,
+        },
+        relations: {
+          driver: true,
+          rider: true,
+          vechicle: true,
+        },
+      });
 
-    return updatedRide;
+      return updatedRide;
     } catch (err) {
       throw err;
     }
@@ -251,20 +273,20 @@ console.log("Driver Count:", driver.length);
   }
   async completeRide(
     rideId: string
-  ){
+  ) {
     const existance = await Ride.findOne({
-      where:{
+      where: {
         id: rideId
       },
-      relations:{
+      relations: {
         driver: true
       }
-      
+
     })
-    if(!existance){
+    if (!existance) {
       throw new Error("ride never exist")
     }
-   
+
     existance.ridestauts = RideStatus.COMPLETED
     existance.driver.status = Driverstatus.ONLINE;
     await existance.driver.save()
@@ -274,100 +296,100 @@ console.log("Driver Count:", driver.length);
 
     return "ride completed successfully"
   }
-   async getAcceptRide(
-        rideId: string,
-      
-    ){
-      try{
-       const active = await Ride.findOne(
+  async getAcceptRide(
+    rideId: string,
+
+  ) {
+    try {
+      const active = await Ride.findOne(
         {
-         where:{
-          id: rideId
-         },
-          relations:{
+          where: {
+            id: rideId
+          },
+          relations: {
             driver: true,
             rider: true,
             vechicle: true
           }
         }
-      
-       )
-         if(!active){
-          throw new Error("ride not found")
+
+      )
+      if (!active) {
+        throw new Error("ride not found")
+      }
+      return active;
+    } catch (err) {
+      console.log("the error is ", err)
+    }
+
+  }
+  async getstatus(
+    rideId: string
+  ) {
+    try {
+      const status = await Ride.findOne({
+        where: {
+          id: rideId
         }
-        return active;
-      }catch(err){
-        console.log("the error is ", err)
+      })
+      if (!status) {
+        throw new Error("no ride found")
       }
-
+      return status.ridestauts
+    } catch (err) {
+      console.log(err)
     }
-    async getstatus(
-      rideId: string
-    ){
-      try{
-           const status = await Ride.findOne({
-            where:{
-              id: rideId
-            }
-           })
-           if(!status){
-            throw new Error("no ride found")
-           }
-           return status.ridestauts
-      }catch(err){
-        console.log(err)
-      }
 
-    }
-    async GetuserRide(userId: string){
-         try{
-           const existanceride =  await Ride.find(
-            {
-              where:{
-                
-                rider:{
-                  id: userId
-                  
-                },
-                ridestauts: RideStatus.COMPLETED
-                
-              },
-              relations:{
-                driver:{
-                  user: true
-                }
+  }
+  async GetuserRide(userId: string) {
+    try {
+      const existanceride = await Ride.find(
+        {
+          where: {
 
-              }
-            }
-           )
-           if(!existanceride){
-            throw new Error("the ride never exist")
-           }
-           return existanceride;
-         }catch(err){
-          console.log("teh error is ",err)
-         }
-    }
-    async getDriver(
-      rideId: string
-    ){
-      try{
-          const existance = await Ride.findOne({
-            where:{
-              id: rideId
+            rider: {
+              id: userId
+
             },
-            relations:{
-              driver: {
-                user: true
-              }
+            ridestauts: RideStatus.COMPLETED
 
+          },
+          relations: {
+            driver: {
+              user: true
             }
-          })
-          return existance;
-      }catch(err){
-        console.log(err)
-      }
 
+          }
+        }
+      )
+      if (!existanceride) {
+        throw new Error("the ride never exist")
+      }
+      return existanceride;
+    } catch (err) {
+      console.log("teh error is ", err)
     }
+  }
+  async getDriver(
+    rideId: string
+  ) {
+    try {
+      const existance = await Ride.findOne({
+        where: {
+          id: rideId
+        },
+        relations: {
+          driver: {
+            user: true
+          }
+
+        }
+      })
+      return existance;
+    } catch (err) {
+      console.log(err)
+    }
+
+  }
 }
 export default new RideService();

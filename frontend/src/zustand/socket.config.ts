@@ -2,6 +2,7 @@ import { create } from "zustand"
 import io, { type Socket } from "socket.io-client"
 import { api } from "../api/Api";
 import uselocation from "./location";
+import { getnotification } from "./Admindashboard";
 interface Vehicle {
   id: string;
   isDefault: boolean;
@@ -73,6 +74,8 @@ interface SocketStore{
     listenToRides: () => void;
     nonlistentorides: () => void;
     clearride: () => void;
+    listentoadminactivites: ()=>void;
+    nonlistentoadminactivites: ()=>void;
 }
 
 
@@ -176,6 +179,25 @@ const useScoket = create<SocketStore>((set, get)=>({
     ,
     clearride:()=>{
         set({newRide: null})
+    },
+    listentoadminactivites: ()=>{
+        try{
+            const {Socket} = get()
+            const {addactivity} = getnotification.getState()
+
+            Socket?.on("admin:activity",(activity)=>{
+                console.log("the activity is ",activity)
+                addactivity(activity)
+            })
+
+        }catch(err){
+            console.log(err)
+        }
+    },
+    nonlistentoadminactivites: ()=>{
+        const {Socket} = get()
+
+        Socket?.off("admin:activity");
     }
      
 }))

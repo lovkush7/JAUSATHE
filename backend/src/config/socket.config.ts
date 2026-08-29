@@ -4,6 +4,7 @@ import express, { type Express } from "express"
 import DriverService from "../services/Driver/DriverService.ts"
 import { Driverstatus, UserRole } from "../enum/enum.details.ts"
 import RideServices from "../services/RideService/Ride.Services.ts"
+import { Socket } from "dgram"
 
 const app: Express = express()
 
@@ -25,6 +26,12 @@ export function notifyNoDriverFound(rideId: string, userid: string) {
             { message: `no driver found for rideId: ${rideId}` });
     }
 }
+export function notifyAdmin(
+    event: string,
+    data: any
+) {
+    io.to("admins").emit(event, data)
+}
 export function notifyDriversnewRides(
     driverIds: string[],
     rideData: any) {
@@ -32,7 +39,7 @@ export function notifyDriversnewRides(
         const socketId = onlineDrivers[driverIds]?.socketId;
         if (socketId) {
             io.to(socketId).emit("new-ride", rideData);
-        }else{
+        } else {
             console.log("driver not found")
         }
     })
@@ -43,7 +50,7 @@ interface onlineUsers {
     role: "PASSENGERS" | "DRIVER";
 }
 interface RideData {
-     rideId: string
+    rideId: string
     DriverId: string
     vechiclesId: string
 }
@@ -68,6 +75,9 @@ io.on("connection", (socket) => {
             socketId: socket.id,
             role: role
         }
+    } else if (role === "ADMIN") {
+        socket.join("admins")
+        console.log("Admin joined", socket.id)
     }
 
     io.emit("online-users", { passengers: Object.keys(onlinePassengers), drivers: Object.keys(onlineDrivers) })
@@ -83,12 +93,12 @@ io.on("connection", (socket) => {
         )
     })
 
-    socket.on("ride-accept", async(data:RideData)=>{
+    socket.on("ride-accept", async (data: RideData) => {
         RideServices.AcceptRide(
             data.vechiclesId,
             data.DriverId,
             data.rideId)
-        
+
     })
     socket.on("driveronline", async () => {
         console.log("driver active success")
@@ -96,6 +106,12 @@ io.on("connection", (socket) => {
             userId,
             Driverstatus.ONLINE
         )
+        io.to("admins").emit("admin:driver-online", {
+            type: "DRIVER_ONLINE",
+            driverId: userId,
+            status: Driverstatus.ONLINE,
+            timestamp: new Date(),
+        });
     })
 
     // socket.on("driveroffline",async ()=>{
@@ -105,32 +121,38 @@ io.on("connection", (socket) => {
     //  )
     // })
 
-   socket.on("disconnect", async () => {
-    console.log("a user disconnected", socket.id);
+    socket.on("disconnect", async () => {
+        console.log("a user disconnected", socket.id);
 
-    try {
-        if (role === UserRole.DRIVER) {
-            await DriverService.updateDriverStatus(
-                userId,
-                Driverstatus.OFFLINE
-            );
-        }
-    } catch (err) {
-        console.error("Failed to update driver status:", err);
-    } finally {
-        if (role === UserRole.PASSENGERS) {
-            delete onlinePassengers[userId];
-        }
+        try {
+            if (role === UserRole.DRIVER) {
+                await DriverService.updateDriverStatus(
+                    userId,
+                    Driverstatus.OFFLINE
+                );
+                io.to("admins").emit("admin:driver-offline", {
+                    type: "DRIVER_OFFLINE",
+                    driverId: userId,
+                    status: Driverstatus.OFFLINE,
+                    timestamp: new Date(),
+                });
+            }
+        } catch (err) {
+            console.error("Failed to update driver status:", err);
+        } finally {
+            if (role === UserRole.PASSENGERS) {
+                delete onlinePassengers[userId];
+            }
 
-        if (role === UserRole.DRIVER) {
-            delete onlineDrivers[userId];
-        }
+            if (role === UserRole.DRIVER) {
+                delete onlineDrivers[userId];
+            }
 
-        io.emit("online-users", {
-            passengers: Object.keys(onlinePassengers),
-            drivers: Object.keys(onlineDrivers),
-        });
-    }
-});
+            io.emit("online-users", {
+                passengers: Object.keys(onlinePassengers),
+                drivers: Object.keys(onlineDrivers),
+            });
+        }
+    });
 })
 export { io, server, app }
