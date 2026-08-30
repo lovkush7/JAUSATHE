@@ -103,17 +103,15 @@ class RideService {
     ride.rider = existance;
     await ride.save();
 
-    notifyAdmin("admin:ride-created", {
-      type: "RIDE_CREATED",
-      rideId: ride.id,
-      riderId: existance.id,
-      pickupAddress: ride.pickupAddress,
-      dropoffAddress: ride.DropoffAddress,
-      vehicleType: ride.reqVehicleType,
-      estimatedFare: ride.estimatedFare,
-      status: ride.ridestauts,
-      createdAt: new Date(),
-    });
+  notifyAdmin("admin:activity", {
+    type: "RIDE_CREATED",
+    title: "New Ride Created",
+    message: `New ride created by ${existance.FullName}`,
+    rideId: ride.id,
+    riderId: existance.id,
+    amount: ride.estimatedFare,
+    timestamp: new Date().toISOString(),
+});
 
 
     const driver = await DriverService.getNearbyDrivers(
@@ -246,14 +244,24 @@ class RideService {
       })
       driverexis.status = Driverstatus.BUSY
       await driverexis.save()
-      notifyAdmin("admin:ride-accepted", {
-        type: "RIDE_ACCEPTED",
-        rideId: rideId,
-        driverId: driverid,
-        vehicleId: vechicleId,
-        status: RideStatus.ACCEPTED,
-        acceptedAt: new Date(),
-      });
+
+      notifyAdmin("admin:activity", {
+  type: "RIDE_ACCEPTED",
+
+  title: "Ride Accepted",
+
+  message: `Driver accepted ride ${ride.id}`,
+
+  rideId: ride.id,
+
+  driverId:  driverid,
+
+  vehicleId: vechicleId,
+
+  status: RideStatus.ACCEPTED,
+
+  timestamp: new Date().toISOString(),
+});
       const updatedRide = await Ride.findOne({
         where: {
           id: rideId,

@@ -3,6 +3,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { AdminSidebar } from "../../atoms/admin/AdminSidebar";
+import LiveActivity from "../../atoms/admin/comp/LiveActivity";
 
 
 
@@ -23,6 +24,7 @@ export default function Reviews() {
 
         <div className="p-6">
           {/* Dashboard content */}
+          <LiveActivity/>
           
         </div>
       </main>

@@ -30,7 +30,15 @@ export function notifyAdmin(
     event: string,
     data: any
 ) {
+    console.log("the event and data are ",event,data)
+      const adminRoom = io.sockets.adapter.rooms.get("admins");
+
+  console.log("EVENT:", event);
+  console.log("DATA:", data);
+  console.log("ADMIN ROOM:", adminRoom);
+  console.log("ADMIN COUNT:", adminRoom?.size ?? 0);
     io.to("admins").emit(event, data)
+
 }
 export function notifyDriversnewRides(
     driverIds: string[],
