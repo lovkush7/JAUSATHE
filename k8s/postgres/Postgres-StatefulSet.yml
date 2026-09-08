@@ -6,7 +6,7 @@ metadata:
 
 spec: 
   serviceName: 'postgres-service'
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: postgres
@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres:latest
+          image: postgres:17
           imagePullPolicy: IfNotPresent
 
           ports:
