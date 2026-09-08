@@ -2,10 +2,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend-service
-  metadata: jausathe
+  namespace: jausathe-namespace
 
 spec: 
-  type: clusterIp
+  type: ClusterIP
   selector:
     app: frontend 
   ports:

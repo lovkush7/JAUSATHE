@@ -23,7 +23,7 @@ spec:
           imagePullPolicy: IfNotPresent
 
           ports:
-            - containerport: 5432
+            - containerPort: 5432
 
           env:
             - name: POSTGRES_USER
@@ -64,15 +64,15 @@ spec:
             periodSeconds: 10
 
           volumeMounts:
-            - name: postgres-presistent-storage
+            - name: postgres-storage
               mountPath: /var/lib/postgresql/data
 
-  volumeClaimsTemplate:
+  volumeClaimTemplates:
     - metadata:
         name: postgres-storage
 
       spec:
-        accessMode:
+        accessModes:
           - ReadWriteOnce
         resources:
           requests:

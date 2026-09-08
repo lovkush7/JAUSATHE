@@ -12,16 +12,16 @@ spec:
 
   template:
     metadata:
-      matchLabels:
+      labels:
         app: frontend
 
     spec:
       containers:
-        - name: frontend_container
-          image: jausathe/frontend:latest
+        - name: frontend-container
+          image: jausathe-frontend:latest
           imagePullPolicy: IfNotPresent
           ports:
-            - containersport: 5173
+            - containerPort: 5173
 
           resources:
             requests:

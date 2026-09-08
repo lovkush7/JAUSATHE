@@ -15,10 +15,10 @@ spec:
       labels: 
         app: backend
 
-      spec:
+    spec:
         containers:
-          - name: backend_container
-            image: jausathe-namespace/backend:latest
+          - name: backend-container
+            image: jausathe-backend:latest  
             imagePullPolicy: IfNotPresent
             ports:
               - containerPort: 8080
