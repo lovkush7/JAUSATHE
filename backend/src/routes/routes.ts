@@ -19,6 +19,8 @@ import { DriverTargetController } from './../controller/DriverTarget/DriverTarge
 import { DriverController } from './../controller/DriverController/Driver.controller.js';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AdminController } from './../controller/AdminController/Admin.controller.js';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { VehiclesController } from './../controller/VehiclesController/Vehicles.controller.js';
 import { expressAuthentication } from './../Middlewares/ExpressAuthentication.js';
 // @ts-ignore - no great way to install types from subpackage
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
@@ -327,6 +329,14 @@ const models: TsoaRoute.Models = {
             "isActive": {"dataType":"boolean","required":true},
             "RainRide": {"dataType":"double","required":true},
             "vechicleType": {"ref":"VehicleType","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "vehiclesapproval": {
+        "dataType": "refObject",
+        "properties": {
+            "isapproved": {"dataType":"boolean","required":true},
         },
         "additionalProperties": false,
     },
@@ -1531,6 +1541,66 @@ export function RegisterRoutes(app: Router,opts?:{multer?:ReturnType<typeof mult
 
               await templateService.apiHandler({
                 methodName: 'GetRideData',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsVehiclesController_Getvehicles: Record<string, TsoaRoute.ParameterSchema> = {
+        };
+        app.get('/vehicles/getVehicles',
+            ...(fetchMiddlewares<RequestHandler>(VehiclesController)),
+            ...(fetchMiddlewares<RequestHandler>(VehiclesController.prototype.Getvehicles)),
+
+            async function VehiclesController_Getvehicles(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsVehiclesController_Getvehicles, request, response });
+
+                const controller = new VehiclesController();
+
+              await templateService.apiHandler({
+                methodName: 'Getvehicles',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsVehiclesController_approvalvehicles: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                body: {"in":"body","name":"body","required":true,"ref":"vehiclesapproval"},
+        };
+        app.patch('/vehicles/approve/:id',
+            ...(fetchMiddlewares<RequestHandler>(VehiclesController)),
+            ...(fetchMiddlewares<RequestHandler>(VehiclesController.prototype.approvalvehicles)),
+
+            async function VehiclesController_approvalvehicles(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsVehiclesController_approvalvehicles, request, response });
+
+                const controller = new VehiclesController();
+
+              await templateService.apiHandler({
+                methodName: 'approvalvehicles',
                 controller,
                 response,
                 next,

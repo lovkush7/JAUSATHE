@@ -1,6 +1,8 @@
-import { Controller, Get,  Route } from "tsoa";
+import { Body, Controller, Get,  Patch,  Path,  Route } from "tsoa";
 import VehiclesServices from "../../services/Vehicleservice/Vehicles.services.ts";
-
+interface vehiclesapproval{
+    isapproved: boolean
+}
 @Route("/vehicles")
 export class VehiclesController extends Controller {
 
@@ -11,6 +13,14 @@ export class VehiclesController extends Controller {
     }catch(err){
         console.log("the error is ", err)
     }
+
+    }
+    @Patch("approve/{id}")
+    async approvalvehicles(
+        @Path() id: string,
+        @Body() body: vehiclesapproval
+    ){
+        return await VehiclesServices.VehiclesApproval(id, body.isapproved)
 
     }
 

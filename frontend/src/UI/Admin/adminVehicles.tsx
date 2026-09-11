@@ -3,6 +3,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { AdminSidebar } from "../../atoms/admin/AdminSidebar";
+import Vehicles from "../../atoms/admin/comp/Vehicles";
 
 
 
@@ -23,7 +24,7 @@ export default function AdminVehicles() {
 
         <div className="p-6">
           {/* Dashboard content */}
-          
+          <Vehicles/>
         </div>
       </main>
 
