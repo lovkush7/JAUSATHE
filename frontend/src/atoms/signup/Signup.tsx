@@ -52,7 +52,15 @@ const mutation = useMutation({
 
   onSuccess: (data)=>{
     console.log("data",data)
+    SetText({
+      FullName: '',
+      Email: '',
+      password: '',
+      Phone: '',
+      Role: 'PASSENGERS',
+    })
     connectsocket();
+
     const role = data.Role;
   console.log("the role is ",role)
     if(role ===  "PASSENGERS"){

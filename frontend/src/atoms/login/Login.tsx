@@ -20,7 +20,7 @@ import { Link, useNavigate } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 import { api } from '@/api/Api'
 import useScoket from '../../zustand/socket.config'
-import { format } from "date-fns"
+import { format, set } from "date-fns"
 
 const Login = () => {
   const [value, setvalue] = useState({
@@ -54,6 +54,7 @@ const Login = () => {
         description: formattedDate,
         position: "top-center",
       })
+      setvalue({ Email: '', password: '' })
       connectsocket()
       console.log(data)
       const role = data.Role;
@@ -78,6 +79,7 @@ const Login = () => {
   const handlesubmit = (e: any) => {
     e.preventDefault();
     mutation.mutate(value)
+    
   }
   return (
 
@@ -100,6 +102,8 @@ const Login = () => {
                   value={value.Email}
                   onChange={(e) => setvalue({ ...value, Email: e.target.value })}
                   required
+                  
+
                 />
               </Field>
               <Field>
@@ -118,7 +122,7 @@ const Login = () => {
                   required />
               </Field>
               <Field>
-                <Button className='bg-blue-600' type="submit">Login</Button>
+                <Button className='bg-blue-600 hover:bg-blue-600' type="submit">Login</Button>
 
                 <FieldDescription className="text-center">
                   Don&apos;t have an account? <Link to='/auth/Signup'>signup</Link>

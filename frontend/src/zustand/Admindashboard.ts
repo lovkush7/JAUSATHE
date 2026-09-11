@@ -1,5 +1,5 @@
 import { create } from "zustand";
-interface AdminActivity {
+export interface AdminActivity {
   type:
     | "RIDE_CREATED"
     | "RIDE_ACCEPTED"

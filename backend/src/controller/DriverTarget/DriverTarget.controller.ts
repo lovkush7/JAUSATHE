@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Path, Post, Route } from "tsoa";
 // import DriverTargetService from "../../services/Targetservice/Driver.Service.ts";
-import DriverTargetService from "../../services/Targetservice/Driver.services.ts"
+import DriverTargetService from "../../services/Targetservice/Driverss.Services.ts"
 interface CreateRideTargetDto{
     DriverId: string;
     targetRides: number;

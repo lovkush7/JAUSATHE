@@ -30,13 +30,13 @@ export function notifyAdmin(
     event: string,
     data: any
 ) {
-    console.log("the event and data are ",event,data)
-      const adminRoom = io.sockets.adapter.rooms.get("admins");
+    console.log("the event and data are ", event, data)
+    const adminRoom = io.sockets.adapter.rooms.get("admins");
 
-  console.log("EVENT:", event);
-  console.log("DATA:", data);
-  console.log("ADMIN ROOM:", adminRoom);
-  console.log("ADMIN COUNT:", adminRoom?.size ?? 0);
+    console.log("EVENT:", event);
+    console.log("DATA:", data);
+    console.log("ADMIN ROOM:", adminRoom);
+    console.log("ADMIN COUNT:", adminRoom?.size ?? 0);
     io.to("admins").emit(event, data)
 
 }
@@ -114,11 +114,18 @@ io.on("connection", (socket) => {
             userId,
             Driverstatus.ONLINE
         )
-        io.to("admins").emit("admin:driver-online", {
+        notifyAdmin("admin:activity", {
             type: "DRIVER_ONLINE",
+
+            title: "Driver Online",
+
+            message: `Driver ${userId} is now online`,
+
             driverId: userId,
+
             status: Driverstatus.ONLINE,
-            timestamp: new Date(),
+
+            timestamp: new Date().toISOString(),
         });
     })
 
@@ -138,11 +145,18 @@ io.on("connection", (socket) => {
                     userId,
                     Driverstatus.OFFLINE
                 );
-                io.to("admins").emit("admin:driver-offline", {
+                notifyAdmin("admin:activity", {
                     type: "DRIVER_OFFLINE",
+
+                    title: "Driver Offline",
+
+                    message: `Driver ${userId} went offline`,
+
                     driverId: userId,
+
                     status: Driverstatus.OFFLINE,
-                    timestamp: new Date(),
+
+                    timestamp: new Date().toISOString(),
                 });
             }
         } catch (err) {
